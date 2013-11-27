@@ -1,0 +1,63 @@
+10
+
+dir
+0
+http://cloudsim.googlecode.com/svn/trunk/modules/cloudsim-examples/src/main/java/org/cloudbus/cloudsim/examples/roundrobin
+http://cloudsim.googlecode.com/svn
+add
+
+
+
+
+
+
+
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+4eb84f4b-ba4d-25d6-b9a1-b968c9957e3e
+
+CircularHostList.java
+file
+
+
+
+add
+
+CloudSimExample9.java
+file
+
+
+
+add
+
+Hosts.java
+file
+
+
+
+add
+
+RoundRobinDatacenterBroker.java
+file
+
+
+
+add
+
+RoundRobinVmAllocationPolicy.java
+file
+
+
+
+add
+
