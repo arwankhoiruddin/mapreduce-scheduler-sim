@@ -10,9 +10,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Round-Robin {@link org.cloudbus.cloudsim.Vm} allocation policy.
+ * FCFS {@link org.cloudbus.cloudsim.Vm} allocation policy.
  *
- * @author alessandro
  */
 public class FCFSVmAllocationPolicy extends org.cloudbus.cloudsim.VmAllocationPolicy {
     private final Map<String, Host> vm_table = new HashMap<String, Host>();
