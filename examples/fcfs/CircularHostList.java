@@ -13,14 +13,14 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.cloudbus.cloudsim.examples.roundrobin;
+package org.cloudbus.cloudsim.examples.fcfs;
+
+import org.cloudbus.cloudsim.Host;
 
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-
-import org.cloudbus.cloudsim.Host;
 
 public final class CircularHostList implements Iterable<Host> {
 

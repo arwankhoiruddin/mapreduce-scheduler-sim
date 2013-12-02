@@ -14,15 +14,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.cloudbus.cloudsim.examples.roundrobin;
-
-import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+package org.cloudbus.cloudsim.examples.fcfs;
 
 import org.cloudbus.cloudsim.Cloudlet;
 import org.cloudbus.cloudsim.CloudletSchedulerTimeShared;
@@ -42,8 +34,14 @@ import org.cloudbus.cloudsim.provisioners.BwProvisionerSimple;
 import org.cloudbus.cloudsim.provisioners.PeProvisionerSimple;
 import org.cloudbus.cloudsim.provisioners.RamProvisionerSimple;
 
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.LinkedList;
+import java.util.List;
 
-public class CloudSimExample9 {
+
+public class CloudSimExample10 {
 
     /**
      * The cloudlet list.
@@ -149,7 +147,7 @@ public class CloudSimExample9 {
 
             printCloudletList(newList);
 
-            Log.printLine(CloudSimExample9.class.getName() + " finished!");
+            Log.printLine(CloudSimExample10.class.getName() + " finished!");
         } catch (Exception e) {
             e.printStackTrace();
             Log.printLine("The simulation has been terminated due to an unexpected error");
@@ -235,7 +233,7 @@ public class CloudSimExample9 {
 // 6. Finally, we need to create a PowerDatacenter object.
         Datacenter datacenter = null;
         try {
-            RoundRobinVmAllocationPolicy vm_policy = new RoundRobinVmAllocationPolicy(hostList);
+            FCFSVmAllocationPolicy vm_policy = new FCFSVmAllocationPolicy(hostList);
             datacenter = new Datacenter(name, characteristics, vm_policy, storageList, 0);
         } catch (Exception e) {
             e.printStackTrace();
@@ -243,8 +241,9 @@ public class CloudSimExample9 {
         return datacenter;
     }
 
+
     private static DatacenterBroker createBroker(String name) throws Exception {
-        return new RoundRobinDatacenterBroker(name);
+        return new FCFSDatacenterBroker(name);
     }
 
     /**
