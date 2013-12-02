@@ -13,7 +13,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.cloudbus.cloudsim.examples.roundrobin;
+package org.cloudbus.cloudsim.examples.other;
 
 import java.util.ArrayList;
 import java.util.Collections;
