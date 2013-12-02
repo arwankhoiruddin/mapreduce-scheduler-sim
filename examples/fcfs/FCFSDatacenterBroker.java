@@ -28,47 +28,43 @@ import java.util.List;
 /**
  * This broker allocates VMs to data centers following the FCFS algorithm.
  */
-public class FCFSDatacenterBroker extends DatacenterBroker
-{
+public class FCFSDatacenterBroker extends DatacenterBroker {
 
     /**
      * Creates an instance of this class associating to it a given name.
-     * @param name The name to be associated to this broker. It might not be <code>null</code> or empty.
+     *
+     * @param name The name to be associated to this broker. It might not be <code>null</code> or
+     *             empty.
      * @throws Exception If the name contains spaces.
      */
-    public FCFSDatacenterBroker(String name) throws Exception
-    {
+    public FCFSDatacenterBroker(String name) throws Exception {
         super(name);
     }
 
     @Override
-    protected void processResourceCharacteristics(SimEvent ev)
-    {
+    protected void processResourceCharacteristics(SimEvent ev) {
         DatacenterCharacteristics characteristics = (DatacenterCharacteristics) ev.getData();
         getDatacenterCharacteristicsList().put(characteristics.getId(), characteristics);
 
-        if (getDatacenterCharacteristicsList().size() == getDatacenterIdsList().size())
-        {
+        if (getDatacenterCharacteristicsList().size() == getDatacenterIdsList().size()) {
             distributeRequestsForNewVmsAcrossDatacentersUsingFCFS();
         }
     }
 
     /**
-     * Distributes the VMs across the data centers using the round-robin approach. A VM is allocated to a data center only if there isn't
-     * a VM in the data center with the same id.
+     * Distributes the VMs across the data centers using the round-robin approach. A VM is allocated
+     * to a data center only if there isn't a VM in the data center with the same id.
      */
-    protected void distributeRequestsForNewVmsAcrossDatacentersUsingFCFS()
-    {
+    protected void distributeRequestsForNewVmsAcrossDatacentersUsingFCFS() {
         int numberOfVmsAllocated = 0;
         int i = 0;
         final List<Integer> availableDatacenters = getDatacenterIdsList();
-        for (Vm vm : getVmList())
-        {
+        for (Vm vm : getVmList()) {
             int datacenterId = availableDatacenters.get(i++ % availableDatacenters.size());
             String datacenterName = CloudSim.getEntityName(datacenterId);
-            if (!getVmsToDatacentersMap().containsKey(vm.getId()))
-            {
-                Log.printLine(CloudSim.clock() + ": " + getName() + ": Trying to Create VM #" + vm.getId() + " in " + datacenterName);
+            if (!getVmsToDatacentersMap().containsKey(vm.getId())) {
+                Log.printLine(CloudSim.clock() + ": " + getName() + ": Trying to Create VM #" + vm
+                    .getId() + " in " + datacenterName);
                 sendNow(datacenterId, CloudSimTags.VM_CREATE_ACK, vm);
                 numberOfVmsAllocated++;
             }

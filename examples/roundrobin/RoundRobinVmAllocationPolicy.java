@@ -18,6 +18,7 @@ import org.cloudbus.cloudsim.examples.roundrobin.CircularHostList;
 public class RoundRobinVmAllocationPolicy extends org.cloudbus.cloudsim.VmAllocationPolicy {
     private final Map<String, Host> vm_table = new HashMap<String, Host>();
     private final CircularHostList hosts;
+
     public RoundRobinVmAllocationPolicy(List<? extends Host> list) {
         super(list);
         this.hosts = new CircularHostList(list);
@@ -40,13 +41,13 @@ public class RoundRobinVmAllocationPolicy extends org.cloudbus.cloudsim.VmAlloca
     }
 
     @Override
-    public boolean allocateHostForVm(Vm vm, Host host)
-    {
-        if (host != null && host.vmCreate(vm))
-        {
+    public boolean allocateHostForVm(Vm vm, Host host) {
+        if (host != null && host.vmCreate(vm)) {
             vm_table.put(vm.getUid(), host);
-            Log.formatLine("%.4f: VM #" + vm.getId() + " has been allocated to the host#" + host.getId() +
-                           " datacenter #" + host.getDatacenter().getId() + "(" + host.getDatacenter().getName() + ") #",
+            Log.formatLine("%.4f: VM #" + vm.getId() + " has been allocated to the host#" + host
+                .getId() +
+                           " datacenter #" + host.getDatacenter().getId() + "(" + host
+                .getDatacenter().getName() + ") #",
                            CloudSim.clock());
             return true;
         }
