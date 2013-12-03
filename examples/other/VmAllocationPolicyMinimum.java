@@ -20,7 +20,6 @@ import org.cloudbus.cloudsim.Host;
 import org.cloudbus.cloudsim.Log;
 import org.cloudbus.cloudsim.Vm;
 import org.cloudbus.cloudsim.core.CloudSim;
-import org.cloudbus.cloudsim.examples.fcfs.Hosts;
 
 import java.util.HashMap;
 import java.util.List;

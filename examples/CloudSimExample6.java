@@ -51,9 +51,9 @@ public class CloudSimExample6 {
 		Vm[] vm = new Vm[vms];
 
 		for(int i=0;i<vms;i++){
-//			vm[i] = new Vm(i, userId, mips, pesNumber, ram, bw, size, vmm, new CloudletSchedulerTimeShared());    //todo         1
+			vm[i] = new Vm(i, userId, mips, pesNumber, ram, bw, size, vmm, new CloudletSchedulerTimeShared());    //todo         1
 			//for creating a VM with a space shared scheduling policy for cloudlets:
-			vm[i] = new Vm(i, userId, mips, pesNumber, ram, bw, size, vmm, new CloudletSchedulerSpaceShared());
+//			vm[i] = new Vm(i, userId, mips, pesNumber, ram, bw, size, vmm, new CloudletSchedulerSpaceShared());
 
 			list.add(vm[i]);
 		}
@@ -97,7 +97,7 @@ public class CloudSimExample6 {
 		try {
 			// First step: Initialize the CloudSim package. It should be called
 			// before creating any entities.
-			int num_user = 1;   // number of grid users
+			int num_user = 2;   // number of grid users
 			Calendar calendar = Calendar.getInstance();
 			boolean trace_flag = false;  // mean trace events
 
@@ -117,7 +117,7 @@ public class CloudSimExample6 {
 
 			//Fourth step: Create VMs and Cloudlets and send them to broker
 			vmlist = createVM(brokerId,5); //creating 20 vms  - works for 5.
-			cloudletList = createCloudlet(brokerId,40); // creating 40 cloudlets
+			cloudletList = createCloudlet(brokerId,4000); // creating 40 cloudlets
 
 			broker.submitVmList(vmlist);
 			broker.submitCloudletList(cloudletList);
@@ -174,7 +174,7 @@ public class CloudSimExample6 {
 		long storage = 1000000; //host storage
 		int bw = 10000;
 
-		hostList.add(
+/*		hostList.add(
     			new Host(
     				hostId,
     				new RamProvisionerSimple(ram),
@@ -198,9 +198,9 @@ public class CloudSimExample6 {
     			)
     		); // Second machine
 
-
+  */
 //		To create a host with a space-shared allocation policy for PEs to VMs:
-/*		hostList.add(
+		hostList.add(
     			new Host(
     				hostId,
     				new RamProvisionerSimple(ram),
@@ -222,7 +222,7 @@ public class CloudSimExample6 {
                 new VmSchedulerSpaceShared(peList2)
             )
                     );
-*/
+
 
 
         //To create a host with a opportunistic space-shared allocation policy for PEs to VMs:
