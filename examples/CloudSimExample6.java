@@ -42,7 +42,7 @@ public class CloudSimExample6 {
 		//VM Parameters
 		long size = 10000; //image size (MB)
 		int ram = 512; //vm memory (MB)
-		int mips = 1000;
+		int mips = 200;
 		long bw = 1000;
 		int pesNumber = 1; //number of cpus
 		String vmm = "Xen"; //VMM name
@@ -51,9 +51,9 @@ public class CloudSimExample6 {
 		Vm[] vm = new Vm[vms];
 
 		for(int i=0;i<vms;i++){
-			vm[i] = new Vm(i, userId, mips, pesNumber, ram, bw, size, vmm, new CloudletSchedulerTimeShared());    //todo         1
+//			vm[i] = new Vm(i, userId, mips, pesNumber, ram, bw, size, vmm, new CloudletSchedulerTimeShared());    //todo         1
 			//for creating a VM with a space shared scheduling policy for cloudlets:
-//			vm[i] = new Vm(i, userId, mips, pesNumber, ram, bw, size, vmm, new CloudletSchedulerSpaceShared());
+			vm[i] = new Vm(i, userId, mips*(i+1), pesNumber, ram, bw, size, vmm, new CloudletSchedulerSpaceShared());
 
 			list.add(vm[i]);
 		}
@@ -67,7 +67,7 @@ public class CloudSimExample6 {
 		LinkedList<Cloudlet> list = new LinkedList<Cloudlet>();
 
 		//cloudlet parameters
-		long length = 1000;
+		long length = 100; //1000
 		long fileSize = 300;
 		long outputSize = 300;
 		int pesNumber = 1;
@@ -76,7 +76,8 @@ public class CloudSimExample6 {
 		Cloudlet[] cloudlet = new Cloudlet[cloudlets];
 
 		for(int i=0;i<cloudlets;i++){
-			cloudlet[i] = new Cloudlet(i, length, pesNumber, fileSize, outputSize, utilizationModel, utilizationModel, utilizationModel);
+            int f = (int) ((Math.random() * 40) + 1);
+			cloudlet[i] = new Cloudlet(i, length*f, pesNumber, fileSize, outputSize, utilizationModel, utilizationModel, utilizationModel);
 			// setting the owner of these Cloudlets
 			cloudlet[i].setUserId(userId);
 			list.add(cloudlet[i]);
@@ -198,7 +199,7 @@ public class CloudSimExample6 {
     			)
     		); // Second machine
 
-  */
+*/
 //		To create a host with a space-shared allocation policy for PEs to VMs:
 		hostList.add(
     			new Host(

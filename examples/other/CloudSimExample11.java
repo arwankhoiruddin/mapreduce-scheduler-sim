@@ -59,11 +59,11 @@ public class CloudSimExample11 {
         LinkedList<Vm> list = new LinkedList<Vm>();
 
 //VM Parameters
-        long size = 10000; //image size (MB)
-        int ram = 512; //vm memory (MB)
-        int mips = 250;
+        long size = 10000; //image size (MB)    //10000
+        int ram = 512; //vm memory (MB)               //512
+        int mips = 250;  //250
         long bw = 1000;
-        int pesNumber = 1; //number of cpus       - 1
+        int pesNumber = 4; //number of cpus       - 1
         String vmm = "Xen"; //VMM name
 
 //create VMs
@@ -83,9 +83,9 @@ public class CloudSimExample11 {
         LinkedList<Cloudlet> list = new LinkedList<Cloudlet>();
 
 //cloudlet parameters
-        long length = 40000;
-        long fileSize = 300;
-        long outputSize = 300;
+        long length = 4000000;                   //40000
+        long fileSize = 300;                            //300
+        long outputSize = 300;                               //300
         int pesNumber = 1;
         UtilizationModel utilizationModel = new UtilizationModelFull();
 
@@ -132,7 +132,7 @@ public class CloudSimExample11 {
 
 //Fourth step: Create VMs and Cloudlets and send them to broker
             vmList = createVM(brokerId, 5, 0); //creating 5 vms
-            cloudletList = createCloudlet(brokerId, 10, 0); // creating 10 cloudlets
+            cloudletList = createCloudlet(brokerId, 1000, 0); // creating 10 cloudlets
 
             broker.submitVmList(vmList);
             broker.submitCloudletList(cloudletList);

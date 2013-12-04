@@ -1,13 +1,13 @@
 # This is to set the colors of the plot
 set term png background "white"
 set key below 
-set style line 1 lc rgb "blue" lw 5 pt 1
-set style line 2 lc rgb "black" lw 5 pt 1
-set style line 3 lc rgb "green" lw 1 pt 1
-set style line 4 lc rgb "red" lw 1 pt 1
+set style line 1 lc rgb "black" lw 1 pt 2
+set style line 2 lc rgb "red" lw 5 pt 1
+set style line 3 lc rgb "blue" lw 1 pt 1
+set style line 4 lc rgb "yellow" lw 1 pt 1
 set output "init5_4000.png"
 
 set xlabel "Cloudlet ID"
 set ylabel "Time/ms"
 
-plot "SS.dat" u 1:($6) smooth frequency with points ls 1 title 'Start Time (FCFS-FCFS)', "TT.dat" u 1:($6) smooth frequency with points ls 2 title 'Start Time (RR-RR)', "TS.dat" u 1:($6) smooth frequency with points ls 3 title 'Start Time (RR-FCFS)', "ST.dat" u 1:($6) smooth frequency with points ls 4 title 'Start Time (FCFS-RR)'
+plot "SS.dat" u 1:($6) with points ls 1 title 'Start Time (FCFS-FCFS)', "TT.dat" u 1:($6) with points ls 2 title 'Start Time (RR-RR)', "TS.dat" u 1:($6) with points ls 3 title 'Start Time (RR-FCFS)', "ST.dat" u 1:($6) with points ls 4 title 'Start Time (FCFS-RR)'

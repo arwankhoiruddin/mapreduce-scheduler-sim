@@ -113,6 +113,10 @@ This avoids the need to manually terminate the user entities upon the end of sim
 public CloudSimShutdown(String name,
     int numUser) throws Exception { .. }
 \end{verbatimtab}
+The total number of cloud user entity plays an important role to determine whether all hostList should be shut down or not. The hostList will be shutdown, unless one or more users are still not finished. It is important to give a correct number of total cloud user entity to avoid CloudSim hanging or displaying a weird behaviour.
+
+\SubSection{Resource Allocation}
+Scheduling of resources are modelled at host and VM levels in CloudSim. At the host level, fractions of the processor element is shared across the VMs running in the host. This is handled by the VmScheduler classes. Similarly, the resources are shared among the cloudlets running in a single VM at the VM level, by the CloudletScheduler classes. Classes ${X|Y}SchedulerSpaceShared$ implement the space shared system using FCFS, where ${X|Y}SchedulerTimeShared$ implement the time shared system using Round Robin. Here, X refers to Cloudlet and Y refers to VmScheduler, which handle the resource allocation at the VM and host level accordingly. $VmAllocationPolicy$ chooses a host for the given VM. The default behaviour is defined by $VmAllocationPolicySimple$ which picks the host with less PEs in use as the host for the VM. The application level scheduling, which of the cloudlets from the broker is executed next, is defined at the broker level. Figure~\ref{fig:scheduling} depicts the overview of resource scheduling and the architecture.
 \begin{figure}[ht]
  \resizebox{\columnwidth}{!}{
   \includegraphics[width=\textwidth]{resources.png}
@@ -120,12 +124,11 @@ public CloudSimShutdown(String name,
  \caption{CloudSim scheduling operations}
  \label{fig:scheduling}
 \end{figure}
-Scheduling of resources are modelled at host and VM levels in CloudSim. At the host level, fractions of the processor element is shared across the VMs running in the host. This is handled by the VmScheduler classes. Similarly, the resources are shared among the cloudlets running in a single VM at the VM level, by the CloudletScheduler classes. Classes ${X|Y}SchedulerSpaceShared$ implement the space shared system using FCFS, where ${X|Y}SchedulerTimeShared$ implement the time shared system using Round Robin. Here, X refers to Cloudlet and Y refers to VmScheduler, which handle the resource allocation at the VM and host level accordingly. The examples and default scenarios often use the TimeShared systems, which use Round Robin algorithm. The application level behaviour, which of the cloudlets from the broker is executed next, is defined at the broker level. However, these policies could be mixed and the algorithm implementations for the application scheduling were tested against these different combinations of scheduling algorithms at VM and host level.
 
-The total number of cloud user entity plays an important role to determine whether all hostList should be shut down or not. The hostList will be shutdown, unless one or more users are still not finished. It is important to give a correct number of total cloud user entity to avoid CloudSim hanging or displaying a weird behaviour.
+The examples and default scenarios often use the TimeShared systems, which use Round Robin algorithm. However, these policies could be mixed and the algorithm implementations for the application scheduling were tested against these different combinations of scheduling algorithms at VM and host level.
 
 \SubSection{Scheduling Algorithms at Broker Level}
-
+The default application scheduling is defined in $DatacenterBroker$ which picks a random cloudlet from the behaviour. To depict the desires application scheduling algorithm, this class is extended and used instead.
 
 %------------------------------------------------------------------------- 
 \Section{Evaluation}
@@ -138,12 +141,14 @@ java -classpath
     CloudSimExample6
 \end{verbatimtab}
 
-Sufferage is the loss that is caused, if the job is not scheduled this time and scheduled to the next available resource instead.
-
 \SubSection{Environment}
-The development of experiments and the evaluation were carried on a platform of Ubuntu 12.04 LTS (precise) - 64 bit, Kernel Linux 3.2.0-40-generic and GNOME 3.4.2. The environment had 1.9 GiB memory and Intel\textregistered Core\texttrademark 2 Duo CPU T6600 @ 2.20GHz * 2 processor available. Java(TM) SE Runtime Environment (build 1.6.0\_31-b04)l hardware environments, and work with the simulations.
+The development of experiments and the evaluation were carried on a platform of Ubuntu 12.04 LTS (precise) - 64 bit, Kernel Linux 3.2.0-56-generic and GNOME 3.4.2. The environment had 1.9 GiB memory and Intel\textregistered Core\texttrademark 2 Duo CPU T6600 @ 2.20GHz * 2 processor available. Java(TM) SE Runtime Environment is of the build 1.6.0\_31-b04.
 \SubSection{Configurations}
-CloudSim was configured with different configurations of jobs and resources and the experiments are continued to study the behaviour of the scheduling algorithms. Some algorithms started to hang up, in a few upper level conditions, which are marked as the extreme conditions for the given configurations in the environment, and further experiments were conducted ensuring that the extreme conditions are not reached. Testing was carried on with 5 virtual machines and up to 4000 cloudlets. Most of the initial experiments were carried ahead with processing elements of 1000 MIPS, 1 CPU in each virtual machines, while the cloudlets having a length of 1000, file size of 300, output size of 300, pesNumber of 1, and with 2 users.
+CloudSim was configured with different configurations of jobs and resources and the experiments are continued to study the behaviour of the scheduling algorithms. Some algorithms started to hang up, in a few upper level conditions, which are marked as the extreme conditions for the given configurations in the environment, and further experiments were conducted ensuring that the extreme conditions are not reached. 
+
+Testing was carried on with 5 virtual machines and up to 4000 cloudlets having different cloudlet lengths randomly generated within the given range. Most of the initial experiments were carried ahead with the VMs having processing elements of 200, 400, 600, 800, and 1000 MIPS, 1 CPU in each virtual machines, and with 2 users.
+\SubSection{Resource Allocation Algorithms}
+Before evaluating the application scheduling algorithms, CloudSim was first tested with the multiple resource allocation algorithms and the default policy of application scheduling and VM allocation to the hosts. The space shared schedulers with first-come first-served algorithm and the time shared schedulers with round robin algorithms were tested for both the VM and Cloudlet scheduling. As indicated by figure~\ref{fig:start}, all the cloudlets were started almost immediately when host level scheduling was run with round robin. But first-come first-served started in the order the tasks submitted. Round robin effectively shares the time window against the multiple cloudlets. 
 \begin{figure}[ht]
  \resizebox{\columnwidth}{!}{
   \includegraphics[width=\textwidth]{init5_4000.png}
@@ -151,6 +156,8 @@ CloudSim was configured with different configurations of jobs and resources and 
  \caption{VM and Host level Scheduling Vs Starting Time}
  \label{fig:start}
 \end{figure}
+
+As shown by figure~\ref{fig:finish}, by switching the available time frame to multiple applications, all the cloudlets tend to finish at the same time regardless of their starting order. However, in first-come first-served, the cloudlets from the VMs that were started finished before the ones that were submitted later. This behaviour ensured that the minimum execution time of first-come first-served was minimized. However, the cloudlets that arrived later had to wait much longer even to have the Pe allocated to them. This increased the starting time or the submission time. The observations indicate that the host level scheduling is dominating in starting and finishing time.
 \begin{figure}[ht]
  \resizebox{\columnwidth}{!}{
   \includegraphics[width=\textwidth]{fin5_4000.png}
@@ -158,10 +165,9 @@ CloudSim was configured with different configurations of jobs and resources and 
  \caption{VM and Host level Scheduling Vs Finishing Time}
  \label{fig:finish}
 \end{figure}
-Before evaluating the application scheduling algorithms, CloudSim was first tested with the random application scheduling which is the default behaviour of the broker. The space shared schedulers with first-come first-served algorithm and the time shared schedulers with round robin algorithms were tested for both the VM and Cloudlet scheduling. As indicated by Figure 2, all the cloudlets were started almost immediately when host level scheduling was run with round robin. But first-come first-served started in the order the tasks submitted. Round robin effectively shares the time window against the multiple cloudlets. As shown by Figure 3, by switching the available time frame to multiple applications, all the cloudlets tend to finish at the same time regardless of their starting order. However, in first-come first-served, the cloudlets from the VMs that were started finished before the ones that were submitted later. This behaviour ensured that the minimum execution time of first-come first-served was minimized. However, the cloudlets that arrived later had to wait much longer even to have the Pe allocated to them. This increased the starting time or the submission time. The observations indicate that the host level scheduling is dominating in starting and finishing time.
 
 To avoid influencing the application scheduling with these multiple scenarios involving these host level and VM level scheduling, TimeShared policies with round robin algorithm were used at these levels for evaluating the application scheduling at the broker level.
-\SubSection{Results}
+\SubSection{Application Scheduling Algorithms}
 
 %------------------------------------------------------------------------- 
 \Section{Conclusion}
@@ -170,8 +176,7 @@ Strictly matchmaking-based algorithms focus to optimize a specific objective fun
 While criteria such as minimum execution time and minimum completion time could be a good start for evaluating the scheduling algorithms, many other parameters take higher precedence in a real cloud environment. Evaluation criteria could be developed based on the market requirements such as the cost of the cloud resource. QoS-based algorithms focus on such priorities. Developing effective evaluation criteria is essential for measuring the user satisfaction with a considerable accuracy. The effectiveness of the simulation environment to depict the real cloud scenarios is still a question to be addressed. While it is sufficient to test the prototypes and the algorithms against the simulation environment during the early phases of development, it is essential to test the production-ready algorithms against the real cloud deployments.
 %------------------------------------------------------------------------- 
 \Section{Acknowledgements}
-
-My special thanks goes to Prof. Luiz Veiga for his continuous motivation and assistance in this project as this is highly relevant to my thesis. As a project that is heavily used by the researchers and academics in their projects and research activities, CloudSim project mailing list is always active with a vibrant community. I am grateful to the original developers and the community of CloudSim as well as the researchers who were the authors of the respective scheduling algorithms.
+Prof. Luiz Veiga provided the project idea and the motivation. Timely suggestions from Prof. Johan Montelius directed me in the right direction throughout the project. Dr. Susanna Lyne helped shaping up the project report and its presentation to its current state. My special thanks goes to these professors who helped completing this project. As a project that is heavily used by the researchers in their research activities, CloudSim project mailing list is always active with a vibrant community. I am grateful to the original developers and the community of CloudSim.
 
 %------------------------------------------------------------------------- 
 \Section{References}

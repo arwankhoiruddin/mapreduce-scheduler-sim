@@ -82,7 +82,7 @@ public class CloudSimExample10 {
         LinkedList<Cloudlet> list = new LinkedList<Cloudlet>();
 
 //cloudlet parameters
-        long length = 40000;
+        long length = 4000000;  //40000
         long fileSize = 300;
         long outputSize = 300;
         int pesNumber = 1;
@@ -131,7 +131,7 @@ public class CloudSimExample10 {
 
 //Fourth step: Create VMs and Cloudlets and send them to broker
             vmList = createVM(brokerId, 5, 0); //creating 5 vms
-            cloudletList = createCloudlet(brokerId, 10, 0); // creating 10 cloudlets
+            cloudletList = createCloudlet(brokerId, 1000, 0); // creating 10 cloudlets
 
             broker.submitVmList(vmList);
             broker.submitCloudletList(cloudletList);
