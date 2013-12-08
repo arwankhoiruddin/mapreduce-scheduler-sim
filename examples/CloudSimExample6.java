@@ -12,6 +12,8 @@ package org.cloudbus.cloudsim.examples;
 
 import org.cloudbus.cloudsim.*;
 import org.cloudbus.cloudsim.core.CloudSim;
+import org.cloudbus.cloudsim.examples.roundrobin.RoundRobinDatacenterBroker;
+import org.cloudbus.cloudsim.examples.roundrobin.RoundRobinVmAllocationPolicy;
 import org.cloudbus.cloudsim.provisioners.BwProvisionerSimple;
 import org.cloudbus.cloudsim.provisioners.PeProvisionerSimple;
 import org.cloudbus.cloudsim.provisioners.RamProvisionerSimple;
@@ -51,9 +53,10 @@ public class CloudSimExample6 {
 		Vm[] vm = new Vm[vms];
 
 		for(int i=0;i<vms;i++){
-//			vm[i] = new Vm(i, userId, mips, pesNumber, ram, bw, size, vmm, new CloudletSchedulerTimeShared());    //todo         1
+			vm[i] = new Vm(i, userId, mips*(i+1), pesNumber, ram, bw, size, vmm, new CloudletSchedulerTimeShared());    //todo         1
 			//for creating a VM with a space shared scheduling policy for cloudlets:
-			vm[i] = new Vm(i, userId, mips*(i+1), pesNumber, ram, bw, size, vmm, new CloudletSchedulerSpaceShared());
+//			vm[i] = new Vm(i, userId, mips*(i+1), pesNumber, ram, bw, size, vmm, new CloudletSchedulerSpaceShared());
+//			vm[i] = new Vm(i, userId, mips*(i+1), pesNumber, ram, bw, size, vmm, new CloudletSchedulerDynamicWorkload(mips*(i+1), pesNumber));
 
 			list.add(vm[i]);
 		}
@@ -98,7 +101,7 @@ public class CloudSimExample6 {
 		try {
 			// First step: Initialize the CloudSim package. It should be called
 			// before creating any entities.
-			int num_user = 2;   // number of grid users
+			int num_user = 200;   // number of grid users
 			Calendar calendar = Calendar.getInstance();
 			boolean trace_flag = false;  // mean trace events
 
@@ -175,7 +178,7 @@ public class CloudSimExample6 {
 		long storage = 1000000; //host storage
 		int bw = 10000;
 
-/*		hostList.add(
+		hostList.add(
     			new Host(
     				hostId,
     				new RamProvisionerSimple(ram),
@@ -199,9 +202,9 @@ public class CloudSimExample6 {
     			)
     		); // Second machine
 
-*/
+
 //		To create a host with a space-shared allocation policy for PEs to VMs:
-		hostList.add(
+/*		hostList.add(
     			new Host(
     				hostId,
     				new RamProvisionerSimple(ram),
@@ -223,23 +226,34 @@ public class CloudSimExample6 {
                 new VmSchedulerSpaceShared(peList2)
             )
                     );
+*/
 
 
+//        To create a host with a opportunistic space-shared allocation policy for PEs to VMs:
+/*		hostList.add(
+    			new Host(
+    				hostId,
+    				new RamProvisionerSimple(ram),
+    				new BwProvisionerSimple(bw),
+    				storage,
+                    peList1,
+    				new VmSchedulerTimeSharedOverSubscription (peList1)
+    			)
+    		);
+        hostId++;
+        hostList.add(
+            new Host(
+                hostId,
+                new RamProvisionerSimple(ram),
+                new BwProvisionerSimple(bw),
+                storage,
+                peList2,
+                new VmSchedulerTimeSharedOverSubscription (peList2)
+            )
+        );
 
-        //To create a host with a opportunistic space-shared allocation policy for PEs to VMs:
-		//hostList.add(
-    	//		new Host(
-    	//			hostId,
-    	//			new CpuProvisionerSimple(peList1),
-    	//			new RamProvisionerSimple(ram),
-    	//			new BwProvisionerSimple(bw),
-    	//			storage,
-    	//			new VmSchedulerOportunisticSpaceShared(peList1)
-    	//		)
-    	//	);
-
-
-		// 5. Create a DatacenterCharacteristics object that stores the
+ */
+        // 5. Create a DatacenterCharacteristics object that stores the
 		//    properties of a data center: architecture, OS, list of
 		//    Machines, allocation policy: time- or space-shared, time zone
 		//    and its price (G$/Pe time unit).
@@ -260,7 +274,7 @@ public class CloudSimExample6 {
 		// 6. Finally, we need to create a PowerDatacenter object.
 		Datacenter datacenter = null;
 		try {
-			datacenter = new Datacenter(name, characteristics, new VmAllocationPolicySimple(hostList), storageList, 0);
+			datacenter = new Datacenter(name, characteristics, new RoundRobinVmAllocationPolicy(hostList), storageList, 0);              //VmAllocationPolicySimple //todo
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -274,7 +288,7 @@ public class CloudSimExample6 {
 
 		DatacenterBroker broker = null;
 		try {
-			broker = new DatacenterBroker("Broker");
+			broker = new RoundRobinDatacenterBroker("Broker");   //DatacenterBroker todo
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
