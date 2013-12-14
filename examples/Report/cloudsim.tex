@@ -35,16 +35,16 @@ KTH Royal Institute of Technology, Stockholm, Sweden.\\ kpr@kth.se\\
 \thispagestyle{empty}
 
 \begin{abstract}
-   Cloud computing involves a  hierarchy of dispersed with distributed shared resources, such as processor, memory, and bandwidth. Many of the user-submitted tasks require a considerable amount of resources to be allocated exclusively for them for a successful operation. Jobs should be scheduled in a felicitous manner for an efficient execution. Application scheduling algorithms are implemented to fairly schedule the jobs of the users to the available resources. Prior to test the scheduling algorithms in the real cloud environment, they are often tested on a simulation environment such as CloudSim or EmuSim. This paper looks into the three families of application scheduling algorithms -  strict matchmaking-based, utility-driven, and QoS-driven algorithms, and evaluates the algorithms to find their performance and scheduling efficiency. 
+   Cloud computing involves a  hierarchy of dispersed with distributed shared resources, such as processor, memory, and bandwidth. Many of the user-submitted tasks require a considerable amount of resources to be allocated exclusively for them for a successful operation. Jobs should be scheduled in a felicitous manner for an efficient execution. Application scheduling algorithms are implemented to fairly schedule the jobs of the users to the available resources. Prior to test the scheduling algorithms in the real cloud environment, they are often tested on a simulation environment such as CloudSim or EmuSim. This paper looks into the three families of application scheduling algorithms --- strict matchmaking-based, utility-driven, and QoS-driven algorithms, and evaluates the algorithms to find their performance and scheduling efficiency. 
 \end{abstract}
 
 
 \textbf{Categories and Subject Descriptors}\\
-D.2.8 \textbf{[Software Engineering]}: Operating Systems - scheduling\\
-D.2.8 \textbf{[Software Engineering]}: Metrics - performance measures\\
+D.2.8 \textbf{[Software Engineering]}: Operating Systems --- scheduling\\
+D.2.8 \textbf{[Software Engineering]}: Metrics --- performance measures\\
 \textbf{General Terms}\\
 Simulation\\
-\textbf{Keywords} -  Application Scheduling, Strict Matchmaking-based algorithms, Utility-driven algorithms, QoS-driven algorithms, Cloud Simulation, VM (Virtual Machine).
+\textbf{Keywords} ---  Application Scheduling, Strict Matchmaking-based algorithms, Utility-driven algorithms, QoS-driven algorithms, Cloud Simulation, VM (Virtual Machine).
 
 %------------------------------------------------------------------------- 
 \Section{Introduction}
@@ -207,6 +207,11 @@ Job scheduling success ratio remained at 100\% for all the scheduling algorithms
 Strict matchmaking-based algorithms focus to optimize a specific objective function. User's satisfaction depends on how much his requirements are satisfied by the scheduling algorithms. User utility was proven to be reasonably high for all the criteria considered for the utility based algorithm developed considering the partial requirements satisfaction. Hence it is mandatory to develop efficient utility based scheduling algorithms to satisfy the users with heterogeneous evaluation criteria.
 
 While criteria such as minimum execution time and minimum completion time could be a good start for evaluating the scheduling algorithms, many other parameters take higher precedence in a real cloud environment. Evaluation criteria could be developed based on the market requirements such as the cost of the cloud resource. QoS-based algorithms focus on such priorities. Developing effective evaluation criteria is essential for measuring the user satisfaction with a considerable accuracy. The effectiveness of the simulation environment to depict the real cloud scenarios is still a question to be addressed. While it is sufficient to test the prototypes and the algorithms against the simulation environment during the early phases of development, it is essential to test the production-ready algorithms against the real cloud deployments.
+
+%------------------------------------------------------------------------- 
+\Section{Future Work}
+Performance of the simulation tools are far from ideal, as they try to portray a geo-distributed decentralized environment using the network and topology simulation code that is serial and manipulating the large global state that is  considered consistent. Current multi-core machines and computing clusters could be exploited by the cloud simulation tools avoiding the sequential and centralized execution of the simulations. A decentralized scheduler architecture, such as a hierarchical or a mesh-like architecture, would facilitate enhanced scalability. Nevertheless, the scalability comes with a price in efficiency. The tradeoff was estimated during the project in a conceptual manner. Further investigation would show whether a distributed scheduler architecture would be beneficial overshadowing its shortcomings in efficiency.
+
 %------------------------------------------------------------------------- 
 \Section{Acknowledgements}
 Prof. Luiz Veiga provided the project idea and the motivation. Timely suggestions from Prof. Johan Montelius directed me in the right direction throughout the project. Dr. Susanna Lyne helped shaping up the project report and its presentation to its current state. My special thanks goes to these professors who helped me complete the project. As a project that is heavily used by the researchers in their research activities, CloudSim mailing list is always active with a vibrant community. I am grateful to the original developers and the community of CloudSim.
