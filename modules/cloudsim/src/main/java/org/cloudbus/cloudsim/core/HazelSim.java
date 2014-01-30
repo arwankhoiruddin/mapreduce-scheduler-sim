@@ -17,7 +17,7 @@ import org.cloudbus.cloudsim.Log;
 import java.io.FileNotFoundException;
 
 public class HazelSim {
-    public static void initHazelcast() {
+    public static HazelcastInstance initHazelcast() {
         Config cfg;
         try {
             cfg = new FileSystemXmlConfig("conf/hazelcast.xml");
@@ -26,6 +26,7 @@ public class HazelSim {
             cfg = new Config();
         }
         HazelcastInstance instance = Hazelcast.newHazelcastInstance(cfg);
+        return instance;
     }
 }
 
