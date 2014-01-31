@@ -16,17 +16,69 @@ import com.hazelcast.core.HazelcastInstance;
 import org.cloudbus.cloudsim.Log;
 import java.io.FileNotFoundException;
 
+/**
+ * A singleton that integrates Hazelcast into Cloud2Sim and initiates Hazelcast.
+ */
 public class HazelSim {
-    public static HazelcastInstance initHazelcast() {
-        Config cfg;
+    private static HazelSim hazelSim;
+    private static Config cfg;
+    private static HazelcastInstance instance;
+    private static HazelcastInstance[] instances;
+
+    /**
+     * Protected constructor to avoid instantiation of the singleton class
+     */
+    protected HazelSim() {
         try {
-            cfg = new FileSystemXmlConfig("conf/hazelcast.xml");
+            cfg = new FileSystemXmlConfig(Cloud2SimConstants.HAZELCAST_CONFIG_FILE);
         } catch (FileNotFoundException e) {
-            Log.printConcatLine("Hazelcast Configuration File not found. Using the default.");
+            Log.printConcatLine(Cloud2SimConstants.HAZELCAST_CONFIG_FILE_NOT_FOUND_ERROR);
             cfg = new Config();
         }
-        HazelcastInstance instance = Hazelcast.newHazelcastInstance(cfg);
+    }
+
+    /**
+     * Creates a HazelSim object and initializes a Hazelcast instance.
+     * @return the hazelsim object.
+     */
+    public static HazelSim getHazelSim() {
+        if (hazelSim == null) {
+            hazelSim = new HazelSim();
+        }
+        instance = Hazelcast.newHazelcastInstance(cfg);
+        return hazelSim;
+    }
+
+    /**
+     * Creates a HazelSim object and initializes an array of Hazelcast instances.
+     * @param instanceCount No. of Hazelcast instances.
+     * @return the hazelsim object.
+     */
+    public static HazelSim getHazelSim(int instanceCount) {
+        if (hazelSim == null) {
+            hazelSim = new HazelSim();
+        }
+        instances = new HazelcastInstance[instanceCount];
+        for (int i = 0; i < instanceCount; i++) {
+            instances[i] = Hazelcast.newHazelcastInstance(cfg);
+        }
+        return hazelSim;
+    }
+
+    /**
+     * Gets the hazelcast instance.
+     * @return the hazelcast instance.
+     */
+    public HazelcastInstance getHazelcastInstance() {
         return instance;
+    }
+
+    /**
+     * Gets the hazelcast instances.
+     * @return the hazelcast instances.
+     */
+    public HazelcastInstance[] getHazelcastInstances() {
+        return instances;
     }
 }
 
