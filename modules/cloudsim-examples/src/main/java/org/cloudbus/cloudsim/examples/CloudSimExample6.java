@@ -120,7 +120,7 @@ public class CloudSimExample6 {
 			CloudSim.init(num_user, calendar, trace_flag);
 
 			// Second step: Create Datacenters
-			//Datacenters are the resource providers in CloudSim. We need at list one of them to run a CloudSim simulation
+			//Datacenters are the resource providers in CloudSim. We need at least one of them to run a CloudSim simulation
 			@SuppressWarnings("unused")
 			Datacenter datacenter0 = createDatacenter("Datacenter_0");
 			@SuppressWarnings("unused")
@@ -132,9 +132,61 @@ public class CloudSimExample6 {
 
 			//Fourth step: Create VMs and Cloudlets and send them to broker
 			vmlist = createVM(brokerId,5); //creating 20 vms
-			cloudletList = createCloudlet(brokerId,4000); // creating 40 cloudlets
+			cloudletList = createCloudlet(brokerId,20000); // creating 40 - 15000 cloudlets   (20000 fails)
+            // 0.1: Broker: Sending cloudlet 19999 to VM #3
 
-			broker.submitVmList(vmlist);
+            /*
+            *
+            # Starting CloudSimExample6...
+Initialising...
+Starting CloudSim version 3.0
+Datacenter_0 is starting...
+Datacenter_1 is starting...
+Broker is starting...
+Entities started.
+0.0: Broker: Cloud Resource List received with 2 resource(s)
+0.0: Broker: Trying to Create VM #0 in Datacenter_0
+0.0: Broker: Trying to Create VM #1 in Datacenter_1
+0.0: Broker: Trying to Create VM #2 in Datacenter_0
+0.0: Broker: Trying to Create VM #3 in Datacenter_1
+0.0: Broker: Trying to Create VM #4 in Datacenter_0
+0.0000: VM #0 has been allocated to the host#0 datacenter #2(Datacenter_0) #
+0.0000: VM #2 has been allocated to the host#1 datacenter #2(Datacenter_0) #
+0.0000: VM #4 has been allocated to the host#0 datacenter #2(Datacenter_0) #
+0.0000: VM #1 has been allocated to the host#0 datacenter #3(Datacenter_1) #
+0.0000: VM #3 has been allocated to the host#1 datacenter #3(Datacenter_1) #
+0.1: Broker: VM #0 has been created in Datacenter #2, Host #0
+0.1: Broker: VM #2 has been created in Datacenter #2, Host #1
+0.1: Broker: VM #4 has been created in Datacenter #2, Host #0
+0.1: Broker: VM #1 has been created in Datacenter #3, Host #0
+0.1: Broker: VM #3 has been created in Datacenter #3, Host #1
+0.1: Broker: Sending cloudlet 0 to VM #0
+0.1: Broker: Sending cloudlet 1 to VM #1
+0.6: Broker: Cloudlet 1 received
+13.2: Broker: Cloudlet 0 received
+13.2: Broker: All Cloudlets executed. Finishing...
+13.2: Broker: Destroying VM #0
+13.2: Broker: Destroying VM #2
+13.2: Broker: Destroying VM #4
+13.2: Broker: Destroying VM #1
+13.2: Broker: Destroying VM #3
+Broker is shutting down...
+Simulation: No more future events
+CloudInformationService: Notify all CloudSim entities for shutting down.
+Datacenter_0 is shutting down...
+Datacenter_1 is shutting down...
+Broker is shutting down...
+Simulation completed.
+Simulation completed.
+
+# ========== OUTPUT ==========
+# Cloudlet ID    STATUS    Data center ID    VM ID        Time    Start Time    Finish Time    Submission Time    Processing Cost
+    1        SUCCESS        3            1            0.5        0.1            0.6        0.1        3
+    0        SUCCESS        2            0            13.1        0.1            13.2        0.1        3
+# CloudSimExample6 finished!
+            * */
+
+            broker.submitVmList(vmlist);
 			broker.submitCloudletList(cloudletList);
 
 			// Fifth step: Starts the simulation
