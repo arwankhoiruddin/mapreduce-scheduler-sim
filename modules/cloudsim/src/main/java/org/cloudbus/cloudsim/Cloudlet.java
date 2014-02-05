@@ -93,7 +93,7 @@ public class Cloudlet {
 
 	// //////////////////////////////////////////
 	// Below are CONSTANTS attributes
-	/** The Cloudlet has been created and added to the CloudletList object. */
+	/** The Cloudlet has been created and added to the Cloudlet List object. */
 	public static final int CREATED = 0;
 
 	/** The Cloudlet has been assigned to a CloudResource object as planned. */

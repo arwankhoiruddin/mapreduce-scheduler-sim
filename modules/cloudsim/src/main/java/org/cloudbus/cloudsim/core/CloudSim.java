@@ -17,7 +17,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import com.hazelcast.core.HazelcastInstance;
 import org.cloudbus.cloudsim.Log;
 import org.cloudbus.cloudsim.core.predicates.Predicate;
 import org.cloudbus.cloudsim.core.predicates.PredicateAny;
@@ -183,8 +182,6 @@ public class CloudSim {
 	 * @post $none
 	 */
 	public static double startSimulation() throws NullPointerException {
-        HazelSim hazelSim = HazelSim.getHazelSim(Cloud2SimConstants.NO_OF_HAZELCAST_INSTANCES);
-        HazelcastInstance[] instances = hazelSim.getHazelcastInstances();
 
 		Log.printConcatLine("Starting CloudSim version ", CLOUDSIM_VERSION_STRING);
 		try {
