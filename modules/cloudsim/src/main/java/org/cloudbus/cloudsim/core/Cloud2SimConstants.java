@@ -17,4 +17,5 @@ public class Cloud2SimConstants {
     public static final String HAZELCAST_CONFIG_FILE = "conf/hazelcast.xml";
     public static final String HAZELCAST_CONFIG_FILE_NOT_FOUND_ERROR =
         "Hazelcast Configuration File not found. Using the default.";
+    public static final String DEFAULT_HAZELCAST_ADDRESS = "127.0.0.1:5701";
 }
