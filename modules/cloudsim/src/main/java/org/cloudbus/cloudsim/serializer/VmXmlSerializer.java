@@ -25,7 +25,7 @@ import java.math.BigDecimal;
 public class VmXmlSerializer implements StreamSerializer<Vm> {
     @Override
     public int getTypeId() {
-        return 15;
+        return 14;
     }
     @Override
     public void write(ObjectDataOutput out, Vm object) throws IOException {

@@ -149,7 +149,79 @@ public class Cloudlet {
 	/** The required files. */
 	private List<String> requiredFiles = null;   // list of required filenames
 
-	/**
+    public DecimalFormat getNum() {
+        return num;
+    }
+
+    public void setNum(DecimalFormat num) {
+        this.num = num;
+    }
+
+    public boolean isRecord() {
+        return record;
+    }
+
+    public void setRecord(boolean record) {
+        this.record = record;
+    }
+
+    public String getNewline() {
+        return newline;
+    }
+
+    public void setNewline(String newline) {
+        this.newline = newline;
+    }
+
+    public StringBuffer getHistory() {
+        return history;
+    }
+
+    public void setHistory(StringBuffer history) {
+        this.history = history;
+    }
+
+    public List<Resource> getResList() {
+        return resList;
+    }
+
+    public void setResList(List<Resource> resList) {
+        this.resList = resList;
+    }
+
+    public int getIndex() {
+        return index;
+    }
+
+    public void setIndex(int index) {
+        this.index = index;
+    }
+
+    public int getNetToS() {
+        return netToS;
+    }
+
+    public void setNetToS(int netToS) {
+        this.netToS = netToS;
+    }
+
+    public double getCostPerBw() {
+        return costPerBw;
+    }
+
+    public void setCostPerBw(double costPerBw) {
+        this.costPerBw = costPerBw;
+    }
+
+    public double getAccumulatedBwCost() {
+        return accumulatedBwCost;
+    }
+
+    public void setAccumulatedBwCost(double accumulatedBwCost) {
+        this.accumulatedBwCost = accumulatedBwCost;
+    }
+
+    /**
 	 * Allocates a new Cloudlet object. The Cloudlet length, input and output file sizes should be
 	 * greater than or equal to 1. By default this constructor sets the history of this object.
 	 * 
@@ -197,7 +269,9 @@ public class Cloudlet {
 	}
 
     public Cloudlet() {
-//todo
+        if (resList == null) {
+            resList = new ArrayList<Resource>(2);
+        }
     }
 
 	/**
@@ -349,8 +423,10 @@ public class Cloudlet {
 		// Normally, a Cloudlet is only executed on a resource without being
 		// migrated to others. Hence, to reduce memory consumption, set the
 		// size of this ArrayList to be less than the default one.
-		resList = new ArrayList<Resource>(2);
-		index = -1;
+        if (resList == null) {
+            resList = new ArrayList<Resource>(2);
+        }
+        index = -1;
 		this.record = record;
 
 		vmId = -1;
@@ -369,7 +445,7 @@ public class Cloudlet {
 	/**
 	 * Internal class that keeps track Cloudlet's movement in different CloudResources.
 	 */
-	private static class Resource {
+	public static class Resource {
 
 		/** Cloudlet's submission time to a CloudResource. */
 		public double submissionTime = 0.0;
@@ -1176,7 +1252,7 @@ public class Cloudlet {
 	 * @pre str != null
 	 * @post $none
 	 */
-	protected void write(final String str) {
+	public void write(final String str) {
 		if (!record) {
 			return;
 		}
@@ -1310,7 +1386,7 @@ public class Cloudlet {
 	 * 
 	 * @param requiredFiles the new required files
 	 */
-	protected void setRequiredFiles(final List<String> requiredFiles) {
+	public void setRequiredFiles(final List<String> requiredFiles) {
 		this.requiredFiles = requiredFiles;
 	}
 

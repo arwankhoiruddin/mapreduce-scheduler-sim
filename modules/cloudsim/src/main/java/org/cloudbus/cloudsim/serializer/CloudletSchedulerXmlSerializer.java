@@ -23,7 +23,7 @@ import java.io.InputStream;
 public class CloudletSchedulerXmlSerializer implements StreamSerializer<CloudletScheduler> {
     @Override
     public int getTypeId() {
-        return 11;
+        return 10;
     }
     @Override
     public void write(ObjectDataOutput out, CloudletScheduler object) throws IOException {

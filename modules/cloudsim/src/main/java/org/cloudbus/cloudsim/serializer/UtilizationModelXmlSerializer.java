@@ -12,7 +12,7 @@ package org.cloudbus.cloudsim.serializer;
 import com.hazelcast.nio.ObjectDataInput;
 import com.hazelcast.nio.ObjectDataOutput;
 import com.hazelcast.nio.serialization.StreamSerializer;
-import org.cloudbus.cloudsim.Vm;
+import org.cloudbus.cloudsim.UtilizationModel;
 
 import java.beans.XMLDecoder;
 import java.beans.XMLEncoder;
@@ -20,13 +20,13 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class UtilizationModelXmlSerializer implements StreamSerializer<Vm> {
+public class UtilizationModelXmlSerializer implements StreamSerializer<UtilizationModel> {
     @Override
     public int getTypeId() {
-        return 17;
+        return 13;
     }
     @Override
-    public void write(ObjectDataOutput out, Vm object) throws IOException {
+    public void write(ObjectDataOutput out, UtilizationModel object) throws IOException {
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         XMLEncoder encoder = new XMLEncoder(bos);
         encoder.writeObject(object);
@@ -34,10 +34,10 @@ public class UtilizationModelXmlSerializer implements StreamSerializer<Vm> {
         out.write(bos.toByteArray());
     }
     @Override
-    public Vm read(ObjectDataInput in) throws IOException {
+    public UtilizationModel read(ObjectDataInput in) throws IOException {
         final InputStream inputStream = (InputStream) in;
         XMLDecoder decoder = new XMLDecoder(inputStream);
-        return (Vm) decoder.readObject();
+        return (UtilizationModel) decoder.readObject();
     }
     @Override
     public void destroy() {
