@@ -11,9 +11,15 @@ package org.cloudbus.cloudsim.core;
 
 import com.hazelcast.config.Config;
 import com.hazelcast.config.FileSystemXmlConfig;
+import com.hazelcast.config.SerializerConfig;
 import com.hazelcast.core.Hazelcast;
 import com.hazelcast.core.HazelcastInstance;
 import org.cloudbus.cloudsim.Log;
+import org.cloudbus.cloudsim.Vm;
+import org.cloudbus.cloudsim.serializer.CloudletSchedulerXmlSerializer;
+import org.cloudbus.cloudsim.serializer.HostXmlSerializer;
+import org.cloudbus.cloudsim.serializer.VmXmlSerializer;
+
 import java.io.FileNotFoundException;
 
 /**
@@ -29,12 +35,22 @@ public class HazelSim {
      * Protected constructor to avoid instantiation of the singleton class
      */
     protected HazelSim() {
+        SerializerConfig sc = new SerializerConfig().setImplementation(new VmXmlSerializer()).
+            setTypeClass(Vm.class);
+        SerializerConfig sc1 = new SerializerConfig().setImplementation(
+            new CloudletSchedulerXmlSerializer()).setTypeClass(CloudletSchedulerXmlSerializer.class);
+        SerializerConfig sc2 = new SerializerConfig().setImplementation(
+            new HostXmlSerializer()).setTypeClass(HostXmlSerializer.class);
+
         try {
             cfg = new FileSystemXmlConfig(Cloud2SimConstants.HAZELCAST_CONFIG_FILE);
         } catch (FileNotFoundException e) {
             Log.printConcatLine(Cloud2SimConstants.HAZELCAST_CONFIG_FILE_NOT_FOUND_ERROR);
             cfg = new Config();
         }
+        cfg.getSerializationConfig().addSerializerConfig(sc);
+        cfg.getSerializationConfig().addSerializerConfig(sc1);
+        cfg.getSerializationConfig().addSerializerConfig(sc2);
     }
 
     /**

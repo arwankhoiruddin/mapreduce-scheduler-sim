@@ -189,6 +189,24 @@
         <backup-count>1</backup-count>
     </list>
 
+    <list name="vmList">
+        <backup-count>1</backup-count>
+    </list>
+
+    <list name="vmCreatedList">
+        <backup-count>1</backup-count>
+    </list>
+
+    <list name="cloudletList">
+        <backup-count>1</backup-count>
+    </list>
+    <list name="cloudletSubmittedList">
+        <backup-count>1</backup-count>
+    </list>
+    <list name="cloudletReceivedList">
+        <backup-count>1</backup-count>
+    </list>
+
     <set name="default">
         <backup-count>1</backup-count>
     </set>
@@ -201,6 +219,14 @@
 
     <serialization>
         <portable-version>0</portable-version>
+        <serializers>
+                <serializer type-class="org.cloudbus.cloudsim.Vm"> org.cloudbus.cloudsim.serializer.VmXmlSerializer</serializer>
+                <serializer type-class="org.cloudbus.cloudsim.Host"> org.cloudbus.cloudsim.serializer.HostXmlSerializer</serializer>
+                <serializer type-class="org.cloudbus.cloudsim.CloudletScheduler"> org.cloudbus.cloudsim.serializer.CloudletSchedulerXmlSerializer</serializer>
+                <serializer type-class="org.cloudbus.cloudsim.Cloudlet"> org.cloudbus.cloudsim.serializer.CloudletXmlSerializer</serializer>
+                <serializer type-class="org.cloudbus.cloudsim.UtilizationModel"> org.cloudbus.cloudsim.serializer.UtilizationModelXmlSerializer</serializer>
+
+        </serializers>
     </serialization>
 
     <services enable-defaults="true" />

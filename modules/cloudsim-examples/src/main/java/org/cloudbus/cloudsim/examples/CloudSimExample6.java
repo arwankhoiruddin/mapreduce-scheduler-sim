@@ -12,8 +12,6 @@ package org.cloudbus.cloudsim.examples;
 
 import org.cloudbus.cloudsim.*;
 import org.cloudbus.cloudsim.core.CloudSim;
-import org.cloudbus.cloudsim.examples.roundrobin.RoundRobinDatacenterBroker;
-import org.cloudbus.cloudsim.examples.roundrobin.RoundRobinVmAllocationPolicy;
 import org.cloudbus.cloudsim.provisioners.BwProvisionerSimple;
 import org.cloudbus.cloudsim.provisioners.PeProvisionerSimple;
 import org.cloudbus.cloudsim.provisioners.RamProvisionerSimple;
@@ -21,7 +19,6 @@ import org.cloudbus.cloudsim.provisioners.RamProvisionerSimple;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -54,13 +51,7 @@ public class CloudSimExample6 {
 		Vm[] vm = new Vm[vms];
 
 		for(int i=0;i<vms;i++){
-            if ((i%3)==2)
 			vm[i] = new Vm(i, userId, mips*(i+1), pesNumber, ram, bw, size, vmm, new CloudletSchedulerTimeShared());    //todo         1
-			//for creating a VM with a space shared scheduling policy for cloudlets:
-			else if ((i%3)==1)
-            vm[i] = new Vm(i, userId, mips*(i+1), pesNumber, ram, bw, size, vmm, new CloudletSchedulerSpaceShared());
-			else
-            vm[i] = new Vm(i, userId, mips*(i+1), pesNumber, ram, bw, size, vmm, new CloudletSchedulerDynamicWorkload(mips*(i+1), pesNumber));
   			list.add(vm[i]);
 		}
 
@@ -83,17 +74,9 @@ public class CloudSimExample6 {
 
 		for(int i=0;i<cloudlets;i++){
             int f = (int) ((Math.random() * 40) + 1);
-//            int f = 10;
-
-                 //            if (f > 35)
-               //                  utilizationModel = new UtilizationModelStochastic();
 			cloudlet[i] = new Cloudlet(i, length*f, pesNumber, fileSize, outputSize, utilizationModel, utilizationModel, utilizationModel);
 			// setting the owner of these Cloudlets
 			cloudlet[i].setUserId(userId);
-            //todo: set Params
-            cloudlet[i].setVmId(i % 4);
-           // cloudlet[i].setNumberOfPes(f);
-
             list.add(cloudlet[i]);
 		}
 
@@ -132,7 +115,7 @@ public class CloudSimExample6 {
 
 			//Fourth step: Create VMs and Cloudlets and send them to broker
 			vmlist = createVM(brokerId,5); //creating 20 vms
-			cloudletList = createCloudlet(brokerId,20000); // creating 40 - 15000 cloudlets   (20000 fails)
+			cloudletList = createCloudlet(brokerId,20); // creating 40 - 19800 cloudlets   (20000 fails)
             // 0.1: Broker: Sending cloudlet 19999 to VM #3
 
             /*
@@ -337,7 +320,7 @@ Simulation completed.
 		// 6. Finally, we need to create a PowerDatacenter object.
 		Datacenter datacenter = null;
 		try {
-			datacenter = new Datacenter(name, characteristics, new RoundRobinVmAllocationPolicy(hostList), storageList, 0);        //todo VmAllocationPolicySimple
+			datacenter = new Datacenter(name, characteristics, new VmAllocationPolicySimple(hostList), storageList, 0);        //todo VmAllocationPolicySimple
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -351,7 +334,7 @@ Simulation completed.
 
 		DatacenterBroker broker = null;
 		try {
-			broker = new RoundRobinDatacenterBroker("Broker");      //DatacenterBroker todo
+			broker = new DatacenterBroker("Broker");      //DatacenterBroker todo
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;

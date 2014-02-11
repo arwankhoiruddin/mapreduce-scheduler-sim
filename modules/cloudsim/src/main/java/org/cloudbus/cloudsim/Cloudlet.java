@@ -40,16 +40,16 @@ public class Cloudlet {
 	 * The input file size of this Cloudlet before execution (unit: in byte). in byte = program +
 	 * input data size
 	 */
-	private final long cloudletFileSize;
+	private long cloudletFileSize;
 
 	/** The output file size of this Cloudlet after execution (unit: in byte). */
-	private final long cloudletOutputSize;
+	private long cloudletOutputSize;
 
 	/** The num of Pe required to execute this job. */
 	private int numberOfPes;
 
 	/** The cloudlet ID. */
-	private final int cloudletId;
+	private int cloudletId;
 
 	/** The status of this Cloudlet. */
 	private int status;
@@ -71,7 +71,7 @@ public class Cloudlet {
 	private int reservationId = -1;
 
 	/** The records the transaction history for this Cloudlet. */
-	private final boolean record;
+	private boolean record;
 
 	/** The newline. */
 	private String newline;
@@ -80,7 +80,7 @@ public class Cloudlet {
 	private StringBuffer history;
 
 	/** The res list. */
-	private final List<Resource> resList;
+	private List<Resource> resList;
 
 	/** The index. */
 	private int index;
@@ -195,6 +195,10 @@ public class Cloudlet {
 
 		requiredFiles = new LinkedList<String>();
 	}
+
+    public Cloudlet() {
+//todo
+    }
 
 	/**
 	 * Allocates a new Cloudlet object. The Cloudlet length, input and output file sizes should be

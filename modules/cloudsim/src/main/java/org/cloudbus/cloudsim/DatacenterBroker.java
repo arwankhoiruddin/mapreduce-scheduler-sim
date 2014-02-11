@@ -9,7 +9,6 @@
 package org.cloudbus.cloudsim;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -22,11 +21,12 @@ import org.cloudbus.cloudsim.core.CloudSimTags;
 import org.cloudbus.cloudsim.core.HazelSim;
 import org.cloudbus.cloudsim.core.SimEntity;
 import org.cloudbus.cloudsim.core.SimEvent;
+import org.cloudbus.cloudsim.lists.CloudletList;
 import org.cloudbus.cloudsim.lists.VmList;
 
 /**
  * DatacentreBroker represents a broker acting on behalf of a user. It hides VM management, as vm
- * creation, submission of cloudlets to this VMs and destruction of VMs.
+ * creation, sumbission of cloudlets to this VMs and destruction of VMs.
  * 
  * @author Rodrigo N. Calheiros
  * @author Anton Beloglazov
@@ -34,26 +34,20 @@ import org.cloudbus.cloudsim.lists.VmList;
  */
 public class DatacenterBroker extends SimEntity {
 
-	/** The vm list. */
-	protected List<? extends Vm> vmList;
+//    /** The vm list. */
+//	protected List<? extends Vm> vmList;
 
-	/** The vms created list. */
-	protected List<? extends Vm> vmsCreatedList;
+//	/** The vms created list. */
+//	protected List<? extends Vm> vmsCreatedList;
 
-    protected HazelSim hazelSim = HazelSim.getHazelSim(Cloud2SimConstants.NO_OF_HAZELCAST_INSTANCES);
-
-    protected HazelcastInstance[] instances = hazelSim.getHazelcastInstances();
-
-    /** The cloudlet list. */
-    protected Map<Integer, Cloudlet> cloudletList = instances[0].getMap("cloudlets");
+	/** The cloudlet list. */
+	protected List<? extends Cloudlet> cloudletList;
 
 	/** The cloudlet submitted list. */
-	protected Map<Integer, Cloudlet> cloudletSubmittedList =
-        instances[0].getMap("cloudletSubmittedList");
+	protected List<? extends Cloudlet> cloudletSubmittedList;
 
 	/** The cloudlet received list. */
-	protected Map<Integer, Cloudlet> cloudletReceivedList =
-        instances[0].getMap("cloudletReceivedList");
+	protected List<? extends Cloudlet> cloudletReceivedList;
 
 	/** The cloudlets submitted. */
 	protected int cloudletsSubmitted;
@@ -79,6 +73,8 @@ public class DatacenterBroker extends SimEntity {
 	/** The datacenter characteristics list. */
 	protected Map<Integer, DatacenterCharacteristics> datacenterCharacteristicsList;
 
+    protected HazelcastInstance[] instances;
+
 	/**
 	 * Created a new DatacenterBroker object.
 	 * 
@@ -89,14 +85,21 @@ public class DatacenterBroker extends SimEntity {
 	 * @post $none
 	 */
 	public DatacenterBroker(String name) throws Exception {
+
 		super(name);
 
-        setVmList(new ArrayList<Vm>());
-		setVmsCreatedList(new ArrayList<Vm>());
+        HazelSim hazelSim = HazelSim.getHazelSim(Cloud2SimConstants.NO_OF_HAZELCAST_INSTANCES);
+        instances = hazelSim.getHazelcastInstances();
 
-		setCloudletList(new HashMap<Integer, Cloudlet>());
-		setCloudletSubmittedList(new HashMap<Integer, Cloudlet>());
-		setCloudletReceivedList(new HashMap<Integer, Cloudlet>());
+//        IList<Vm> list = instances[0].getList("VmList");
+//        setVmList(list);
+
+//        IList<Vm> createdList = instances[0].getList("VmCreatedList");
+//        setVmsCreatedList(createdList);
+
+//        setCloudletList(new ArrayList<Cloudlet>());
+//		setCloudletSubmittedList(new ArrayList<Cloudlet>());
+//		setCloudletReceivedList(new ArrayList<Cloudlet>());
 
 		cloudletsSubmitted = 0;
 		setVmsRequested(0);
@@ -123,14 +126,13 @@ public class DatacenterBroker extends SimEntity {
 
 	/**
 	 * This method is used to send to the broker the list of cloudlets.
-	 *
-     *
+	 * 
 	 * @param list the list
 	 * @pre list !=null
 	 * @post $none
 	 */
-	public void submitCloudletList(Map <Integer, Cloudlet> list) {
-		getCloudletList().putAll(list);
+	public void submitCloudletList(List<? extends Cloudlet> list) {
+		getCloudletList().addAll(list);
 	}
 
 	/**
@@ -143,7 +145,7 @@ public class DatacenterBroker extends SimEntity {
 	 * @post $none
 	 */
 	public void bindCloudletToVm(int cloudletId, int vmId) {
-        getCloudletList().get(cloudletId).setVmId(vmId);
+		CloudletList.getById(getCloudletList(), cloudletId).setVmId(vmId);
 	}
 
 	/**
@@ -235,9 +237,10 @@ public class DatacenterBroker extends SimEntity {
 		if (result == CloudSimTags.TRUE) {
 			getVmsToDatacentersMap().put(vmId, datacenterId);
 			getVmsCreatedList().add(VmList.getById(getVmList(), vmId));
-			Log.printConcatLine(CloudSim.clock(), ": ", getName(), ": VM #", vmId,
+
+            Log.printConcatLine(CloudSim.clock(), ": ", getName(), ": VM #", vmId,
 					" has been created in Datacenter #", datacenterId, ", Host #",
-					VmList.getById(getVmsCreatedList(), vmId).getHost().getId());
+					VmList.getById(getVmsCreatedList(), vmId).getHost());//.getId());
 		} else {
 			Log.printConcatLine(CloudSim.clock(), ": ", getName(), ": Creation of VM #", vmId,
 					" failed in Datacenter #", datacenterId);
@@ -280,7 +283,7 @@ public class DatacenterBroker extends SimEntity {
 	 */
 	protected void processCloudletReturn(SimEvent ev) {
 		Cloudlet cloudlet = (Cloudlet) ev.getData();
-		getCloudletReceivedList().put(cloudlet.getCloudletId(), cloudlet); //add(cloudlet);
+		getCloudletReceivedList().add(cloudlet);
 		Log.printConcatLine(CloudSim.clock(), ": ", getName(), ": Cloudlet ", cloudlet.getCloudletId(),
 				" received");
 		cloudletsSubmitted--;
@@ -349,21 +352,18 @@ public class DatacenterBroker extends SimEntity {
 	 */
 	protected void submitCloudlets() {
 		int vmIndex = 0;
-
-        Map<Integer, Cloudlet> successfullySubmitted =
-            instances[0].getMap("successfullySubmitted");
-
-		for (Cloudlet cloudlet : getCloudletList().values()) {
+		List<Cloudlet> successfullySubmitted = new ArrayList<Cloudlet>();
+		for (Cloudlet cloudlet : getCloudletList()) {
 			Vm vm;
 			// if user didn't bind this cloudlet and it has not been executed yet
 			if (cloudlet.getVmId() == -1) {
 				vm = getVmsCreatedList().get(vmIndex);
 			} else { // submit to the specific vm
+                Log.printConcatLine(cloudlet.getVmId());
 				vm = VmList.getById(getVmsCreatedList(), cloudlet.getVmId());
 				if (vm == null) { // vm was not created
 					if(!Log.isDisabled()) {				    
-					    Log.printConcatLine(
-                            CloudSim.clock(), ": ", getName(), ": Postponing execution of cloudlet ",
+					    Log.printConcatLine(CloudSim.clock(), ": ", getName(), ": Postponing execution of cloudlet ",
 							cloudlet.getCloudletId(), ": bount VM not available");
 					}
 					continue;
@@ -379,12 +379,12 @@ public class DatacenterBroker extends SimEntity {
 			sendNow(getVmsToDatacentersMap().get(vm.getId()), CloudSimTags.CLOUDLET_SUBMIT, cloudlet);
 			cloudletsSubmitted++;
 			vmIndex = (vmIndex + 1) % getVmsCreatedList().size();
-			getCloudletSubmittedList().put(cloudlet.getCloudletId(), cloudlet);
-			successfullySubmitted.put(cloudlet.getCloudletId(), cloudlet);
+			getCloudletSubmittedList().add(cloudlet);
+			successfullySubmitted.add(cloudlet);
 		}
 
 		// remove submitted cloudlets from waiting list
-		getCloudletList().entrySet().removeAll(Collections.singleton(successfullySubmitted));
+		getCloudletList().removeAll(successfullySubmitted);
 	}
 
 	/**
@@ -439,74 +439,83 @@ public class DatacenterBroker extends SimEntity {
 	 */
 	@SuppressWarnings("unchecked")
 	public <T extends Vm> List<T> getVmList() {
-		return (List<T>) vmList;
+        return instances[0].getList("vmList");
 	}
 
-	/**
-	 * Sets the vm list.
-	 * 
-	 * @param <T> the generic type
-	 * @param vmList the new vm list
-	 */
-	protected <T extends Vm> void setVmList(List<T> vmList) {
-		this.vmList = vmList;
-	}
+//	/**
+//	 * Sets the vm list.
+//	 *
+//	 * @param <T> the generic type
+//	 * @param vmList the new vm list
+//	 */
+//	protected <T extends Vm> void setVmList(List<T> vmList) {
+//		this.vmList = vmList;
+//	}
 
 	/**
 	 * Gets the cloudlet list.
-	 *
+	 * 
+	 * @param <T> the generic type
 	 * @return the cloudlet list
 	 */
-    public Map<Integer, Cloudlet> getCloudletList() {
-        return cloudletList;
-    }
+	@SuppressWarnings("unchecked")
+	public <T extends Cloudlet> List<T> getCloudletList() {
+		return instances[0].getList("cloudletList");
+	}
 
-    /**
-     * Sets the cloudlet list.
-     *
-     * @param cloudletList the new cloudlet list
-     */
-    protected void setCloudletList(Map<Integer, Cloudlet> cloudletList) {
-        this.cloudletList = cloudletList;
-    }
+//	/**
+//	 * Sets the cloudlet list.
+//	 *
+//	 * @param <T> the generic type
+//	 * @param cloudletList the new cloudlet list
+//	 */
+//	protected <T extends Cloudlet> void setCloudletList(List<T> cloudletList) {
+//		this.cloudletList = cloudletList;
+//	}
 
-    /**
+	/**
 	 * Gets the cloudlet submitted list.
-	 * 
+	 *
+	 * @param <T> the generic type
 	 * @return the cloudlet submitted list
 	 */
-    public Map<Integer, Cloudlet> getCloudletSubmittedList() {
-        return cloudletSubmittedList;
-    }
+	@SuppressWarnings("unchecked")
+	public <T extends Cloudlet> List<T> getCloudletSubmittedList() {
+		return instances[0].getList("cloudletSubmittedList");
+	}
 
-    /**
-     * Sets the cloudlet submitted list.
-     *
-     * @param cloudletSubmittedList the new cloudlet submitted list
-     */
-    protected void setCloudletSubmittedList(Map<Integer, Cloudlet> cloudletSubmittedList) {
-        this.cloudletSubmittedList = cloudletSubmittedList;
-    }
+//	/**
+//	 * Sets the cloudlet submitted list.
+//	 *
+//	 * @param <T> the generic type
+//	 * @param cloudletSubmittedList the new cloudlet submitted list
+//	 */
+//	protected <T extends Cloudlet> void setCloudletSubmittedList(List<T> cloudletSubmittedList) {
+//		this.cloudletSubmittedList = cloudletSubmittedList;
+//	}
 
-    /**
+	/**
 	 * Gets the cloudlet received list.
 	 * 
+	 * @param <T> the generic type
 	 * @return the cloudlet received list
 	 */
-    public Map<Integer, Cloudlet> getCloudletReceivedList() {
-        return cloudletReceivedList;
-    }
+	@SuppressWarnings("unchecked")
+	public <T extends Cloudlet> List<T> getCloudletReceivedList() {
+		return instances[0].getList("cloudletReceivedList");
+	}
 
-    /**
-     * Sets the cloudlet received list.
-     *
-     * @param cloudletReceivedList the new cloudlet received list
-     */
-    protected void setCloudletReceivedList(Map<Integer, Cloudlet> cloudletReceivedList) {
-        this.cloudletReceivedList = cloudletReceivedList;
-    }
+//	/**
+//	 * Sets the cloudlet received list.
+//	 *
+//	 * @param <T> the generic type
+//	 * @param cloudletReceivedList the new cloudlet received list
+//	 */
+//	protected <T extends Cloudlet> void setCloudletReceivedList(List<T> cloudletReceivedList) {
+//		this.cloudletReceivedList = cloudletReceivedList;
+//	}
 
-    /**
+	/**
 	 * Gets the vm list.
 	 * 
 	 * @param <T> the generic type
@@ -514,18 +523,18 @@ public class DatacenterBroker extends SimEntity {
 	 */
 	@SuppressWarnings("unchecked")
 	public <T extends Vm> List<T> getVmsCreatedList() {
-		return (List<T>) vmsCreatedList;
+		return instances[0].getList("vmCreatedList");
 	}
 
-	/**
-	 * Sets the vm list.
-	 * 
-	 * @param <T> the generic type
-	 * @param vmsCreatedList the vms created list
-	 */
-	protected <T extends Vm> void setVmsCreatedList(List<T> vmsCreatedList) {
-		this.vmsCreatedList = vmsCreatedList;
-	}
+//	/**
+//	 * Sets the vm list.
+//	 *
+//	 * @param <T> the generic type
+//	 * @param vmsCreatedList the vms created list
+//	 */
+//	protected <T extends Vm> void setVmsCreatedList(List<T> vmsCreatedList) {
+//		this.vmsCreatedList = vmsCreatedList;
+//	}
 
 	/**
 	 * Gets the vms requested.

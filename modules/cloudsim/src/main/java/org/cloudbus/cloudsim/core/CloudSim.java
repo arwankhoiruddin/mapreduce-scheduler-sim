@@ -17,10 +17,14 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import com.hazelcast.config.Config;
+import com.hazelcast.config.SerializerConfig;
 import org.cloudbus.cloudsim.Log;
+import org.cloudbus.cloudsim.Vm;
 import org.cloudbus.cloudsim.core.predicates.Predicate;
 import org.cloudbus.cloudsim.core.predicates.PredicateAny;
 import org.cloudbus.cloudsim.core.predicates.PredicateNone;
+import org.cloudbus.cloudsim.serializer.VmXmlSerializer;
 
 /**
  * This class extends the CloudSimCore to enable network simulation in CloudSim. Also, it disables
@@ -344,7 +348,8 @@ public class CloudSim {
 	 */
 	protected static void initialize() {
 		Log.printLine("Initialising...");
-		entities = new ArrayList<SimEntity>();
+
+        entities = new ArrayList<SimEntity>();
 		entitiesByName = new LinkedHashMap<String, SimEntity>();
 		future = new FutureQueue();
 		deferred = new DeferredQueue();
