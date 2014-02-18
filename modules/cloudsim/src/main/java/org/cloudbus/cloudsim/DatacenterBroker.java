@@ -417,7 +417,18 @@ public class DatacenterBroker extends SimEntity {
         return instances[0].getList("vmList");
 	}
 
-	/**
+    /**
+     * Gets the VMs created list.
+     *
+     * @param <T> the generic type
+     * @return the vm list
+     */
+    @SuppressWarnings("unchecked")
+    public <T extends Vm> List<T> getVmsCreatedList() {
+        return instances[0].getList("vmCreatedList");
+    }
+
+    /**
 	 * Gets the cloudlet list.
 	 * 
 	 * @param <T> the generic type
@@ -448,17 +459,6 @@ public class DatacenterBroker extends SimEntity {
 	@SuppressWarnings("unchecked")
 	public <T extends Cloudlet> List<T> getCloudletReceivedList() {
 		return instances[0].getList("cloudletReceivedList");
-	}
-
-	/**
-	 * Gets the vm list.
-	 * 
-	 * @param <T> the generic type
-	 * @return the vm list
-	 */
-	@SuppressWarnings("unchecked")
-	public <T extends Vm> List<T> getVmsCreatedList() {
-		return instances[0].getList("vmCreatedList");
 	}
 
 	/**
