@@ -7,7 +7,7 @@
  *
  * Copyright (c) 2014, Pradeeban Kathiravelu <pradeeban.kathiravelu@tecnico.ulisboa.pt>
  */
-package org.cloudbus.cloudsim.core;
+package org.cloudbus.cloudsim.core.hazelcast;
 
 import com.hazelcast.config.Config;
 import com.hazelcast.config.FileSystemXmlConfig;
@@ -19,6 +19,7 @@ import org.cloudbus.cloudsim.CloudletScheduler;
 import org.cloudbus.cloudsim.Host;
 import org.cloudbus.cloudsim.Log;
 import org.cloudbus.cloudsim.Vm;
+import org.cloudbus.cloudsim.core.Cloud2SimConstants;
 import org.cloudbus.cloudsim.serializer.CloudletSchedulerXmlSerializer;
 import org.cloudbus.cloudsim.serializer.CloudletXmlSerializer;
 import org.cloudbus.cloudsim.serializer.HostXmlSerializer;

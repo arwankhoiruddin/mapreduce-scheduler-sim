@@ -8,17 +8,11 @@
  */
 package org.cloudbus.cloudsim.examples.hazelcast;
 
-import com.hazelcast.config.Config;
-import com.hazelcast.config.FileSystemXmlConfig;
-import com.hazelcast.core.Hazelcast;
 import com.hazelcast.core.HazelcastInstance;
-import org.cloudbus.cloudsim.Log;
 import org.cloudbus.cloudsim.core.Cloud2SimConstants;
-import org.cloudbus.cloudsim.core.HazelSim;
+import org.cloudbus.cloudsim.core.hazelcast.HazelSim;
 
-import java.io.FileNotFoundException;
 import java.util.Map;
-import java.util.Queue;
 
 public class HazelCastTest {
     public static void main(String[] args) {
