@@ -10,6 +10,7 @@
 package org.cloudbus.cloudsim.examples;
 
 import org.cloudbus.cloudsim.*;
+import org.cloudbus.cloudsim.core.constants.Cloud2SimConstants;
 import org.cloudbus.cloudsim.core.CloudSim;
 import org.cloudbus.cloudsim.core.hazelcast.HzObjectCollection;
 import org.cloudbus.cloudsim.provisioners.BwProvisionerSimple;
@@ -102,7 +103,7 @@ public class CloudSimExample6 {
 			//Fourth step: Create VMs and Cloudlets and send them to broker
 			createVM(brokerId,5); //creating 20 vms
 			/* The cloudlet list. */
-            createCloudlet(brokerId, 2000);
+            createCloudlet(brokerId, 20);
 
             broker.submitVmList(HzObjectCollection.getUserVmList());
 			broker.submitCloudletList(HzObjectCollection.getUserCloudletList());
@@ -296,7 +297,7 @@ public class CloudSimExample6 {
 			cloudlet = list.get(i);
 			Log.print(indent + cloudlet.getCloudletId() + indent + indent);
 
-			if (cloudlet.getCloudletStatus() == Cloudlet.SUCCESS){
+			if (cloudlet.getCloudletStatus() == Cloud2SimConstants.SUCCESS){
 				Log.print("SUCCESS");
 
 				Log.printLine( indent + indent + cloudlet.getResourceId() + indent + indent + indent + cloudlet.getVmId() +

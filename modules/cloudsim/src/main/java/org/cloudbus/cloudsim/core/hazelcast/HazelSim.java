@@ -19,7 +19,7 @@ import org.cloudbus.cloudsim.CloudletScheduler;
 import org.cloudbus.cloudsim.Host;
 import org.cloudbus.cloudsim.Log;
 import org.cloudbus.cloudsim.Vm;
-import org.cloudbus.cloudsim.core.Cloud2SimConstants;
+import org.cloudbus.cloudsim.core.constants.HazelSimConstants;
 import org.cloudbus.cloudsim.serializer.CloudletSchedulerXmlSerializer;
 import org.cloudbus.cloudsim.serializer.CloudletXmlSerializer;
 import org.cloudbus.cloudsim.serializer.HostXmlSerializer;
@@ -50,9 +50,9 @@ public class HazelSim {
             new HostXmlSerializer()).setTypeClass(Host.class);
 
         try {
-            cfg = new FileSystemXmlConfig(Cloud2SimConstants.HAZELCAST_CONFIG_FILE);
+            cfg = new FileSystemXmlConfig(HazelSimConstants.HAZELCAST_CONFIG_FILE);
         } catch (FileNotFoundException e) {
-            Log.printConcatLine(Cloud2SimConstants.HAZELCAST_CONFIG_FILE_NOT_FOUND_ERROR);
+            Log.printConcatLine(HazelSimConstants.HAZELCAST_CONFIG_FILE_NOT_FOUND_ERROR);
             cfg = new Config();
         }
         cfg.getSerializationConfig().addSerializerConfig(sc);

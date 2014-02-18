@@ -8,14 +8,12 @@
 
 package org.cloudbus.cloudsim;
 
-import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.hazelcast.nio.ObjectDataInput;
-import com.hazelcast.nio.ObjectDataOutput;
+import org.cloudbus.cloudsim.core.constants.Cloud2SimConstants;
 import org.cloudbus.cloudsim.core.CloudSim;
 
 /**
@@ -94,41 +92,7 @@ public class Cloudlet {
 	/** The ToS for sending Cloudlet over the network. */
 	private int netToS;
 
-	// //////////////////////////////////////////
-	// Below are CONSTANTS attributes
-	/** The Cloudlet has been created and added to the Cloudlet List object. */
-	public static final int CREATED = 0;
-
-	/** The Cloudlet has been assigned to a CloudResource object as planned. */
-	public static final int READY = 1;
-
-	/** The Cloudlet has moved to a Cloud node. */
-	public static final int QUEUED = 2;
-
-	/** The Cloudlet is in execution in a Cloud node. */
-	public static final int INEXEC = 3;
-
-	/** The Cloudlet has been executed successfully. */
-	public static final int SUCCESS = 4;
-
-	/** The Cloudlet is failed. */
-	public static final int FAILED = 5;
-
-	/** The Cloudlet has been canceled. */
-	public static final int CANCELED = 6;
-
-	/**
-	 * The Cloudlet has been paused. It can be resumed by changing the status into <tt>RESUMED</tt>.
-	 */
-	public static final int PAUSED = 7;
-
-	/** The Cloudlet has been resumed from <tt>PAUSED</tt> state. */
-	public static final int RESUMED = 8;
-
-	/** The cloudlet has failed due to a resource failure. */
-	public static final int FAILED_RESOURCE_UNAVAILABLE = 9;
-
-	/** The vm id. */
+    /** The vm id. */
 	protected int vmId;
 
 	/** The cost per bw. */
@@ -400,7 +364,7 @@ public class Cloudlet {
 			final UtilizationModel utilizationModelBw,
 			final boolean record) {
 		userId = -1;          // to be set by a Broker or user
-		status = CREATED;
+		status = Cloud2SimConstants.CREATED;
 		this.cloudletId = cloudletId;
 		numberOfPes = pesNumber;
 		execStartTime = 0.0;
@@ -436,119 +400,49 @@ public class Cloudlet {
 	/**
 	 * Internal class that keeps track Cloudlet's movement in different CloudResources.
 	 */
-	public static class Resource implements com.hazelcast.nio.serialization.DataSerializable {
+    // ////////////////////// INTERNAL CLASS ///////////////////////////////////
 
-		/** Cloudlet's submission time to a CloudResource. */
-		public double submissionTime = 0.0;
+    /**
+     * Internal class that keeps track Cloudlet's movement in different CloudResources.
+     */
+    public static class Resource {
 
-		/**
-		 * The time of this Cloudlet resides in a CloudResource (from arrival time until departure
-		 * time).
-		 */
-		public double wallClockTime = 0.0;
+        /** Cloudlet's submission time to a CloudResource. */
+        public double submissionTime = 0.0;
 
-		/** The total execution time of this Cloudlet in a CloudResource. */
-		public double actualCPUTime = 0.0;
+        /**
+         * The time of this Cloudlet resides in a CloudResource (from arrival time until departure
+         * time).
+         */
+        public double wallClockTime = 0.0;
 
-		/** Cost per second a CloudResource charge to execute this Cloudlet. */
-		public double costPerSec = 0.0;
+        /** The total execution time of this Cloudlet in a CloudResource. */
+        public double actualCPUTime = 0.0;
 
-		/** Cloudlet's length finished so far. */
-		public long finishedSoFar = 0;
+        /** Cost per second a CloudResource charge to execute this Cloudlet. */
+        public double costPerSec = 0.0;
 
-		/** a CloudResource id. */
-		public int resourceId = -1;
+        /** Cloudlet's length finished so far. */
+        public long finishedSoFar = 0;
 
-		/** a CloudResource name. */
-		public String resourceName = null;
+        /** a CloudResource id. */
+        public int resourceId = -1;
 
-        public double getSubmissionTime() {
-            return submissionTime;
-        }
+        /** a CloudResource name. */
+        public String resourceName = null;
 
-        public void setSubmissionTime(double submissionTime) {
-            this.submissionTime = submissionTime;
-        }
-
-        public double getWallClockTime() {
-            return wallClockTime;
-        }
-
-        public void setWallClockTime(double wallClockTime) {
-            this.wallClockTime = wallClockTime;
-        }
-
-        public double getActualCPUTime() {
-            return actualCPUTime;
-        }
-
-        public void setActualCPUTime(double actualCPUTime) {
-            this.actualCPUTime = actualCPUTime;
-        }
-
-        public double getCostPerSec() {
-            return costPerSec;
-        }
-
-        public void setCostPerSec(double costPerSec) {
-            this.costPerSec = costPerSec;
-        }
-
-        public long getFinishedSoFar() {
-            return finishedSoFar;
-        }
-
-        public void setFinishedSoFar(long finishedSoFar) {
-            this.finishedSoFar = finishedSoFar;
-        }
-
-        public int getResourceId() {
-            return resourceId;
-        }
-
-        public void setResourceId(int resourceId) {
-            this.resourceId = resourceId;
-        }
-
-        public String getResourceName() {
-            return resourceName;
-        }
-
-        public void setResourceName(String resourceName) {
-            this.resourceName = resourceName;
-        }
-
-        @Override
-        public void writeData(ObjectDataOutput objectDataOutput) throws IOException {
-            objectDataOutput.writeDouble(submissionTime);
-            objectDataOutput.writeDouble(wallClockTime);
-            objectDataOutput.writeDouble(actualCPUTime);
-            objectDataOutput.writeDouble(costPerSec);
-            objectDataOutput.writeLong(finishedSoFar);
-            objectDataOutput.writeInt(resourceId);
-            objectDataOutput.writeUTF(resourceName);
-        }
-
-        @Override
-        public void readData(ObjectDataInput objectDataInput) throws IOException {
-            submissionTime = objectDataInput.readDouble();
-            wallClockTime = objectDataInput.readDouble();
-            actualCPUTime = objectDataInput.readDouble();
-            costPerSec = objectDataInput.readDouble();
-            finishedSoFar = objectDataInput.readLong();
-            resourceId = objectDataInput.readInt();
-            resourceName = objectDataInput.readUTF();
-        }
     } // end of internal class
 
-    public void setStatus(int status) {
-        this.status = status;
-    }
+    // ////////////////////// End of Internal Class //////////////////////////
 
-    public void setFinishTime(double finishTime) {
-        this.finishTime = finishTime;
-    }
-
+//    public void setStatus(int status) {
+//        this.status = status;
+//    }
+//
+//    public void setFinishTime(double finishTime) {
+//        this.finishTime = finishTime;
+//    }
+//
     // ////////////////////// End of Internal Class //////////////////////////
 
 	/**
@@ -1000,12 +894,12 @@ public class Cloudlet {
 		}
 
 		// throws an exception if the new status is outside the range
-		if (newStatus < Cloudlet.CREATED || newStatus > Cloudlet.FAILED_RESOURCE_UNAVAILABLE) {
+		if (newStatus < Cloud2SimConstants.CREATED || newStatus > Cloud2SimConstants.FAILED_RESOURCE_UNAVAILABLE) {
 			throw new Exception(
 					"Cloudlet.setCloudletStatus() : Error - Invalid integer range for Cloudlet status.");
 		}
 
-		if (newStatus == Cloudlet.SUCCESS) {
+		if (newStatus == Cloud2SimConstants.SUCCESS) {
 			finishTime = CloudSim.clock();
 		}
 
@@ -1050,43 +944,43 @@ public class Cloudlet {
 	public static String getStatusString(final int status) {
 		String statusString = null;
 		switch (status) {
-			case Cloudlet.CREATED:
+			case Cloud2SimConstants.CREATED:
 				statusString = "Created";
 				break;
 
-			case Cloudlet.READY:
+			case Cloud2SimConstants.READY:
 				statusString = "Ready";
 				break;
 
-			case Cloudlet.INEXEC:
+			case Cloud2SimConstants.INEXEC:
 				statusString = "InExec";
 				break;
 
-			case Cloudlet.SUCCESS:
+			case Cloud2SimConstants.SUCCESS:
 				statusString = "Success";
 				break;
 
-			case Cloudlet.QUEUED:
+			case Cloud2SimConstants.QUEUED:
 				statusString = "Queued";
 				break;
 
-			case Cloudlet.FAILED:
+			case Cloud2SimConstants.FAILED:
 				statusString = "Failed";
 				break;
 
-			case Cloudlet.CANCELED:
+			case Cloud2SimConstants.CANCELED:
 				statusString = "Canceled";
 				break;
 
-			case Cloudlet.PAUSED:
+			case Cloud2SimConstants.PAUSED:
 				statusString = "Paused";
 				break;
 
-			case Cloudlet.RESUMED:
+			case Cloud2SimConstants.RESUMED:
 				statusString = "Resumed";
 				break;
 
-			case Cloudlet.FAILED_RESOURCE_UNAVAILABLE:
+			case Cloud2SimConstants.FAILED_RESOURCE_UNAVAILABLE:
 				statusString = "Failed_resource_unavailable";
 				break;
 

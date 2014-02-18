@@ -14,7 +14,7 @@ import com.hazelcast.core.HazelcastInstance;
 import org.cloudbus.cloudsim.Cloudlet;
 import org.cloudbus.cloudsim.Log;
 import org.cloudbus.cloudsim.Vm;
-import org.cloudbus.cloudsim.core.Cloud2SimConstants;
+import org.cloudbus.cloudsim.core.constants.HazelSimConstants;
 
 import java.util.List;
 
@@ -24,7 +24,7 @@ public class HzObjectCollection {
     public static void init() {
         Log.printConcatLine("Initiating the Hazelcast instances for Cloud2Sim.");
 
-        HazelSim hazelSim = HazelSim.getHazelSim(Cloud2SimConstants.NO_OF_HAZELCAST_INSTANCES);
+        HazelSim hazelSim = HazelSim.getHazelSim(HazelSimConstants.NO_OF_HAZELCAST_INSTANCES);
         instances = hazelSim.getHazelcastInstances();
     }
 

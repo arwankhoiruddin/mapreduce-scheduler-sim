@@ -22,6 +22,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.cloudbus.cloudsim.core.constants.Cloud2SimConstants;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -139,7 +140,7 @@ public class CloudletSchedulerSingleServiceTest {
 		vmScheduler.cloudletSubmit(cloudlet, 0);
 		vmScheduler.cloudletFinish(new ResCloudlet(cloudlet));
 
-		assertEquals(Cloudlet.SUCCESS, vmScheduler.getCloudletStatus(0));
+		assertEquals(Cloud2SimConstants.SUCCESS, vmScheduler.getCloudletStatus(0));
 		assertTrue(vmScheduler.isFinishedCloudlets());
 		assertSame(cloudlet, vmScheduler.getNextFinishedCloudlet());
 	}

@@ -15,6 +15,7 @@ import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.cloudbus.cloudsim.core.constants.Cloud2SimConstants;
 import org.cloudbus.cloudsim.core.CloudSim;
 import org.cloudbus.cloudsim.core.hazelcast.HzObjectCollection;
 import org.cloudbus.cloudsim.provisioners.BwProvisionerSimple;
@@ -248,7 +249,7 @@ public class TimeSharedProblemDetector {
 			cloudlet = list.get(i);
 			Log.print(indent + cloudlet.getCloudletId() + indent + indent);
 
-			if (cloudlet.getCloudletStatus() == Cloudlet.SUCCESS) {
+			if (cloudlet.getCloudletStatus() == Cloud2SimConstants.SUCCESS) {
 				Log.print("SUCCESS");
 
 				Log.printLine(indent + indent + cloudlet.getResourceId()

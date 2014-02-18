@@ -8,6 +8,7 @@
 
 package org.cloudbus.cloudsim;
 
+import org.cloudbus.cloudsim.core.constants.Cloud2SimConstants;
 import org.cloudbus.cloudsim.core.CloudSim;
 
 /**
@@ -299,9 +300,9 @@ public class ResCloudlet {
 			cloudlet.setCloudletStatus(status);
 
 			// if a previous Cloudlet status is INEXEC
-			if (prevStatus == Cloudlet.INEXEC) {
+			if (prevStatus == Cloud2SimConstants.INEXEC) {
 				// and current status is either CANCELED, PAUSED or SUCCESS
-				if (status == Cloudlet.CANCELED || status == Cloudlet.PAUSED || status == Cloudlet.SUCCESS) {
+				if (status == Cloud2SimConstants.CANCELED || status == Cloud2SimConstants.PAUSED || status == Cloud2SimConstants.SUCCESS) {
 					// then update the Cloudlet completion time
 					totalCompletionTime += (clock - startExecTime);
 					index = 0;
@@ -309,14 +310,14 @@ public class ResCloudlet {
 				}
 			}
 
-			if (prevStatus == Cloudlet.RESUMED && status == Cloudlet.SUCCESS) {
+			if (prevStatus == Cloud2SimConstants.RESUMED && status == Cloud2SimConstants.SUCCESS) {
 				// then update the Cloudlet completion time
 				totalCompletionTime += (clock - startExecTime);
 				return true;
 			}
 
 			// if a Cloudlet is now in execution
-			if (status == Cloudlet.INEXEC || (prevStatus == Cloudlet.PAUSED && status == Cloudlet.RESUMED)) {
+			if (status == Cloud2SimConstants.INEXEC || (prevStatus == Cloud2SimConstants.PAUSED && status == Cloud2SimConstants.RESUMED)) {
 				startExecTime = clock;
 				cloudlet.setExecStartTime(startExecTime);
 			}
@@ -460,7 +461,7 @@ public class ResCloudlet {
 
 		long finished = 0;
 		//if (cloudlet.getCloudletTotalLength() * Consts.MILLION < cloudletFinishedSoFar) {
-		if (cloudlet.getCloudletStatus()==Cloudlet.SUCCESS) {
+		if (cloudlet.getCloudletStatus()== Cloud2SimConstants.SUCCESS) {
 			finished = cloudlet.getCloudletLength();
 		} else {
 			finished = cloudletFinishedSoFar / Consts.MILLION;

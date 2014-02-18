@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.cloudbus.cloudsim.core.constants.Cloud2SimConstants;
 import org.cloudbus.cloudsim.core.CloudSim;
 
 /**
@@ -131,7 +132,7 @@ public class CloudletSchedulerDynamicWorkload extends CloudletSchedulerTimeShare
 	@Override
 	public double cloudletSubmit(Cloudlet cl, double fileTransferTime) {
 		ResCloudlet rcl = new ResCloudlet(cl);
-		rcl.setCloudletStatus(Cloudlet.INEXEC);
+		rcl.setCloudletStatus(Cloud2SimConstants.INEXEC);
 
 		for (int i = 0; i < cl.getNumberOfPes(); i++) {
 			rcl.setMachineAndPeId(0, i);
@@ -150,7 +151,7 @@ public class CloudletSchedulerDynamicWorkload extends CloudletSchedulerTimeShare
 	 */
 	@Override
 	public void cloudletFinish(ResCloudlet rcl) {
-		rcl.setCloudletStatus(Cloudlet.SUCCESS);
+		rcl.setCloudletStatus(Cloud2SimConstants.SUCCESS);
 		rcl.finalizeCloudlet();
 		getCloudletFinishedList().add(rcl);
 	}

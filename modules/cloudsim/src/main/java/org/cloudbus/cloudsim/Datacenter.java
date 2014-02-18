@@ -13,6 +13,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.cloudbus.cloudsim.core.constants.Cloud2SimConstants;
 import org.cloudbus.cloudsim.core.CloudSim;
 import org.cloudbus.cloudsim.core.CloudSimTags;
 import org.cloudbus.cloudsim.core.SimEntity;
@@ -625,7 +626,7 @@ public class Datacenter extends SimEntity {
 			failed = true;
 		} else {
 			// has the cloudlet already finished?
-			if (cl.getCloudletStatus() == Cloudlet.SUCCESS) {// if yes, send it back to user
+			if (cl.getCloudletStatus() == Cloud2SimConstants.SUCCESS) {// if yes, send it back to user
 				int[] data = new int[3];
 				data[0] = getId();
 				data[1] = cloudletId;

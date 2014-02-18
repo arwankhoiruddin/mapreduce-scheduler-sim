@@ -9,7 +9,7 @@
 package org.cloudbus.cloudsim.examples.hazelcast;
 
 import com.hazelcast.core.HazelcastInstance;
-import org.cloudbus.cloudsim.core.Cloud2SimConstants;
+import org.cloudbus.cloudsim.core.constants.HazelSimConstants;
 import org.cloudbus.cloudsim.core.hazelcast.HazelSim;
 
 import java.util.Map;
@@ -17,7 +17,7 @@ import java.util.Map;
 public class HazelCastTest {
     public static void main(String[] args) {
 
-        HazelSim hazelSim = HazelSim.getHazelSim(Cloud2SimConstants.NO_OF_HAZELCAST_INSTANCES);
+        HazelSim hazelSim = HazelSim.getHazelSim(HazelSimConstants.NO_OF_HAZELCAST_INSTANCES);
         HazelcastInstance[] instances = hazelSim.getHazelcastInstances();
 
         Map<Integer, String> mapCustomers = instances[0].getMap("customers");

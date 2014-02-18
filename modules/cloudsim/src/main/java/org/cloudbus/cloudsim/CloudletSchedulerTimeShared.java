@@ -10,6 +10,7 @@ package org.cloudbus.cloudsim;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.cloudbus.cloudsim.core.constants.Cloud2SimConstants;
 import org.cloudbus.cloudsim.core.CloudSim;
 
 /**
@@ -163,7 +164,7 @@ public class CloudletSchedulerTimeShared extends CloudletScheduler {
 			if (rcl.getRemainingCloudletLength() == 0) {
 				cloudletFinish(rcl);
 			} else {
-				rcl.setCloudletStatus(Cloudlet.CANCELED);
+				rcl.setCloudletStatus(Cloud2SimConstants.CANCELED);
 			}
 			return rcl.getCloudlet();
 		}
@@ -174,7 +175,7 @@ public class CloudletSchedulerTimeShared extends CloudletScheduler {
 		for (ResCloudlet rcl : getCloudletPausedList()) {
 			if (rcl.getCloudletId() == cloudletId) {
 				found = true;
-				rcl.setCloudletStatus(Cloudlet.CANCELED);
+				rcl.setCloudletStatus(Cloud2SimConstants.CANCELED);
 				break;
 			}
 			position++;
@@ -214,7 +215,7 @@ public class CloudletSchedulerTimeShared extends CloudletScheduler {
 			if (rcl.getRemainingCloudletLength() == 0) {
 				cloudletFinish(rcl);
 			} else {
-				rcl.setCloudletStatus(Cloudlet.PAUSED);
+				rcl.setCloudletStatus(Cloud2SimConstants.PAUSED);
 				getCloudletPausedList().add(rcl);
 			}
 			return true;
@@ -231,7 +232,7 @@ public class CloudletSchedulerTimeShared extends CloudletScheduler {
 	 */
 	@Override
 	public void cloudletFinish(ResCloudlet rcl) {
-		rcl.setCloudletStatus(Cloudlet.SUCCESS);
+		rcl.setCloudletStatus(Cloud2SimConstants.SUCCESS);
 		rcl.finalizeCloudlet();
 		getCloudletFinishedList().add(rcl);
 	}
@@ -260,7 +261,7 @@ public class CloudletSchedulerTimeShared extends CloudletScheduler {
 
 		if (found) {
 			ResCloudlet rgl = getCloudletPausedList().remove(position);
-			rgl.setCloudletStatus(Cloudlet.INEXEC);
+			rgl.setCloudletStatus(Cloud2SimConstants.INEXEC);
 			getCloudletExecList().add(rgl);
 
 			// calculate the expected time for cloudlet completion
@@ -288,7 +289,7 @@ public class CloudletSchedulerTimeShared extends CloudletScheduler {
 	@Override
 	public double cloudletSubmit(Cloudlet cloudlet, double fileTransferTime) {
 		ResCloudlet rcl = new ResCloudlet(cloudlet);
-		rcl.setCloudletStatus(Cloudlet.INEXEC);
+		rcl.setCloudletStatus(Cloud2SimConstants.INEXEC);
 		for (int i = 0; i < cloudlet.getNumberOfPes(); i++) {
 			rcl.setMachineAndPeId(0, i);
 		}
