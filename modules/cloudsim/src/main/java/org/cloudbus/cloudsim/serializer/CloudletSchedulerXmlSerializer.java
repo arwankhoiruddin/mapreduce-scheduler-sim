@@ -27,6 +27,7 @@ public class CloudletSchedulerXmlSerializer implements StreamSerializer<Cloudlet
     }
     @Override
     public void write(ObjectDataOutput out, CloudletScheduler object) throws IOException {
+        System.out.println("I am cloudlet scheduler");
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         XMLEncoder encoder = new XMLEncoder(bos);
         encoder.writeObject(object);

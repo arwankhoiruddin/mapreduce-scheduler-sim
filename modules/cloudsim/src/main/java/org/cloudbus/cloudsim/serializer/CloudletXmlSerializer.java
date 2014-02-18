@@ -14,6 +14,9 @@ import com.hazelcast.nio.ObjectDataOutput;
 import com.hazelcast.nio.serialization.StreamSerializer;
 import org.cloudbus.cloudsim.Cloudlet;
 
+import java.beans.DefaultPersistenceDelegate;
+import java.beans.Encoder;
+import java.beans.Expression;
 import java.beans.PersistenceDelegate;
 import java.beans.XMLDecoder;
 import java.beans.XMLEncoder;
@@ -33,8 +36,10 @@ public class CloudletXmlSerializer implements StreamSerializer<Cloudlet> {
     public void write(ObjectDataOutput out, Cloudlet object) throws IOException {
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         XMLEncoder encoder = new XMLEncoder(bos);
-        PersistenceDelegate pd = encoder.getPersistenceDelegate(Integer.class);
-        encoder.setPersistenceDelegate(BigDecimal.class, pd);
+        String[] propertyNames = new String[] { "cloudletId", "cloudletLength", "numberOfPes", "cloudletFileSize",
+                "cloudletOutputSize", "utilizationModelCpu", "utilizationModelRam", "utilizationModelBw", "record"};
+        encoder.setPersistenceDelegate(Cloudlet.class, new DefaultPersistenceDelegate(propertyNames));
+
         encoder.writeObject(object);
         encoder.close();
         out.write(bos.toByteArray());
@@ -42,9 +47,12 @@ public class CloudletXmlSerializer implements StreamSerializer<Cloudlet> {
 
     @Override
     public Cloudlet read(ObjectDataInput in) throws IOException {
+
         final InputStream inputStream = (InputStream) in;
         XMLDecoder decoder = new XMLDecoder(inputStream);
-        return (Cloudlet) decoder.readObject();
+        Cloudlet cloudlet = (Cloudlet) decoder.readObject();
+        decoder.close();
+        return cloudlet;
     }
 
     @Override

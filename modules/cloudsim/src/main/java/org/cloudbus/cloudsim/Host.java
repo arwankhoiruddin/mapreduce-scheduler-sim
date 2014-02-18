@@ -269,7 +269,7 @@ public class Host {
 	 * 
 	 * @param vm the VM
 	 */
-	protected void vmDeallocate(Vm vm) {
+	public void vmDeallocate(Vm vm) {
 		getRamProvisioner().deallocateRamForVm(vm);
 		getBwProvisioner().deallocateBwForVm(vm);
 		getVmScheduler().deallocatePesForVm(vm);
@@ -279,7 +279,7 @@ public class Host {
 	/**
 	 * Deallocate all hostList for the VM.
 	 */
-	protected void vmDeallocateAll() {
+	public void vmDeallocateAll() {
 		getRamProvisioner().deallocateRamForAllVms();
 		getBwProvisioner().deallocateBwForAllVms();
 		getVmScheduler().deallocatePesForAllVms();
@@ -441,7 +441,7 @@ public class Host {
 	 * 
 	 * @param id the new id
 	 */
-	protected void setId(int id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 
@@ -459,7 +459,7 @@ public class Host {
 	 * 
 	 * @param ramProvisioner the new ram provisioner
 	 */
-	protected void setRamProvisioner(RamProvisioner ramProvisioner) {
+	public void setRamProvisioner(RamProvisioner ramProvisioner) {
 		this.ramProvisioner = ramProvisioner;
 	}
 
@@ -477,7 +477,7 @@ public class Host {
 	 * 
 	 * @param bwProvisioner the new bw provisioner
 	 */
-	protected void setBwProvisioner(BwProvisioner bwProvisioner) {
+	public void setBwProvisioner(BwProvisioner bwProvisioner) {
 		this.bwProvisioner = bwProvisioner;
 	}
 
@@ -495,7 +495,7 @@ public class Host {
 	 * 
 	 * @param vmScheduler the vm scheduler
 	 */
-	protected void setVmScheduler(VmScheduler vmScheduler) {
+	public void setVmScheduler(VmScheduler vmScheduler) {
 		this.vmScheduler = vmScheduler;
 	}
 
@@ -516,7 +516,7 @@ public class Host {
 	 * @param <T> the generic type
 	 * @param peList the new pe list
 	 */
-	protected <T extends Pe> void setPeList(List<T> peList) {
+	public <T extends Pe> void setPeList(List<T> peList) {
 		this.peList = peList;
 	}
 
@@ -536,7 +536,7 @@ public class Host {
 	 * 
 	 * @param storage the new storage
 	 */
-	protected void setStorage(long storage) {
+	public void setStorage(long storage) {
 		this.storage = storage;
 	}
 

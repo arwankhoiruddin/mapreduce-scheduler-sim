@@ -14,9 +14,13 @@ import com.hazelcast.config.FileSystemXmlConfig;
 import com.hazelcast.config.SerializerConfig;
 import com.hazelcast.core.Hazelcast;
 import com.hazelcast.core.HazelcastInstance;
+import org.cloudbus.cloudsim.Cloudlet;
+import org.cloudbus.cloudsim.CloudletScheduler;
+import org.cloudbus.cloudsim.Host;
 import org.cloudbus.cloudsim.Log;
 import org.cloudbus.cloudsim.Vm;
 import org.cloudbus.cloudsim.serializer.CloudletSchedulerXmlSerializer;
+import org.cloudbus.cloudsim.serializer.CloudletXmlSerializer;
 import org.cloudbus.cloudsim.serializer.HostXmlSerializer;
 import org.cloudbus.cloudsim.serializer.VmXmlSerializer;
 
@@ -37,10 +41,12 @@ public class HazelSim {
     protected HazelSim() {
         SerializerConfig sc = new SerializerConfig().setImplementation(new VmXmlSerializer()).
             setTypeClass(Vm.class);
+        SerializerConfig sc0 = new SerializerConfig().setImplementation(new CloudletXmlSerializer()).
+            setTypeClass(Cloudlet.class);
         SerializerConfig sc1 = new SerializerConfig().setImplementation(
-            new CloudletSchedulerXmlSerializer()).setTypeClass(CloudletSchedulerXmlSerializer.class);
+            new CloudletSchedulerXmlSerializer()).setTypeClass(CloudletScheduler.class);
         SerializerConfig sc2 = new SerializerConfig().setImplementation(
-            new HostXmlSerializer()).setTypeClass(HostXmlSerializer.class);
+            new HostXmlSerializer()).setTypeClass(Host.class);
 
         try {
             cfg = new FileSystemXmlConfig(Cloud2SimConstants.HAZELCAST_CONFIG_FILE);
@@ -49,6 +55,7 @@ public class HazelSim {
             cfg = new Config();
         }
         cfg.getSerializationConfig().addSerializerConfig(sc);
+        cfg.getSerializationConfig().addSerializerConfig(sc0);
         cfg.getSerializationConfig().addSerializerConfig(sc1);
         cfg.getSerializationConfig().addSerializerConfig(sc2);
     }

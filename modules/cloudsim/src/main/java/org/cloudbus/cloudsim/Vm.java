@@ -128,9 +128,6 @@ public class Vm {
 		setCurrentAllocatedSize(0);
 	}
 
-    public Vm() {
-    }
-
 	/**
 	 * Updates the processing of cloudlets running on this VM.
 	 * 
@@ -441,7 +438,7 @@ public class Vm {
 	 * 
 	 * @return the host
 	 */
-	public Host getHost() {
+	public Host getHost() {   //todo: this currently gets null
 		return host;
 	}
 

@@ -12,8 +12,10 @@ package org.cloudbus.cloudsim.serializer;
 import com.hazelcast.nio.ObjectDataInput;
 import com.hazelcast.nio.ObjectDataOutput;
 import com.hazelcast.nio.serialization.StreamSerializer;
+import org.cloudbus.cloudsim.Cloudlet;
 import org.cloudbus.cloudsim.Vm;
 
+import java.beans.DefaultPersistenceDelegate;
 import java.beans.PersistenceDelegate;
 import java.beans.XMLDecoder;
 import java.beans.XMLEncoder;
@@ -23,26 +25,32 @@ import java.io.InputStream;
 import java.math.BigDecimal;
 
 public class VmXmlSerializer implements StreamSerializer<Vm> {
+
     @Override
     public int getTypeId() {
         return 14;
     }
+
     @Override
     public void write(ObjectDataOutput out, Vm object) throws IOException {
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         XMLEncoder encoder = new XMLEncoder(bos);
-        PersistenceDelegate pd = encoder.getPersistenceDelegate(Integer.class);
-        encoder.setPersistenceDelegate(BigDecimal.class, pd);
+        String[] propertyNames = new String[] { "id", "userId", "mips", "numberOfPes", "ram", "bw", "size", "vmm",
+                "cloudletScheduler" };
+        encoder.setPersistenceDelegate(Vm.class, new DefaultPersistenceDelegate(propertyNames));
+
         encoder.writeObject(object);
         encoder.close();
         out.write(bos.toByteArray());
     }
+
     @Override
     public Vm read(ObjectDataInput in) throws IOException {
         final InputStream inputStream = (InputStream) in;
         XMLDecoder decoder = new XMLDecoder(inputStream);
         return (Vm) decoder.readObject();
     }
+
     @Override
     public void destroy() {
     }

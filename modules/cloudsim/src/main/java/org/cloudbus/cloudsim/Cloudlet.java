@@ -8,12 +8,18 @@
 
 package org.cloudbus.cloudsim;
 
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.hazelcast.core.HazelcastInstance;
+import com.hazelcast.nio.ObjectDataInput;
+import com.hazelcast.nio.ObjectDataOutput;
+import org.cloudbus.cloudsim.core.Cloud2SimConstants;
 import org.cloudbus.cloudsim.core.CloudSim;
+import org.cloudbus.cloudsim.core.HazelSim;
 
 /**
  * Cloudlet is an extension to the cloudlet. It stores, despite all the information encapsulated in
@@ -268,12 +274,6 @@ public class Cloudlet {
 		requiredFiles = new LinkedList<String>();
 	}
 
-    public Cloudlet() {
-        if (resList == null) {
-            resList = new ArrayList<Resource>(2);
-        }
-    }
-
 	/**
 	 * Allocates a new Cloudlet object. The Cloudlet length, input and output file sizes should be
 	 * greater than or equal to 1.
@@ -438,14 +438,21 @@ public class Cloudlet {
 		setUtilizationModelCpu(utilizationModelCpu);
 		setUtilizationModelRam(utilizationModelRam);
 		setUtilizationModelBw(utilizationModelBw);
-	}
+
+		vmId = -1;
+		accumulatedBwCost = 0.0;
+		costPerBw = 0.0;
+
+		requiredFiles = new LinkedList<String>();
+
+    }
 
 	// ////////////////////// INTERNAL CLASS ///////////////////////////////////
 
 	/**
 	 * Internal class that keeps track Cloudlet's movement in different CloudResources.
 	 */
-	public static class Resource {
+	public static class Resource implements com.hazelcast.nio.serialization.DataSerializable {
 
 		/** Cloudlet's submission time to a CloudResource. */
 		public double submissionTime = 0.0;
@@ -471,9 +478,106 @@ public class Cloudlet {
 		/** a CloudResource name. */
 		public String resourceName = null;
 
-	} // end of internal class
+        public double getSubmissionTime() {
+            return submissionTime;
+        }
 
-	// ////////////////////// End of Internal Class //////////////////////////
+        public void setSubmissionTime(double submissionTime) {
+            this.submissionTime = submissionTime;
+        }
+
+        public double getWallClockTime() {
+            return wallClockTime;
+        }
+
+        public void setWallClockTime(double wallClockTime) {
+            this.wallClockTime = wallClockTime;
+        }
+
+        public double getActualCPUTime() {
+            return actualCPUTime;
+        }
+
+        public void setActualCPUTime(double actualCPUTime) {
+            this.actualCPUTime = actualCPUTime;
+        }
+
+        public double getCostPerSec() {
+            return costPerSec;
+        }
+
+        public void setCostPerSec(double costPerSec) {
+            this.costPerSec = costPerSec;
+        }
+
+        public long getFinishedSoFar() {
+            return finishedSoFar;
+        }
+
+        public void setFinishedSoFar(long finishedSoFar) {
+            this.finishedSoFar = finishedSoFar;
+        }
+
+        public int getResourceId() {
+            return resourceId;
+        }
+
+        public void setResourceId(int resourceId) {
+            this.resourceId = resourceId;
+        }
+
+        public String getResourceName() {
+            return resourceName;
+        }
+
+        public void setResourceName(String resourceName) {
+            this.resourceName = resourceName;
+        }
+
+        @Override
+        public void writeData(ObjectDataOutput objectDataOutput) throws IOException {
+            objectDataOutput.writeDouble(submissionTime);
+            objectDataOutput.writeDouble(wallClockTime);
+            objectDataOutput.writeDouble(actualCPUTime);
+            objectDataOutput.writeDouble(costPerSec);
+            objectDataOutput.writeLong(finishedSoFar);
+            objectDataOutput.writeInt(resourceId);
+            objectDataOutput.writeUTF(resourceName);
+        }
+
+        @Override
+        public void readData(ObjectDataInput objectDataInput) throws IOException {
+            submissionTime = objectDataInput.readDouble();
+            wallClockTime = objectDataInput.readDouble();
+            actualCPUTime = objectDataInput.readDouble();
+            costPerSec = objectDataInput.readDouble();
+            finishedSoFar = objectDataInput.readLong();
+            resourceId = objectDataInput.readInt();
+            resourceName = objectDataInput.readUTF();
+        }
+    } // end of internal class
+
+    public void setCloudletFileSize(long cloudletFileSize) {
+        this.cloudletFileSize = cloudletFileSize;
+    }
+
+    public void setCloudletOutputSize(long cloudletOutputSize) {
+        this.cloudletOutputSize = cloudletOutputSize;
+    }
+
+    public void setCloudletId(int cloudletId) {
+        this.cloudletId = cloudletId;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+    public void setFinishTime(double finishTime) {
+        this.finishTime = finishTime;
+    }
+
+    // ////////////////////// End of Internal Class //////////////////////////
 
 	/**
 	 * Sets the id of the reservation made for this cloudlet.
@@ -708,8 +812,6 @@ public class Cloudlet {
 	 * different CloudResources.
 	 * 
 	 * @param length length of this Cloudlet
-	 * @see gridsim.AllocPolicy
-	 * @see gridsim.ResCloudlet
 	 * @pre length >= 0.0
 	 * @post $none
 	 */

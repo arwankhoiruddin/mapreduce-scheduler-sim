@@ -40,14 +40,14 @@ public class DatacenterBroker extends SimEntity {
 //	/** The vms created list. */
 //	protected List<? extends Vm> vmsCreatedList;
 
-	/** The cloudlet list. */
-	protected List<? extends Cloudlet> cloudletList;
-
-	/** The cloudlet submitted list. */
-	protected List<? extends Cloudlet> cloudletSubmittedList;
-
-	/** The cloudlet received list. */
-	protected List<? extends Cloudlet> cloudletReceivedList;
+//	/** The cloudlet list. */
+//	protected List<? extends Cloudlet> cloudletList;
+//
+//	/** The cloudlet submitted list. */
+//	protected List<? extends Cloudlet> cloudletSubmittedList;
+//
+//	/** The cloudlet received list. */
+//	protected List<? extends Cloudlet> cloudletReceivedList;
 
 	/** The cloudlets submitted. */
 	protected int cloudletsSubmitted;
@@ -90,16 +90,6 @@ public class DatacenterBroker extends SimEntity {
 
         HazelSim hazelSim = HazelSim.getHazelSim(Cloud2SimConstants.NO_OF_HAZELCAST_INSTANCES);
         instances = hazelSim.getHazelcastInstances();
-
-//        IList<Vm> list = instances[0].getList("VmList");
-//        setVmList(list);
-
-//        IList<Vm> createdList = instances[0].getList("VmCreatedList");
-//        setVmsCreatedList(createdList);
-
-//        setCloudletList(new ArrayList<Cloudlet>());
-//		setCloudletSubmittedList(new ArrayList<Cloudlet>());
-//		setCloudletReceivedList(new ArrayList<Cloudlet>());
 
 		cloudletsSubmitted = 0;
 		setVmsRequested(0);

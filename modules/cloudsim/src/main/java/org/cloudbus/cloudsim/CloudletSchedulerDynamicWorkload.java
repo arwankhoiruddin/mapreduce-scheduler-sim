@@ -361,7 +361,7 @@ public class CloudletSchedulerDynamicWorkload extends CloudletSchedulerTimeShare
 	 * 
 	 * @return the cache previous time
 	 */
-	protected double getCachePreviousTime() {
+	public double getCachePreviousTime() {
 		return cachePreviousTime;
 	}
 
@@ -370,7 +370,7 @@ public class CloudletSchedulerDynamicWorkload extends CloudletSchedulerTimeShare
 	 * 
 	 * @param cachePreviousTime the new cache previous time
 	 */
-	protected void setCachePreviousTime(double cachePreviousTime) {
+	public void setCachePreviousTime(double cachePreviousTime) {
 		this.cachePreviousTime = cachePreviousTime;
 	}
 
@@ -379,7 +379,7 @@ public class CloudletSchedulerDynamicWorkload extends CloudletSchedulerTimeShare
 	 * 
 	 * @return the cache current requested mips
 	 */
-	protected List<Double> getCacheCurrentRequestedMips() {
+	public List<Double> getCacheCurrentRequestedMips() {
 		return cacheCurrentRequestedMips;
 	}
 
@@ -388,7 +388,7 @@ public class CloudletSchedulerDynamicWorkload extends CloudletSchedulerTimeShare
 	 * 
 	 * @param cacheCurrentRequestedMips the new cache current requested mips
 	 */
-	protected void setCacheCurrentRequestedMips(List<Double> cacheCurrentRequestedMips) {
+	public void setCacheCurrentRequestedMips(List<Double> cacheCurrentRequestedMips) {
 		this.cacheCurrentRequestedMips = cacheCurrentRequestedMips;
 	}
 

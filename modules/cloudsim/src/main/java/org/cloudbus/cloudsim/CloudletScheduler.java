@@ -248,7 +248,7 @@ public abstract class CloudletScheduler {
 	 * 
 	 * @param previousTime the new previous time
 	 */
-	protected void setPreviousTime(double previousTime) {
+	public void setPreviousTime(double previousTime) {
 		this.previousTime = previousTime;
 	}
 
@@ -257,7 +257,7 @@ public abstract class CloudletScheduler {
 	 * 
 	 * @param currentMipsShare the new current mips share
 	 */
-	protected void setCurrentMipsShare(List<Double> currentMipsShare) {
+	public void setCurrentMipsShare(List<Double> currentMipsShare) {
 		this.currentMipsShare = currentMipsShare;
 	}
 
@@ -287,7 +287,7 @@ public abstract class CloudletScheduler {
 	 * @param <T> the generic type
 	 * @param cloudletWaitingList the cloudlet waiting list
 	 */
-	protected <T extends ResCloudlet> void setCloudletWaitingList(List<T> cloudletWaitingList) {
+	public <T extends ResCloudlet> void setCloudletWaitingList(List<T> cloudletWaitingList) {
 		this.cloudletWaitingList = cloudletWaitingList;
 	}
 
@@ -308,7 +308,7 @@ public abstract class CloudletScheduler {
 	 * @param <T> the generic type
 	 * @param cloudletExecList the new cloudlet exec list
 	 */
-	protected <T extends ResCloudlet> void setCloudletExecList(List<T> cloudletExecList) {
+	public <T extends ResCloudlet> void setCloudletExecList(List<T> cloudletExecList) {
 		this.cloudletExecList = cloudletExecList;
 	}
 
@@ -329,7 +329,7 @@ public abstract class CloudletScheduler {
 	 * @param <T> the generic type
 	 * @param cloudletPausedList the new cloudlet paused list
 	 */
-	protected <T extends ResCloudlet> void setCloudletPausedList(List<T> cloudletPausedList) {
+	public <T extends ResCloudlet> void setCloudletPausedList(List<T> cloudletPausedList) {
 		this.cloudletPausedList = cloudletPausedList;
 	}
 
@@ -350,7 +350,7 @@ public abstract class CloudletScheduler {
 	 * @param <T> the generic type
 	 * @param cloudletFinishedList the new cloudlet finished list
 	 */
-	protected <T extends ResCloudlet> void setCloudletFinishedList(List<T> cloudletFinishedList) {
+	public <T extends ResCloudlet> void setCloudletFinishedList(List<T> cloudletFinishedList) {
 		this.cloudletFinishedList = cloudletFinishedList;
 	}
 
@@ -371,7 +371,7 @@ public abstract class CloudletScheduler {
 	 * @param <T> the generic type
 	 * @param cloudletFailedList the new cloudlet failed list.
 	 */
-	protected <T extends ResCloudlet> void setCloudletFailedList(List<T> cloudletFailedList) {
+	public <T extends ResCloudlet> void setCloudletFailedList(List<T> cloudletFailedList) {
 		this.cloudletFailedList = cloudletFailedList;
 	}
 

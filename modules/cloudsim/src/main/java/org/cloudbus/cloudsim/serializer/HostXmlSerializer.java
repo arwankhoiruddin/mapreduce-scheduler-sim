@@ -14,6 +14,7 @@ import com.hazelcast.nio.ObjectDataOutput;
 import com.hazelcast.nio.serialization.StreamSerializer;
 import org.cloudbus.cloudsim.Host;
 
+import java.beans.DefaultPersistenceDelegate;
 import java.beans.XMLDecoder;
 import java.beans.XMLEncoder;
 import java.io.ByteArrayOutputStream;
@@ -27,8 +28,14 @@ public class HostXmlSerializer implements StreamSerializer<Host> {
     }
     @Override
     public void write(ObjectDataOutput out, Host object) throws IOException {
+        System.out.println("Here, I ammmmmmmmmmmmmmmmm HOST");
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         XMLEncoder encoder = new XMLEncoder(bos);
+
+        String[] propertyNames = new String[] { "id", "ramProvisioner", "bwProvisioner", "storage",
+                "peList", "vmScheduler"};
+        encoder.setPersistenceDelegate(Host.class, new DefaultPersistenceDelegate(propertyNames));
+
         encoder.writeObject(object);
         encoder.close();
         out.write(bos.toByteArray());
