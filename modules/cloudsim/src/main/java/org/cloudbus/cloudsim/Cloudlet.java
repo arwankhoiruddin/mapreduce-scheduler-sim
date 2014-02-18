@@ -164,10 +164,6 @@ public class Cloudlet {
         return record;
     }
 
-//    public void setRecord(boolean record) {
-//        this.record = record; todo
-//    }
-
     public String getNewline() {
         return newline;
     }
@@ -189,7 +185,7 @@ public class Cloudlet {
     }
 
     public void setResList(List<Resource> resList) {
-        this.resList = resList; // todo
+        this.resList = resList;
     }
 
     public int getIndex() {
@@ -544,18 +540,6 @@ public class Cloudlet {
             resourceName = objectDataInput.readUTF();
         }
     } // end of internal class
-
-//    public void setCloudletFileSize(long cloudletFileSize) {
-//        this.cloudletFileSize = cloudletFileSize;
-//    }
-// todo
-//    public void setCloudletOutputSize(long cloudletOutputSize) {
-//        this.cloudletOutputSize = cloudletOutputSize;
-//    }
-//
-//    public void setCloudletId(int cloudletId) {
-//        this.cloudletId = cloudletId;
-//    }
 
     public void setStatus(int status) {
         this.status = status;

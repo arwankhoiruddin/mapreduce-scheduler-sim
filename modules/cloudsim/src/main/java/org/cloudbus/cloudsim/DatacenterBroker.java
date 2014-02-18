@@ -25,29 +25,14 @@ import org.cloudbus.cloudsim.lists.CloudletList;
 import org.cloudbus.cloudsim.lists.VmList;
 
 /**
- * DatacentreBroker represents a broker acting on behalf of a user. It hides VM management, as vm
- * creation, sumbission of cloudlets to this VMs and destruction of VMs.
+ * DatacenterBroker represents a broker acting on behalf of a user. It hides VM management, as vm
+ * creation, submission of cloudlets to this VMs and destruction of VMs.
  * 
  * @author Rodrigo N. Calheiros
  * @author Anton Beloglazov
  * @since CloudSim Toolkit 1.0
  */
 public class DatacenterBroker extends SimEntity {
-
-//    /** The vm list. */
-//	protected List<? extends Vm> vmList;
-
-//	/** The vms created list. */
-//	protected List<? extends Vm> vmsCreatedList;
-
-//	/** The cloudlet list. */
-//	protected List<? extends Cloudlet> cloudletList;
-//
-//	/** The cloudlet submitted list. */
-//	protected List<? extends Cloudlet> cloudletSubmittedList;
-//
-//	/** The cloudlet received list. */
-//	protected List<? extends Cloudlet> cloudletReceivedList;
 
 	/** The cloudlets submitted. */
 	protected int cloudletsSubmitted;
@@ -432,16 +417,6 @@ public class DatacenterBroker extends SimEntity {
         return instances[0].getList("vmList");
 	}
 
-//	/**
-//	 * Sets the vm list.
-//	 *
-//	 * @param <T> the generic type
-//	 * @param vmList the new vm list
-//	 */
-//	protected <T extends Vm> void setVmList(List<T> vmList) {
-//		this.vmList = vmList;
-//	}
-
 	/**
 	 * Gets the cloudlet list.
 	 * 
@@ -452,16 +427,6 @@ public class DatacenterBroker extends SimEntity {
 	public <T extends Cloudlet> List<T> getCloudletList() {
 		return instances[0].getList("cloudletList");
 	}
-
-//	/**
-//	 * Sets the cloudlet list.
-//	 *
-//	 * @param <T> the generic type
-//	 * @param cloudletList the new cloudlet list
-//	 */
-//	protected <T extends Cloudlet> void setCloudletList(List<T> cloudletList) {
-//		this.cloudletList = cloudletList;
-//	}
 
 	/**
 	 * Gets the cloudlet submitted list.
@@ -474,16 +439,6 @@ public class DatacenterBroker extends SimEntity {
 		return instances[0].getList("cloudletSubmittedList");
 	}
 
-//	/**
-//	 * Sets the cloudlet submitted list.
-//	 *
-//	 * @param <T> the generic type
-//	 * @param cloudletSubmittedList the new cloudlet submitted list
-//	 */
-//	protected <T extends Cloudlet> void setCloudletSubmittedList(List<T> cloudletSubmittedList) {
-//		this.cloudletSubmittedList = cloudletSubmittedList;
-//	}
-
 	/**
 	 * Gets the cloudlet received list.
 	 * 
@@ -495,16 +450,6 @@ public class DatacenterBroker extends SimEntity {
 		return instances[0].getList("cloudletReceivedList");
 	}
 
-//	/**
-//	 * Sets the cloudlet received list.
-//	 *
-//	 * @param <T> the generic type
-//	 * @param cloudletReceivedList the new cloudlet received list
-//	 */
-//	protected <T extends Cloudlet> void setCloudletReceivedList(List<T> cloudletReceivedList) {
-//		this.cloudletReceivedList = cloudletReceivedList;
-//	}
-
 	/**
 	 * Gets the vm list.
 	 * 
@@ -515,16 +460,6 @@ public class DatacenterBroker extends SimEntity {
 	public <T extends Vm> List<T> getVmsCreatedList() {
 		return instances[0].getList("vmCreatedList");
 	}
-
-//	/**
-//	 * Sets the vm list.
-//	 *
-//	 * @param <T> the generic type
-//	 * @param vmsCreatedList the vms created list
-//	 */
-//	protected <T extends Vm> void setVmsCreatedList(List<T> vmsCreatedList) {
-//		this.vmsCreatedList = vmsCreatedList;
-//	}
 
 	/**
 	 * Gets the vms requested.

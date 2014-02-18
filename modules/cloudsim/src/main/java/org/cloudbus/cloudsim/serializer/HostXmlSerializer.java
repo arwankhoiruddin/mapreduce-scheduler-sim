@@ -28,7 +28,6 @@ public class HostXmlSerializer implements StreamSerializer<Host> {
     }
     @Override
     public void write(ObjectDataOutput out, Host object) throws IOException {
-        System.out.println("Here, I ammmmmmmmmmmmmmmmm HOST");
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         XMLEncoder encoder = new XMLEncoder(bos);
 

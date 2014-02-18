@@ -15,15 +15,11 @@ import com.hazelcast.nio.serialization.StreamSerializer;
 import org.cloudbus.cloudsim.Cloudlet;
 
 import java.beans.DefaultPersistenceDelegate;
-import java.beans.Encoder;
-import java.beans.Expression;
-import java.beans.PersistenceDelegate;
 import java.beans.XMLDecoder;
 import java.beans.XMLEncoder;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.math.BigDecimal;
 
 public class CloudletXmlSerializer implements StreamSerializer<Cloudlet> {
 
