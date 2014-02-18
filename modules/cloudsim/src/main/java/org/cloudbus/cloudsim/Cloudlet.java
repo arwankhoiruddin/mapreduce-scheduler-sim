@@ -14,12 +14,9 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.nio.ObjectDataInput;
 import com.hazelcast.nio.ObjectDataOutput;
-import org.cloudbus.cloudsim.core.Cloud2SimConstants;
 import org.cloudbus.cloudsim.core.CloudSim;
-import org.cloudbus.cloudsim.core.HazelSim;
 
 /**
  * Cloudlet is an extension to the cloudlet. It stores, despite all the information encapsulated in
@@ -46,16 +43,16 @@ public class Cloudlet {
 	 * The input file size of this Cloudlet before execution (unit: in byte). in byte = program +
 	 * input data size
 	 */
-	private long cloudletFileSize;
+	private final long cloudletFileSize;
 
 	/** The output file size of this Cloudlet after execution (unit: in byte). */
-	private long cloudletOutputSize;
+	private final long cloudletOutputSize;
 
 	/** The num of Pe required to execute this job. */
 	private int numberOfPes;
 
 	/** The cloudlet ID. */
-	private int cloudletId;
+	private final int cloudletId;
 
 	/** The status of this Cloudlet. */
 	private int status;
@@ -77,7 +74,7 @@ public class Cloudlet {
 	private int reservationId = -1;
 
 	/** The records the transaction history for this Cloudlet. */
-	private boolean record;
+	private final boolean record;
 
 	/** The newline. */
 	private String newline;
@@ -167,9 +164,9 @@ public class Cloudlet {
         return record;
     }
 
-    public void setRecord(boolean record) {
-        this.record = record;
-    }
+//    public void setRecord(boolean record) {
+//        this.record = record; todo
+//    }
 
     public String getNewline() {
         return newline;
@@ -192,7 +189,7 @@ public class Cloudlet {
     }
 
     public void setResList(List<Resource> resList) {
-        this.resList = resList;
+        this.resList = resList; // todo
     }
 
     public int getIndex() {
@@ -423,9 +420,7 @@ public class Cloudlet {
 		// Normally, a Cloudlet is only executed on a resource without being
 		// migrated to others. Hence, to reduce memory consumption, set the
 		// size of this ArrayList to be less than the default one.
-        if (resList == null) {
-            resList = new ArrayList<Resource>(2);
-        }
+        resList = new ArrayList<Resource>(2);
         index = -1;
 		this.record = record;
 
@@ -438,13 +433,6 @@ public class Cloudlet {
 		setUtilizationModelCpu(utilizationModelCpu);
 		setUtilizationModelRam(utilizationModelRam);
 		setUtilizationModelBw(utilizationModelBw);
-
-		vmId = -1;
-		accumulatedBwCost = 0.0;
-		costPerBw = 0.0;
-
-		requiredFiles = new LinkedList<String>();
-
     }
 
 	// ////////////////////// INTERNAL CLASS ///////////////////////////////////
@@ -557,17 +545,17 @@ public class Cloudlet {
         }
     } // end of internal class
 
-    public void setCloudletFileSize(long cloudletFileSize) {
-        this.cloudletFileSize = cloudletFileSize;
-    }
-
-    public void setCloudletOutputSize(long cloudletOutputSize) {
-        this.cloudletOutputSize = cloudletOutputSize;
-    }
-
-    public void setCloudletId(int cloudletId) {
-        this.cloudletId = cloudletId;
-    }
+//    public void setCloudletFileSize(long cloudletFileSize) {
+//        this.cloudletFileSize = cloudletFileSize;
+//    }
+// todo
+//    public void setCloudletOutputSize(long cloudletOutputSize) {
+//        this.cloudletOutputSize = cloudletOutputSize;
+//    }
+//
+//    public void setCloudletId(int cloudletId) {
+//        this.cloudletId = cloudletId;
+//    }
 
     public void setStatus(int status) {
         this.status = status;
