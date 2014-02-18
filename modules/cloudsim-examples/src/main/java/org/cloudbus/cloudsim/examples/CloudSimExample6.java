@@ -7,11 +7,11 @@
  * Copyright (c) 2009, The University of Melbourne, Australia
  */
 
-
 package org.cloudbus.cloudsim.examples;
 
 import org.cloudbus.cloudsim.*;
 import org.cloudbus.cloudsim.core.CloudSim;
+import org.cloudbus.cloudsim.core.hazelcast.HzObjectCollection;
 import org.cloudbus.cloudsim.provisioners.BwProvisionerSimple;
 import org.cloudbus.cloudsim.provisioners.PeProvisionerSimple;
 import org.cloudbus.cloudsim.provisioners.RamProvisionerSimple;
@@ -28,16 +28,7 @@ import java.util.List;
  */
 public class CloudSimExample6 {
 
-	/** The cloudlet list. */
-	private static List<Cloudlet> cloudletList;
-
-	/** The vmlist. */
-	private static List<Vm> vmlist;
-
-	private static List<Vm> createVM(int userId, int vms) {
-
-		//Creates a container to store VMs. This list is passed to the broker later
-		LinkedList<Vm> list = new LinkedList<Vm>();
+	private static void createVM(int userId, int vms) {
 
 		//VM Parameters
 		long size = 10000; //image size (MB)
@@ -51,22 +42,19 @@ public class CloudSimExample6 {
 		Vm[] vm = new Vm[vms];
 
 		for(int i=0;i<vms;i++){
-			vm[i] = new Vm(i, userId, mips*(i+1), pesNumber, ram, bw, size, vmm, new CloudletSchedulerTimeShared());    //todo         1
-  			list.add(vm[i]);
+			vm[i] = new Vm(i, userId, mips*(i+1), pesNumber, ram, bw, size, vmm, new CloudletSchedulerTimeShared());
+  			HzObjectCollection.getUserVmList().add(vm[i]);
 		}
-
-		return list;
 	}
 
 
-	private static List<Cloudlet> createCloudlet(int userId, int cloudlets){
+	private static void createCloudlet(int userId, int cloudlets){
 		// Creates a container to store Cloudlets
-		LinkedList<Cloudlet> list = new LinkedList<Cloudlet>();
 
 		//cloudlet parameters
-		long length = 100; //100
-		long fileSize = 300;
-		long outputSize = 300;
+		long length = 10; //100
+		long fileSize = 30; // 300
+		long outputSize = 30; // 300
 		int pesNumber = 1;
 		UtilizationModel utilizationModel = new UtilizationModelFull();
 
@@ -74,15 +62,13 @@ public class CloudSimExample6 {
 
 		for(int i=0;i<cloudlets;i++){
             int f = (int) ((Math.random() * 40) + 1);
-			cloudlet[i] = new Cloudlet(i, length*f, pesNumber, fileSize, outputSize, utilizationModel, utilizationModel, utilizationModel);
+			cloudlet[i] = new Cloudlet(i, length*f, pesNumber, fileSize, outputSize, utilizationModel,
+                    utilizationModel, utilizationModel);
 			// setting the owner of these Cloudlets
 			cloudlet[i].setUserId(userId);
-            list.add(cloudlet[i]);
+            HzObjectCollection.getUserCloudletList().add(cloudlet[i]);
 		}
-
-		return list;
 	}
-
 
 	////////////////////////// STATIC METHODS ///////////////////////
 
@@ -114,82 +100,29 @@ public class CloudSimExample6 {
 			int brokerId = broker.getId();
 
 			//Fourth step: Create VMs and Cloudlets and send them to broker
-			vmlist = createVM(brokerId,5); //creating 20 vms
-			cloudletList = createCloudlet(brokerId,20); // creating 40 - 19800 cloudlets   (20000 fails)
-            // 0.1: Broker: Sending cloudlet 19999 to VM #3
+			createVM(brokerId,5); //creating 20 vms
+			/* The cloudlet list. */
+            createCloudlet(brokerId, 2000);
 
-            /*
-            *
-            # Starting CloudSimExample6...
-Initialising...
-Starting CloudSim version 3.0
-Datacenter_0 is starting...
-Datacenter_1 is starting...
-Broker is starting...
-Entities started.
-0.0: Broker: Cloud Resource List received with 2 resource(s)
-0.0: Broker: Trying to Create VM #0 in Datacenter_0
-0.0: Broker: Trying to Create VM #1 in Datacenter_1
-0.0: Broker: Trying to Create VM #2 in Datacenter_0
-0.0: Broker: Trying to Create VM #3 in Datacenter_1
-0.0: Broker: Trying to Create VM #4 in Datacenter_0
-0.0000: VM #0 has been allocated to the host#0 datacenter #2(Datacenter_0) #
-0.0000: VM #2 has been allocated to the host#1 datacenter #2(Datacenter_0) #
-0.0000: VM #4 has been allocated to the host#0 datacenter #2(Datacenter_0) #
-0.0000: VM #1 has been allocated to the host#0 datacenter #3(Datacenter_1) #
-0.0000: VM #3 has been allocated to the host#1 datacenter #3(Datacenter_1) #
-0.1: Broker: VM #0 has been created in Datacenter #2, Host #0
-0.1: Broker: VM #2 has been created in Datacenter #2, Host #1
-0.1: Broker: VM #4 has been created in Datacenter #2, Host #0
-0.1: Broker: VM #1 has been created in Datacenter #3, Host #0
-0.1: Broker: VM #3 has been created in Datacenter #3, Host #1
-0.1: Broker: Sending cloudlet 0 to VM #0
-0.1: Broker: Sending cloudlet 1 to VM #1
-0.6: Broker: Cloudlet 1 received
-13.2: Broker: Cloudlet 0 received
-13.2: Broker: All Cloudlets executed. Finishing...
-13.2: Broker: Destroying VM #0
-13.2: Broker: Destroying VM #2
-13.2: Broker: Destroying VM #4
-13.2: Broker: Destroying VM #1
-13.2: Broker: Destroying VM #3
-Broker is shutting down...
-Simulation: No more future events
-CloudInformationService: Notify all CloudSim entities for shutting down.
-Datacenter_0 is shutting down...
-Datacenter_1 is shutting down...
-Broker is shutting down...
-Simulation completed.
-Simulation completed.
-
-# ========== OUTPUT ==========
-# Cloudlet ID    STATUS    Data center ID    VM ID        Time    Start Time    Finish Time    Submission Time    Processing Cost
-    1        SUCCESS        3            1            0.5        0.1            0.6        0.1        3
-    0        SUCCESS        2            0            13.1        0.1            13.2        0.1        3
-# CloudSimExample6 finished!
-            * */
-
-            broker.submitVmList(vmlist);
-			broker.submitCloudletList(cloudletList);
+            broker.submitVmList(HzObjectCollection.getUserVmList());
+			broker.submitCloudletList(HzObjectCollection.getUserCloudletList());
 
 			// Fifth step: Starts the simulation
 			CloudSim.startSimulation();
 
 			// Final step: Print results when simulation is over
-			List<Cloudlet> newList = broker.getCloudletReceivedList();
+			List<Cloudlet> newList = HzObjectCollection.getCloudletReceivedList();
 
 			CloudSim.stopSimulation();
 
 			printCloudletList(newList);
 
 			Log.printLine("# CloudSimExample6 finished!");
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-			Log.printLine("# The simulation has been terminated due to an unexpected error");
-		}
-	}
+		} catch (Exception e) {
+            e.printStackTrace();
+            Log.printLine("# The simulation has been terminated due to an unexpected error");
+        }
+    }
 
 	private static Datacenter createDatacenter(String name){
 
@@ -231,7 +164,7 @@ Simulation completed.
     				new BwProvisionerSimple(bw),
     				storage,
     				peList1,
-    				new VmSchedulerTimeShared(peList1)                      //todo      2
+    				new VmSchedulerTimeShared(peList1)
     			)
     		); // This is our first machine
 
@@ -320,7 +253,7 @@ Simulation completed.
 		// 6. Finally, we need to create a PowerDatacenter object.
 		Datacenter datacenter = null;
 		try {
-			datacenter = new Datacenter(name, characteristics, new VmAllocationPolicySimple(hostList), storageList, 0);        //todo VmAllocationPolicySimple
+			datacenter = new Datacenter(name, characteristics, new VmAllocationPolicySimple(hostList), storageList, 0);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -332,30 +265,15 @@ Simulation completed.
 	//to the specific rules of the simulated scenario
 	private static DatacenterBroker createBroker(){
 
-		DatacenterBroker broker = null;
+		DatacenterBroker broker;
 		try {
-			broker = new DatacenterBroker("Broker");      //DatacenterBroker todo
+			broker = new DatacenterBroker("Broker");
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
 		}
 		return broker;
 	}
-
-
-    //We strongly encourage users to develop their own broker policies, to submit vms and cloudlets according
-    //to the specific rules of the simulated scenario
-    private static DatacenterBroker createBroker(int id){
-
-        DatacenterBroker broker = null;
-        try {
-            broker = new DatacenterBroker("Broker"+id);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-        return broker;
-    }
 
     /**
 	 * Prints the Cloudlet objects

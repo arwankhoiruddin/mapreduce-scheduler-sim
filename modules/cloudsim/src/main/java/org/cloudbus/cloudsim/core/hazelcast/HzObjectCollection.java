@@ -29,6 +29,28 @@ public class HzObjectCollection {
     }
 
     /**
+     * Gets the list of vms created by the user.
+     *
+     * @param <T> the generic type
+     * @return the vm list
+     */
+    @SuppressWarnings("unchecked")
+    public static <T extends Vm> List<T> getUserVmList() {
+        return instances[0].getList("userVmList");
+    }
+
+    /**
+     * Gets the list of cloudlets created by the user.
+     *
+     * @param <T> the generic type
+     * @return the cloudlet list
+     */
+    @SuppressWarnings("unchecked")
+    public static <T extends Cloudlet> List<T> getUserCloudletList() {
+        return instances[0].getList("userCloudletList");
+    }
+
+    /**
      * Gets the vm list.
      *
      * @param <T> the generic type

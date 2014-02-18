@@ -189,6 +189,14 @@
         <backup-count>1</backup-count>
     </list>
 
+    <list name="userVmList">
+        <backup-count>1</backup-count>
+    </list>
+
+    <list name="userCloudletList">
+        <backup-count>1</backup-count>
+    </list>
+
     <list name="vmList">
         <backup-count>1</backup-count>
     </list>
