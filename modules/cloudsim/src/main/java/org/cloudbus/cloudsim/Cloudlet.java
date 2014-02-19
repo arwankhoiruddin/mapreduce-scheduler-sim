@@ -59,9 +59,6 @@ public class Cloudlet {
 	/** The format of decimal numbers. */
 	private DecimalFormat num;
 
-	/** The time where this Cloudlet completes. */
-	private double finishTime;
-
 	/**
 	 * Start time of executing this Cloudlet. With new functionalities, such as CANCEL, PAUSED and
 	 * RESUMED, this attribute only stores the latest execution time. Previous execution time are
@@ -369,7 +366,6 @@ public class Cloudlet {
 		this.cloudletId = cloudletId;
 		numberOfPes = pesNumber;
 		execStartTime = 0.0;
-		finishTime = -1.0;    // meaning this Cloudlet hasn't finished yet
 		classType = 0;
 		netToS = 0;
 
@@ -434,16 +430,6 @@ public class Cloudlet {
 
     } // end of internal class
 
-    // ////////////////////// End of Internal Class //////////////////////////
-
-//    public void setStatus(int status) {
-//        this.status = status;
-//    }
-//
-//    public void setFinishTime(double finishTime) {
-//        this.finishTime = finishTime;
-//    }
-//
     // ////////////////////// End of Internal Class //////////////////////////
 
 	/**
