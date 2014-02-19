@@ -43,7 +43,7 @@ public class CloudSimExample6 {
 		Vm[] vm = new Vm[vms];
 
 		for(int i=0;i<vms;i++){
-			vm[i] = new Vm(i, userId, mips*(i+1), pesNumber, ram, bw, size, vmm, new CloudletSchedulerTimeShared());
+			vm[i] = new Vm(i, userId, mips*(i+1), pesNumber, ram, bw, size, vmm, new CloudletSchedulerSpaceShared());
   			HzObjectCollection.getUserVmList().add(vm[i]);
 		}
 	}
@@ -103,7 +103,7 @@ public class CloudSimExample6 {
 			//Fourth step: Create VMs and Cloudlets and send them to broker
 			createVM(brokerId,5); //creating 20 vms
 			/* The cloudlet list. */
-            createCloudlet(brokerId, 20);
+            createCloudlet(brokerId, 200);
 
             broker.submitVmList(HzObjectCollection.getUserVmList());
 			broker.submitCloudletList(HzObjectCollection.getUserCloudletList());
@@ -157,7 +157,7 @@ public class CloudSimExample6 {
 		int ram = 2048; //host memory (MB)
 		long storage = 1000000; //host storage
 		int bw = 10000;
-
+/*
 		hostList.add(
     			new Host(
     				hostId,
@@ -181,10 +181,10 @@ public class CloudSimExample6 {
     				new VmSchedulerTimeShared(peList2)
     			)
     		); // Second machine
-
+*/
 
 //		To create a host with a space-shared allocation policy for PEs to VMs:
-/*		hostList.add(
+		hostList.add(
     			new Host(
     				hostId,
     				new RamProvisionerSimple(ram),
@@ -205,8 +205,7 @@ public class CloudSimExample6 {
                 peList2,
                 new VmSchedulerSpaceShared(peList2)
             )
-                    );
-*/
+        );
 
 
 //        To create a host with a opportunistic space-shared allocation policy for PEs to VMs:

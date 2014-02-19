@@ -17,6 +17,7 @@ import org.cloudbus.cloudsim.Vm;
 import org.cloudbus.cloudsim.core.constants.HazelSimConstants;
 
 import java.util.List;
+import java.util.Map;
 
 public class HzObjectCollection {
     protected static HazelcastInstance[] instances;
@@ -26,6 +27,14 @@ public class HzObjectCollection {
 
         HazelSim hazelSim = HazelSim.getHazelSim(HazelSimConstants.NO_OF_HAZELCAST_INSTANCES);
         instances = hazelSim.getHazelcastInstances();
+    }
+
+    /**
+     * Map: cloudletId -> cloudlet execution finished time
+     * @return the map
+     */
+    public static Map<Integer, Double> getCloudletFinishedTime() {
+        return instances[0].getMap("finishedTime");
     }
 
     /**

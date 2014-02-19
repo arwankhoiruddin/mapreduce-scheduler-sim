@@ -15,6 +15,7 @@ import java.util.List;
 
 import org.cloudbus.cloudsim.core.constants.Cloud2SimConstants;
 import org.cloudbus.cloudsim.core.CloudSim;
+import org.cloudbus.cloudsim.core.hazelcast.HzObjectCollection;
 
 /**
  * Cloudlet is an extension to the cloudlet. It stores, despite all the information encapsulated in
@@ -899,9 +900,11 @@ public class Cloudlet {
 					"Cloudlet.setCloudletStatus() : Error - Invalid integer range for Cloudlet status.");
 		}
 
-		if (newStatus == Cloud2SimConstants.SUCCESS) {
-			finishTime = CloudSim.clock();
-		}
+        if (newStatus == Cloud2SimConstants.SUCCESS) {
+            if (CloudSim.clock() > getFinishTime()) {
+                HzObjectCollection.getCloudletFinishedTime().put(cloudletId, CloudSim.clock());
+            }
+        }
 
 		if (record) {
 			write("Sets Cloudlet status from " + getCloudletStatusString() + " to "
@@ -1208,7 +1211,11 @@ public class Cloudlet {
 	 * @post $result >= -1
 	 */
 	public double getFinishTime() {
-		return finishTime;
+        double finishTime = 0.0;
+        if (HzObjectCollection.getCloudletFinishedTime().get(cloudletId) != null) {
+            finishTime = HzObjectCollection.getCloudletFinishedTime().get(cloudletId);
+        }
+        return finishTime;
 	}
 
 	// //////////////////////// PROTECTED METHODS //////////////////////////////
