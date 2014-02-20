@@ -14,6 +14,7 @@ import java.util.Map;
 
 import org.cloudbus.cloudsim.core.constants.Cloud2SimConstants;
 import org.cloudbus.cloudsim.core.CloudSim;
+import org.cloudbus.cloudsim.core.constants.Consts;
 
 /**
  * CloudletSchedulerDynamicWorkload implements a policy of scheduling performed by a virtual machine

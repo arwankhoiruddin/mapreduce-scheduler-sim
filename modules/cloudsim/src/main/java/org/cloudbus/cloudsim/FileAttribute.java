@@ -11,6 +11,7 @@ package org.cloudbus.cloudsim;
 import java.util.Date;
 
 import org.cloudbus.cloudsim.core.CloudSim;
+import org.cloudbus.cloudsim.core.constants.Consts;
 
 /**
  * A class for storing related information regarding to a {@link gridsim.datagrid.File} entity.

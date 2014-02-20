@@ -10,6 +10,7 @@ package org.cloudbus.cloudsim;
 
 import org.cloudbus.cloudsim.core.constants.Cloud2SimConstants;
 import org.cloudbus.cloudsim.core.CloudSim;
+import org.cloudbus.cloudsim.core.constants.Consts;
 
 /**
  * CloudSim ResCloudlet represents a Cloudlet submitted to CloudResource for processing. This class

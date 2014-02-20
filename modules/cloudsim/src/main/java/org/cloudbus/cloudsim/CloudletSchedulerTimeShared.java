@@ -12,6 +12,7 @@ import java.util.List;
 
 import org.cloudbus.cloudsim.core.constants.Cloud2SimConstants;
 import org.cloudbus.cloudsim.core.CloudSim;
+import org.cloudbus.cloudsim.core.constants.Consts;
 
 /**
  * CloudletSchedulerTimeShared implements a policy of scheduling performed by a virtual machine.
