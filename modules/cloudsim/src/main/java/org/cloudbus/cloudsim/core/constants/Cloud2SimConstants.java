@@ -12,7 +12,12 @@ package org.cloudbus.cloudsim.core.constants;
 /**
  * Public constants attributes used in Cloud2Sim.
  */
-public class Cloud2SimConstants {
+public final class Cloud2SimConstants {
+
+    /** Suppress instantiation. */
+    private Cloud2SimConstants() {
+    }
+
     /** The Cloudlet has been created and added to the Cloudlet List object. */
     public static final int CREATED = 0;
     /** The Cloudlet has been assigned to a CloudResource object as planned. */

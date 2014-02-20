@@ -10,7 +10,12 @@
 
 package org.cloudbus.cloudsim.core.constants;
 
-public class HazelSimConstants {
+public final class HazelSimConstants {
+
+    /** Suppress instantiation. */
+    private HazelSimConstants() {
+    }
+
     public static final int NO_OF_HAZELCAST_INSTANCES = 3;
     public static final String HAZELCAST_CONFIG_FILE = "conf/hazelcast.xml";
     public static final String HAZELCAST_CONFIG_FILE_NOT_FOUND_ERROR =
