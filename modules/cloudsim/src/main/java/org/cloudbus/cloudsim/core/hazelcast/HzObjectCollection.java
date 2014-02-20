@@ -38,6 +38,14 @@ public class HzObjectCollection {
     }
 
     /**
+     * Map: vmId -> hostId
+     * @return the map
+     */
+    public static Map<Integer, Integer> getHostForVm() {
+        return instances[0].getMap("hostForVm");
+    }
+
+    /**
      * Gets the list of vms created by the user.
      *
      * @param <T> the generic type

@@ -7,6 +7,8 @@
 
 package org.cloudbus.cloudsim;
 
+import org.cloudbus.cloudsim.core.hazelcast.HzObjectCollection;
+
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -430,7 +432,10 @@ public class Vm {
 	 * @post $none
 	 */
 	public void setHost(Host host) {
-		this.host = host;
+        if (host != null) {
+            this.host = host;
+            HzObjectCollection.getHostForVm().put(this.id, host.getId());
+        }
 	}
 
 	/**
@@ -441,6 +446,14 @@ public class Vm {
 	public Host getHost() {   //todo: this currently gets null
 		return host;
 	}
+
+    public int getHostId() {
+        int id = -1;
+        if (HzObjectCollection.getHostForVm().get(this.id)!= null) {
+            id = HzObjectCollection.getHostForVm().get(this.id);
+        }
+        return id;
+    }
 
 	/**
 	 * Gets the vm scheduler.
