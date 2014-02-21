@@ -11,8 +11,9 @@
 package org.cloudbus.cloudsim.examples.hazelcast.instances;
 
 import java.util.Map;
+import java.util.Random;
 
-public final class ObjectCollectionTest {
+public class ObjectCollectionTest {
     public static void main(String[] args) {
         ObjectCollection.init();
 
@@ -20,7 +21,7 @@ public final class ObjectCollectionTest {
         Map<Integer, String> tempList = ObjectCollection.getTempList();
 
         for (int i = 0; i < 10; i++) {
-            tempList.put(i, "value" + i);
+            tempList.put(new Random().nextInt(100), "value" + i);
         }
 
         int size = ObjectCollection.getList().size();
@@ -34,26 +35,7 @@ public final class ObjectCollectionTest {
         System.out.println("ten " + size);
         ObjectCollection.getList().putAll(ObjectCollection.getTempList());
         size = ObjectCollection.getList().size();
-        System.out.println("Ten. NOT twenty " + size);
-
-        for (int i = 0; i < 10; i++) {
-            ObjectCollection.getTempList().put(i + 10, "value" + i);
-        }
-        ObjectCollection.getList().putAll(ObjectCollection.getTempList());
-        size = ObjectCollection.getList().size();
-        System.out.println("Twenty " + size);
-
-        ObjectCollection.getList().remove(1);
-        size = ObjectCollection.getList().size();
-        System.out.println("nineteen..............." + size);
-
-        ObjectCollection.getList().remove(1);
-        size = ObjectCollection.getList().size();
-        System.out.println("nineteen..............." + size);
-
-        ObjectCollection.getList().put(12, "kitten");
-        size = ObjectCollection.getList().size();
-        System.out.println("nineteen..............." + size);
+        System.out.println("Ten..." + size);
 
         userList = ObjectCollection.getList();
         for (int i : ObjectCollection.getList().keySet()) {
