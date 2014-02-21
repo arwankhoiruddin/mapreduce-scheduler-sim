@@ -4,13 +4,15 @@ To build using maven:
 mvn clean install
 
 skipping the tests:
-mvn clean install -Dmaven.skip.test=true
+$ mvn clean install -Dmaven.skip.test=true
 
 Built distribution inside distribution/target.
-unzip cloudsim-3.1-SNAPSHOT.zip
+$ cd distribution/target
+$ unzip cloudsim-3.1-SNAPSHOT.zip
+$ cd cloudsim-3.1-SNAPSHOT
+$ mv jars/* ../../..
 
 To run an existing example:
-cd cloudsim-3.1-SNAPSHOT/jars
-
-java -classpath cloudsim-3.1-SNAPSHOT.jar:cloudsim-examples-3.1-SNAPSHOT.jar:../../../../lib/hazelcast-3.1.5.jar \
+$ cd ../../..
+$ java -classpath cloudsim-3.1-SNAPSHOT.jar:cloudsim-examples-3.1-SNAPSHOT.jar:lib/hazelcast-3.1.5.jar \
 org.cloudbus.cloudsim.examples.CloudSimExample6
