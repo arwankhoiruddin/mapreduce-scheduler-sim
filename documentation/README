@@ -13,8 +13,7 @@ $ mv cloudsim-3.1-SNAPSHOT/jars/cloudsim-3.1-SNAPSHOT.jar cloudsim-3.1-SNAPSHOT/
 To run an existing example:
 $ java -classpath cloudsim-3.1-SNAPSHOT.jar:cloudsim-examples-3.1-SNAPSHOT.jar:lib/hazelcast-3.1.5.jar org.cloudbus.cloudsim.examples.CloudSimExample6
 
-$ java -classpath cloudsim-3.1-SNAPSHOT.jar:cloudsim-examples-3.1-SNAPSHOT.jar:lib/hazelcast-3.1.5.jar
-org.cloudbus.cloudsim.examples.hazelcast.instances.ObjectCollectionTest
+$ java -classpath cloudsim-3.1-SNAPSHOT.jar:cloudsim-examples-3.1-SNAPSHOT.jar:lib/hazelcast-3.1.5.jar org.cloudbus.cloudsim.examples.hazelcast.instances.ObjectCollectionTest
 
 To initiate an instance without running any specific code:
 $ java -classpath cloudsim-3.1-SNAPSHOT.jar:cloudsim-examples-3.1-SNAPSHOT.jar:lib/hazelcast-3.1.5.jar \
