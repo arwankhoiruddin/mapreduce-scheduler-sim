@@ -1,3 +1,5 @@
+Building Cloud2Sim using source using maven and running an example
+-------------------------------------------------------------------
 To build using maven:
 mvn clean install
 
