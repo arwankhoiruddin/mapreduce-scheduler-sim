@@ -16,7 +16,7 @@ public final class HazelSimConstants {
     private HazelSimConstants() {
     }
 
-    public static final int NO_OF_HAZELCAST_INSTANCES = 6;
+    public static final int NO_OF_HAZELCAST_INSTANCES = 2;
     public static final String HAZELCAST_CONFIG_FILE = "conf/hazelcast.xml";
     public static final String HAZELCAST_CONFIG_FILE_NOT_FOUND_ERROR =
         "Hazelcast Configuration File not found. Using the default.";
