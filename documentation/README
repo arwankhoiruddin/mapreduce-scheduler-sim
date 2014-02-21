@@ -12,5 +12,5 @@ unzip cloudsim-3.1-SNAPSHOT.zip
 To run an existing example:
 cd cloudsim-3.1-SNAPSHOT/jars
 
-java -classpath cloudsim-3.1-SNAPSHOT.jar:cloudsim-examples-3.1-SNAPSHOT.jar:../../../../lib \
+java -classpath cloudsim-3.1-SNAPSHOT.jar:cloudsim-examples-3.1-SNAPSHOT.jar:../../../../lib/hazelcast-3.1.5.jar \
 org.cloudbus.cloudsim.examples.CloudSimExample6
