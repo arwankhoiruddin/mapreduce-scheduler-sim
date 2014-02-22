@@ -33,12 +33,12 @@
             <ports>0</ports>
         </outbound-ports>
         <join>
-            <multicast enabled="true">
+            <multicast enabled="false">
                 <multicast-group>224.2.2.3</multicast-group>
                 <multicast-port>54327</multicast-port>
             </multicast>
-            <tcp-ip enabled="false">
-                <interface>127.0.0.1</interface>
+            <tcp-ip enabled="true">
+                <member>146.193.41.141-146</member>
             </tcp-ip>
             <aws enabled="false">
                 <access-key>my-access-key</access-key>
@@ -232,6 +232,8 @@
                 <serializer type-class="org.cloudbus.cloudsim.Host"> org.cloudbus.cloudsim.serializer.HostXmlSerializer</serializer>
                 <serializer type-class="org.cloudbus.cloudsim.CloudletScheduler"> org.cloudbus.cloudsim.serializer.CloudletSchedulerXmlSerializer</serializer>
                 <serializer type-class="org.cloudbus.cloudsim.Cloudlet"> org.cloudbus.cloudsim.serializer.CloudletXmlSerializer</serializer>
+                <serializer type-class="org.cloudbus.cloudsim.ResCloudlet">
+                    org.cloudbus.cloudsim.serializer.ResCloudletXmlSerializer</serializer>
                 <serializer type-class="org.cloudbus.cloudsim.UtilizationModel"> org.cloudbus.cloudsim.serializer.UtilizationModelXmlSerializer</serializer>
 
         </serializers>
