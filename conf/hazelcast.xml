@@ -53,8 +53,8 @@
                 <tag-value>hz-nodes</tag-value>
             </aws>
         </join>
-        <interfaces enabled="false">
-            <interface>10.10.1.*</interface>
+        <interfaces enabled="true">
+            <interface>146.193.41.*</interface>
         </interfaces>
         <ssl enabled="false" />
         <socket-interceptor enabled="false" />
