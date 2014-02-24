@@ -67,7 +67,6 @@ public class DatacenterBroker extends SimEntity {
 	 */
 	public DatacenterBroker(String name) throws Exception {
 		super(name);
-        HzObjectCollection.init();
 
         cloudletsSubmitted = 0;
 		setVmsRequested(0);

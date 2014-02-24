@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.cloudbus.cloudsim.Log;
+import org.cloudbus.cloudsim.core.hazelcast.HzObjectCollection;
 import org.cloudbus.cloudsim.core.predicates.Predicate;
 import org.cloudbus.cloudsim.core.predicates.PredicateAny;
 import org.cloudbus.cloudsim.core.predicates.PredicateNone;
@@ -64,6 +65,8 @@ public class CloudSim {
 
 	/** The minimal time between events. Events within shorter periods after the last event are discarded. */
 	private static double minTimeBetweenEvents = 0.1;
+
+    private static long simulationStartedTime;
 	
 	/**
 	 * Initialises all the common attributes.
@@ -117,7 +120,9 @@ public class CloudSim {
 	 * @post $none
 	 */
 	public static void init(int numUser, Calendar cal, boolean traceFlag) {
-		try {
+        HzObjectCollection.init();
+        simulationStartedTime = System.currentTimeMillis();
+        try {
 			initCommonVariable(cal, traceFlag, numUser);
 
 			// create a GIS object
@@ -165,10 +170,12 @@ public class CloudSim {
 	    init(numUser, cal, traceFlag);
 	    minTimeBetweenEvents = periodBetweenEvents;
 	}
-	
-	
-	
-	/**
+
+    public static long getSimulationStartedTime() {
+        return simulationStartedTime;
+    }
+
+    /**
 	 * Starts the execution of CloudSim simulation. It waits for complete execution of all entities,
 	 * i.e. until all entities threads reach non-RUNNABLE state or there are no more events in the
 	 * future event queue.

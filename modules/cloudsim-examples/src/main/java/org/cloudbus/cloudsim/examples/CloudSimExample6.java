@@ -10,6 +10,7 @@
 package org.cloudbus.cloudsim.examples;
 
 import org.cloudbus.cloudsim.*;
+import org.cloudbus.cloudsim.app.AppUtil;
 import org.cloudbus.cloudsim.core.constants.Cloud2SimConstants;
 import org.cloudbus.cloudsim.core.CloudSim;
 import org.cloudbus.cloudsim.core.hazelcast.HzObjectCollection;
@@ -77,6 +78,7 @@ public class CloudSimExample6 {
 	 * Creates main() to run this example
 	 */
 	public static void main(String[] args) {
+        AppUtil.start();
 		Log.printLine("# Starting CloudSimExample6...");
 
 		try {
@@ -123,6 +125,7 @@ public class CloudSimExample6 {
             e.printStackTrace();
             Log.printLine("# The simulation has been terminated due to an unexpected error");
         }
+        AppUtil.shutdown();
     }
 
 	private static Datacenter createDatacenter(String name){
