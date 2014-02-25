@@ -21,7 +21,7 @@ $ java -classpath cloudsim-3.1-SNAPSHOT.jar:cloudsim-examples-3.1-SNAPSHOT.jar:l
 Copy the files to the other instances.
 $ scp -r . pradeeban@146.193.41.145:/home/pradeeban
 or just,
-$ scp cloudsim-3.1-SNAPSHOT.jar cloudsim-examples-3.1-SNAPSHOT.jar conf/hazelcast.xml pradeeban@146.193.41.145:/home/pradeeban
+$ scp cloudsim-3.1-SNAPSHOT.jar cloudsim-examples-3.1-SNAPSHOT.jar pradeeban@146.193.41.145:/home/pradeeban
 and
 $ scp conf/hazelcast.xml pradeeban@146.193.41.145:/home/pradeeban/conf
 
