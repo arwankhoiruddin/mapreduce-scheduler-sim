@@ -22,7 +22,7 @@
         <name>dev</name>
         <password>dev-pass</password>
     </group>
-    <management-center enabled="false">http://localhost:8080/mancenter</management-center>
+    <management-center enabled="true">http://localhost:8080/mancenter</management-center>
     <network>
         <port auto-increment="true" port-count="2">5701</port>
         <outbound-ports>
@@ -39,6 +39,7 @@
             </multicast>
             <tcp-ip enabled="true">
                 <member>146.193.41.141-146</member>
+                <member>146.193.41.111</member>
             </tcp-ip>
             <aws enabled="false">
                 <access-key>my-access-key</access-key>
@@ -186,33 +187,33 @@
     </multimap>
 
     <list name="default">
-        <backup-count>0</backup-count>
+        <backup-count>1</backup-count>
     </list>
 
     <list name="userVmList">
-        <backup-count>0</backup-count>
+        <backup-count>1</backup-count>
     </list>
 
     <list name="userCloudletList">
-        <backup-count>0</backup-count>
+        <backup-count>1</backup-count>
     </list>
 
     <list name="vmList">
-        <backup-count>0</backup-count>
+        <backup-count>1</backup-count>
     </list>
 
     <list name="vmCreatedList">
-        <backup-count>0</backup-count>
+        <backup-count>1</backup-count>
     </list>
 
     <list name="cloudletList">
-        <backup-count>0</backup-count>
+        <backup-count>1</backup-count>
     </list>
     <list name="cloudletSubmittedList">
-        <backup-count>0</backup-count>
+        <backup-count>1</backup-count>
     </list>
     <list name="cloudletReceivedList">
-        <backup-count>0</backup-count>
+        <backup-count>1</backup-count>
     </list>
 
     <set name="default">
