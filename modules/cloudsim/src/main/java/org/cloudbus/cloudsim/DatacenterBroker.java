@@ -87,8 +87,8 @@ public class DatacenterBroker extends SimEntity {
 	 * @pre list !=null
 	 * @post $none
 	 */
-	public void submitVmList(List<? extends Vm> list) {
-		HzObjectCollection.getVmList().addAll(list);
+	public void submitVmList(Map<Integer, Vm> list) {
+		HzObjectCollection.getVmList().putAll(list);
 	}
 
 	/**
@@ -203,11 +203,11 @@ public class DatacenterBroker extends SimEntity {
 
 		if (result == CloudSimTags.TRUE) {
 			getVmsToDatacentersMap().put(vmId, datacenterId);
-			HzObjectCollection.getVmsCreatedList().add(VmList.getById(HzObjectCollection.getVmList(), vmId));
+			HzObjectCollection.getVmsCreatedList().put(vmId, HzObjectCollection.getVmList().get(vmId));
 
             Log.printConcatLine(CloudSim.clock(), ": ", getName(), ": VM #", vmId,
 					" has been created in Datacenter #", datacenterId, ", Host #",
-					VmList.getById(HzObjectCollection.getVmsCreatedList(), vmId).getHostId());
+                    HzObjectCollection.getVmsCreatedList().get(vmId).getHostId());
 		} else {
 			Log.printConcatLine(CloudSim.clock(), ": ", getName(), ": Creation of VM #", vmId,
 					" failed in Datacenter #", datacenterId);
@@ -296,11 +296,11 @@ public class DatacenterBroker extends SimEntity {
 		// send as much vms as possible for this datacenter before trying the next one
 		int requestedVms = 0;
 		String datacenterName = CloudSim.getEntityName(datacenterId);
-		for (Vm vm : HzObjectCollection.getVmList()) {
-			if (!getVmsToDatacentersMap().containsKey(vm.getId())) {
-				Log.printLine(CloudSim.clock() + ": " + getName() + ": Trying to Create VM #" + vm.getId()
-						+ " in " + datacenterName);
-				sendNow(datacenterId, CloudSimTags.VM_CREATE_ACK, vm);
+		for (Map.Entry<Integer, Vm> entry : HzObjectCollection.getVmList().entrySet()) {
+			if (!getVmsToDatacentersMap().containsKey(entry.getKey())) {
+				Log.printLine(CloudSim.clock() + ": " + getName() + ": Trying to Create VM #" + entry.getKey() +
+						 " in " + datacenterName);
+				sendNow(datacenterId, CloudSimTags.VM_CREATE_ACK, entry.getValue());
 				requestedVms++;
 			}
 		}
@@ -327,7 +327,7 @@ public class DatacenterBroker extends SimEntity {
 				vm = HzObjectCollection.getVmsCreatedList().get(vmIndex);
 			} else { // submit to the specific vm
                 Log.printConcatLine(cloudlet.getVmId());
-				vm = VmList.getById(HzObjectCollection.getVmsCreatedList(), cloudlet.getVmId());
+				vm = HzObjectCollection.getVmsCreatedList().get(cloudlet.getVmId());
 				if (vm == null) { // vm was not created
 					if(!Log.isDisabled()) {				    
 					    Log.printConcatLine(CloudSim.clock(), ": ", getName(), ": Postponing execution of cloudlet ",
@@ -361,11 +361,10 @@ public class DatacenterBroker extends SimEntity {
 	 * @post $none
 	 */
 	protected void clearDatacenters() {
-		for (Vm vm : HzObjectCollection.getVmsCreatedList()) {
-			Log.printConcatLine(CloudSim.clock(), ": " + getName(), ": Destroying VM #", vm.getId());
-			sendNow(getVmsToDatacentersMap().get(vm.getId()), CloudSimTags.VM_DESTROY, vm);
+		for (Map.Entry<Integer, Vm> entry : HzObjectCollection.getVmsCreatedList().entrySet()) {
+			Log.printConcatLine(CloudSim.clock(), ": " + getName(), ": Destroying VM #", entry.getKey());
+			sendNow(getVmsToDatacentersMap().get(entry.getKey()), CloudSimTags.VM_DESTROY, entry.getValue());
 		}
-
 		HzObjectCollection.getVmsCreatedList().clear();
 	}
 

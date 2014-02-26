@@ -46,7 +46,7 @@ public class CloudSimExample6 {
 
 		for(int i=0;i<vms;i++){
 			vm[i] = new Vm(i, userId, mips*(i+1), pesNumber, ram, bw, size, vmm, new CloudletSchedulerSpaceShared());
-  			HzObjectCollection.getUserVmList().add(vm[i]);
+  			HzObjectCollection.getUserVmList().put(i, vm[i]);
 		}
 	}
 

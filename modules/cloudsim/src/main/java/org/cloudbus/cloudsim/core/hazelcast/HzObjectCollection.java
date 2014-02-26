@@ -16,7 +16,6 @@ import org.cloudbus.cloudsim.Log;
 import org.cloudbus.cloudsim.Vm;
 import org.cloudbus.cloudsim.core.constants.HazelSimConstants;
 
-import java.util.List;
 import java.util.Map;
 
 public class HzObjectCollection {
@@ -46,14 +45,12 @@ public class HzObjectCollection {
     }
 
     /**
-     * Gets the list of vms created by the user.
-     *
-     * @param <T> the generic type
+     * Gets the map of Vms created by the user.
+     * Map: Vm Id -> Vm
      * @return the vm list
      */
-    @SuppressWarnings("unchecked")
-    public static <T extends Vm> List<T> getUserVmList() {
-        return instances[0].getList("userVmList");
+    public static Map<Integer, Vm> getUserVmList() {
+        return instances[0].getMap("userVmList");
     }
 
     /**
@@ -61,31 +58,26 @@ public class HzObjectCollection {
      * Map: Cloudlet Id -> Cloudlet
      * @return the cloudlet map
      */
-    @SuppressWarnings("unchecked")
-    public static Map <Integer, Cloudlet> getUserCloudletList() {
+    public static Map<Integer, Cloudlet> getUserCloudletList() {
         return instances[0].getMap("userCloudletList");
     }
 
     /**
-     * Gets the vm list.
-     *
-     * @param <T> the generic type
+     * Gets the vm map.
+     * Map: Vm Id -> Vm
      * @return the vm list
      */
-    @SuppressWarnings("unchecked")
-    public static <T extends Vm> List<T> getVmList() {
-        return instances[0].getList("vmList");
+    public static Map<Integer, Vm> getVmList() {
+        return instances[0].getMap("vmList");
     }
 
     /**
-     * Gets the VMs created list.
-     *
-     * @param <T> the generic type
+     * Gets the VMs created Map.
+     * Map: Vm Id -> Vm
      * @return the vm list
      */
-    @SuppressWarnings("unchecked")
-    public static <T extends Vm> List<T> getVmsCreatedList() {
-        return instances[0].getList("vmCreatedList");
+    public static Map<Integer, Vm> getVmsCreatedList() {
+        return instances[0].getMap("vmCreatedList");
     }
 
     /**
@@ -93,8 +85,7 @@ public class HzObjectCollection {
      * Map: Cloudlet Id -> Cloudlet
      * @return the cloudlet list
      */
-    @SuppressWarnings("unchecked")
-    public static Map <Integer, Cloudlet> getCloudletList() {
+    public static Map<Integer, Cloudlet> getCloudletList() {
         return instances[0].getMap("cloudletList");
     }
 
@@ -103,8 +94,7 @@ public class HzObjectCollection {
      * Map: Cloudlet Id -> Cloudlet
      * @return the cloudlet submitted list
      */
-    @SuppressWarnings("unchecked")
-    public static Map <Integer, Cloudlet> getCloudletSubmittedList() {
+    public static Map<Integer, Cloudlet> getCloudletSubmittedList() {
         return instances[0].getMap("cloudletSubmittedList");
     }
 
@@ -113,7 +103,6 @@ public class HzObjectCollection {
      * Map: Cloudlet Id -> Cloudlet
      * @return the cloudlet received list
      */
-    @SuppressWarnings("unchecked")
     public static Map<Integer, Cloudlet> getCloudletReceivedList() {
         return instances[0].getMap("cloudletReceivedList");
     }
