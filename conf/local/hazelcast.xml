@@ -189,32 +189,6 @@
         <backup-count>0</backup-count>
     </list>
 
-    <list name="userVmList">
-        <backup-count>0</backup-count>
-    </list>
-
-    <list name="userCloudletList">
-        <backup-count>0</backup-count>
-    </list>
-
-    <list name="vmList">
-        <backup-count>0</backup-count>
-    </list>
-
-    <list name="vmCreatedList">
-        <backup-count>0</backup-count>
-    </list>
-
-    <list name="cloudletList">
-        <backup-count>0</backup-count>
-    </list>
-    <list name="cloudletSubmittedList">
-        <backup-count>0</backup-count>
-    </list>
-    <list name="cloudletReceivedList">
-        <backup-count>0</backup-count>
-    </list>
-
     <set name="default">
         <backup-count>0</backup-count>
     </set>
