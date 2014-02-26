@@ -98,8 +98,8 @@ public class DatacenterBroker extends SimEntity {
 	 * @pre list !=null
 	 * @post $none
 	 */
-	public void submitCloudletList(List<? extends Cloudlet> list) {
-		HzObjectCollection.getCloudletList().addAll(list);
+	public void submitCloudletList(Map<Integer, Cloudlet> list) {
+		HzObjectCollection.getCloudletList().putAll(list);
 	}
 
 	/**
@@ -112,7 +112,7 @@ public class DatacenterBroker extends SimEntity {
 	 * @post $none
 	 */
 	public void bindCloudletToVm(int cloudletId, int vmId) {
-		CloudletList.getById(HzObjectCollection.getCloudletList(), cloudletId).setVmId(vmId);
+        HzObjectCollection.getCloudletList().get(cloudletId).setVmId(vmId);
 	}
 
 	/**
@@ -320,7 +320,7 @@ public class DatacenterBroker extends SimEntity {
 	protected void submitCloudlets() {
 		int vmIndex = 0;
 		List<Cloudlet> successfullySubmitted = new ArrayList<Cloudlet>();
-		for (Cloudlet cloudlet : HzObjectCollection.getCloudletList()) {
+		for (Cloudlet cloudlet : HzObjectCollection.getCloudletList().values()) {
 			Vm vm;
 			// if user didn't bind this cloudlet and it has not been executed yet
 			if (cloudlet.getVmId() == -1) {
@@ -351,7 +351,7 @@ public class DatacenterBroker extends SimEntity {
 		}
 
 		// remove submitted cloudlets from waiting list
-		HzObjectCollection.getCloudletList().removeAll(successfullySubmitted);
+		HzObjectCollection.getCloudletList().entrySet().removeAll(successfullySubmitted);
 	}
 
 	/**

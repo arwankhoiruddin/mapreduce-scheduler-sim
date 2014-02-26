@@ -57,14 +57,13 @@ public class HzObjectCollection {
     }
 
     /**
-     * Gets the list of cloudlets created by the user.
-     *
-     * @param <T> the generic type
-     * @return the cloudlet list
+     * Gets the map of cloudlets created by the user.
+     * Map: Cloudlet Id -> Cloudlet
+     * @return the cloudlet map
      */
     @SuppressWarnings("unchecked")
-    public static <T extends Cloudlet> List<T> getUserCloudletList() {
-        return instances[0].getList("userCloudletList");
+    public static Map <Integer, Cloudlet> getUserCloudletList() {
+        return instances[0].getMap("userCloudletList");
     }
 
     /**
@@ -96,8 +95,8 @@ public class HzObjectCollection {
      * @return the cloudlet list
      */
     @SuppressWarnings("unchecked")
-    public static <T extends Cloudlet> List<T> getCloudletList() {
-        return instances[0].getList("cloudletList");
+    public static Map <Integer, Cloudlet> getCloudletList() {
+        return instances[0].getMap("cloudletList");
     }
 
     /**

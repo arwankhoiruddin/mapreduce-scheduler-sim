@@ -68,7 +68,7 @@ public class CloudSimExample6 {
                     utilizationModel, utilizationModel);
 			// setting the owner of these Cloudlets
 			cloudlet[i].setUserId(userId);
-            HzObjectCollection.getUserCloudletList().add(cloudlet[i]);
+            HzObjectCollection.getUserCloudletList().put(i, cloudlet[i]);
 		}
 	}
 
