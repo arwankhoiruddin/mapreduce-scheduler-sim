@@ -284,7 +284,6 @@ public class CloudSimExample6 {
 	 * @param list  list of Cloudlets
 	 */
 	private static void printCloudletList(Map<Integer, Cloudlet> list) {
-		int size = list.size();
 		Cloudlet cloudlet;
 
 		String indent = "    ";
@@ -296,9 +295,11 @@ public class CloudSimExample6 {
                 + indent + "Submission Time" + indent + "Processing Cost");
 
 		DecimalFormat dft = new DecimalFormat("###.##");
-		for (int i = 0; i < size; i++) {
-			cloudlet = list.get(i);
-			Log.print(indent + cloudlet.getCloudletId() + indent + indent);
+		for (Map.Entry<Integer, Cloudlet> entry: list.entrySet()) {
+			cloudlet = entry.getValue();
+            int cloudletId = entry.getKey();
+
+			Log.print(indent + cloudletId + indent + indent);
 
 			if (cloudlet.getCloudletStatus() == Cloud2SimConstants.SUCCESS){
 				Log.print("SUCCESS");
