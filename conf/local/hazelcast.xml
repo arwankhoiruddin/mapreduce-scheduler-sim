@@ -22,7 +22,7 @@
         <name>dev</name>
         <password>dev-pass</password>
     </group>
-    <management-center enabled="false">http://localhost:8080/mancenter</management-center>
+    <management-center enabled="true">http://localhost:8080/mancenter-3.1.6</management-center>
     <network>
         <port auto-increment="true" port-count="10">5701</port>
         <outbound-ports>

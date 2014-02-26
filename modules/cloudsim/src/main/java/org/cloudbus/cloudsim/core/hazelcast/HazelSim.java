@@ -11,10 +11,19 @@ package org.cloudbus.cloudsim.core.hazelcast;
 
 import com.hazelcast.config.Config;
 import com.hazelcast.config.FileSystemXmlConfig;
+import com.hazelcast.config.SerializerConfig;
 import com.hazelcast.core.Hazelcast;
 import com.hazelcast.core.HazelcastInstance;
+import org.cloudbus.cloudsim.Cloudlet;
+import org.cloudbus.cloudsim.CloudletScheduler;
+import org.cloudbus.cloudsim.Host;
 import org.cloudbus.cloudsim.Log;
+import org.cloudbus.cloudsim.Vm;
 import org.cloudbus.cloudsim.core.constants.HazelSimConstants;
+import org.cloudbus.cloudsim.serializer.CloudletSchedulerXmlSerializer;
+import org.cloudbus.cloudsim.serializer.CloudletXmlSerializer;
+import org.cloudbus.cloudsim.serializer.HostXmlSerializer;
+import org.cloudbus.cloudsim.serializer.VmXmlSerializer;
 
 import java.io.FileNotFoundException;
 
@@ -31,12 +40,25 @@ public class HazelSim {
      * Protected constructor to avoid instantiation of the singleton class
      */
     protected HazelSim() {
+        SerializerConfig sc = new SerializerConfig().setImplementation(new VmXmlSerializer()).
+            setTypeClass(Vm.class);
+        SerializerConfig sc0 = new SerializerConfig().setImplementation(new CloudletXmlSerializer()).
+            setTypeClass(Cloudlet.class);
+        SerializerConfig sc1 = new SerializerConfig().setImplementation(
+            new CloudletSchedulerXmlSerializer()).setTypeClass(CloudletScheduler.class);
+        SerializerConfig sc2 = new SerializerConfig().setImplementation(
+            new HostXmlSerializer()).setTypeClass(Host.class);
+
         try {
             cfg = new FileSystemXmlConfig(HazelSimConstants.HAZELCAST_CONFIG_FILE);
         } catch (FileNotFoundException e) {
             Log.printConcatLine(HazelSimConstants.HAZELCAST_CONFIG_FILE_NOT_FOUND_ERROR);
             cfg = new Config();
         }
+        cfg.getSerializationConfig().addSerializerConfig(sc);
+        cfg.getSerializationConfig().addSerializerConfig(sc0);
+        cfg.getSerializationConfig().addSerializerConfig(sc1);
+        cfg.getSerializationConfig().addSerializerConfig(sc2);
     }
 
     /**
