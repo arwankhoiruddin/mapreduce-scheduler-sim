@@ -346,7 +346,7 @@ public class DatacenterBroker extends SimEntity {
 			sendNow(getVmsToDatacentersMap().get(vm.getId()), CloudSimTags.CLOUDLET_SUBMIT, cloudlet);
 			cloudletsSubmitted++;
 			vmIndex = (vmIndex + 1) % HzObjectCollection.getVmsCreatedList().size();
-			HzObjectCollection.getCloudletSubmittedList().add(cloudlet);
+			HzObjectCollection.getCloudletSubmittedList().put(cloudlet.getCloudletId(), cloudlet);
 			successfullySubmitted.add(cloudlet);
 		}
 

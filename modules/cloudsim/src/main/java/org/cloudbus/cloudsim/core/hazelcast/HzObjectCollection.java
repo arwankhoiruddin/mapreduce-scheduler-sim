@@ -89,9 +89,8 @@ public class HzObjectCollection {
     }
 
     /**
-     * Gets the cloudlet list.
-     *
-     * @param <T> the generic type
+     * Gets the cloudlet map.
+     * Map: Cloudlet Id -> Cloudlet
      * @return the cloudlet list
      */
     @SuppressWarnings("unchecked")
@@ -100,14 +99,13 @@ public class HzObjectCollection {
     }
 
     /**
-     * Gets the cloudlet submitted list.
-     *
-     * @param <T> the generic type
+     * Gets the cloudlet submitted map.
+     * Map: Cloudlet Id -> Cloudlet
      * @return the cloudlet submitted list
      */
     @SuppressWarnings("unchecked")
-    public static <T extends Cloudlet> List<T> getCloudletSubmittedList() {
-        return instances[0].getList("cloudletSubmittedList");
+    public static Map <Integer, Cloudlet> getCloudletSubmittedList() {
+        return instances[0].getMap("cloudletSubmittedList");
     }
 
     /**
