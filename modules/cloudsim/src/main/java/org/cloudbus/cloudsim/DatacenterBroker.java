@@ -250,7 +250,7 @@ public class DatacenterBroker extends SimEntity {
 	 */
 	protected void processCloudletReturn(SimEvent ev) {
 		Cloudlet cloudlet = (Cloudlet) ev.getData();
-		HzObjectCollection.getCloudletReceivedList().add(cloudlet);
+		HzObjectCollection.getCloudletReceivedList().put(cloudlet.getCloudletId(), cloudlet);
 		Log.printConcatLine(CloudSim.clock(), ": ", getName(), ": Cloudlet ", cloudlet.getCloudletId(),
 				" received");
 		cloudletsSubmitted--;

@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * An example showing how to create
@@ -114,7 +115,7 @@ public class CloudSimExample6 {
 			CloudSim.startSimulation();
 
 			// Final step: Print results when simulation is over
-			List<Cloudlet> newList = HzObjectCollection.getCloudletReceivedList();
+			Map<Integer, Cloudlet> newList = HzObjectCollection.getCloudletReceivedList();
 
 			CloudSim.stopSimulation();
 
@@ -282,7 +283,7 @@ public class CloudSimExample6 {
 	 * Prints the Cloudlet objects
 	 * @param list  list of Cloudlets
 	 */
-	private static void printCloudletList(List<Cloudlet> list) {
+	private static void printCloudletList(Map<Integer, Cloudlet> list) {
 		int size = list.size();
 		Cloudlet cloudlet;
 
