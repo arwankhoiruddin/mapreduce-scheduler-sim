@@ -27,11 +27,11 @@ public class AppUtil {
 
     public static void shutdownLogs() {
         long endTime = System.currentTimeMillis();
-        long totalTimeTaken = endTime - startTime;
-        long timeTakenForSimulation = endTime - CloudSim.getSimulationStartedTime();
-        Log.printLine("The total time taken for the execution: " + totalTimeTaken + " ms.");
-        Log.printLine("The time taken for the simulation: " + timeTakenForSimulation + " ms.");
+        double totalTimeTaken = (endTime - startTime)/1000.0;
+        double timeTakenForSimulation = (endTime - CloudSim.getSimulationStartedTime())/1000.0;
+        Log.printLine("The total time taken for the execution: " + totalTimeTaken + " s.");
+        Log.printLine("The time taken for the simulation: " + timeTakenForSimulation + " s.");
         Log.printLine("The time taken for Hazelcast initialization: " + (totalTimeTaken - timeTakenForSimulation) +
-                " ms.");
+                " s.");
     }
 }
