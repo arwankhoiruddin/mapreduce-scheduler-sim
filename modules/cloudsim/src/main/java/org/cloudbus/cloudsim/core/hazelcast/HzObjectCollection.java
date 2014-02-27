@@ -11,12 +11,11 @@
 package org.cloudbus.cloudsim.core.hazelcast;
 
 import com.hazelcast.core.HazelcastInstance;
+import com.hazelcast.core.IMap;
 import org.cloudbus.cloudsim.Cloudlet;
 import org.cloudbus.cloudsim.Log;
 import org.cloudbus.cloudsim.Vm;
 import org.cloudbus.cloudsim.core.constants.HazelSimConstants;
-
-import java.util.Map;
 
 public class HzObjectCollection {
     protected static HazelcastInstance[] instances;
@@ -32,7 +31,7 @@ public class HzObjectCollection {
      * Map: cloudletId -> cloudlet execution finished time
      * @return the map
      */
-    public static Map<Integer, Double> getCloudletFinishedTime() {
+    public static IMap<Integer, Double> getCloudletFinishedTime() {
         return instances[0].getMap("finishedTime");
     }
 
@@ -40,7 +39,7 @@ public class HzObjectCollection {
      * Map: vmId -> hostId
      * @return the map
      */
-    public static Map<Integer, Integer> getHostForVm() {
+    public static IMap<Integer, Integer> getHostForVm() {
         return instances[HazelSimConstants.LAST].getMap("hostForVm");
     }
 
@@ -49,7 +48,7 @@ public class HzObjectCollection {
      * Map: Vm Id -> Vm
      * @return the vm list
      */
-    public static Map<Integer, Vm> getUserVmList() {
+    public static IMap<Integer, Vm> getUserVmList() {
         return instances[HazelSimConstants.LAST].getMap("userVmList");
     }
 
@@ -58,7 +57,7 @@ public class HzObjectCollection {
      * Map: Cloudlet Id -> Cloudlet
      * @return the cloudlet map
      */
-    public static Map<Integer, Cloudlet> getUserCloudletList() {
+    public static IMap<Integer, Cloudlet> getUserCloudletList() {
         return instances[0].getMap("userCloudletList");
     }
 
@@ -67,7 +66,7 @@ public class HzObjectCollection {
      * Map: Vm Id -> Vm
      * @return the vm list
      */
-    public static Map<Integer, Vm> getVmList() {
+    public static IMap<Integer, Vm> getVmList() {
         return instances[HazelSimConstants.LAST].getMap("vmList");
     }
 
@@ -76,7 +75,7 @@ public class HzObjectCollection {
      * Map: Vm Id -> Vm
      * @return the vm list
      */
-    public static Map<Integer, Vm> getVmsCreatedList() {
+    public static IMap<Integer, Vm> getVmsCreatedList() {
         return instances[HazelSimConstants.LAST].getMap("vmCreatedList");
     }
 
@@ -85,7 +84,7 @@ public class HzObjectCollection {
      * Map: Cloudlet Id -> Cloudlet
      * @return the cloudlet list
      */
-    public static Map<Integer, Cloudlet> getCloudletList() {
+    public static IMap<Integer, Cloudlet> getCloudletList() {
         return instances[0].getMap("cloudletList");
     }
 
@@ -94,7 +93,7 @@ public class HzObjectCollection {
      * Map: Cloudlet Id -> Cloudlet
      * @return the cloudlet submitted list
      */
-    public static Map<Integer, Cloudlet> getCloudletSubmittedList() {
+    public static IMap<Integer, Cloudlet> getCloudletSubmittedList() {
         return instances[HazelSimConstants.LAST].getMap("cloudletSubmittedList");
     }
 
@@ -103,7 +102,7 @@ public class HzObjectCollection {
      * Map: Cloudlet Id -> Cloudlet
      * @return the cloudlet received list
      */
-    public static Map<Integer, Cloudlet> getCloudletReceivedList() {
+    public static IMap<Integer, Cloudlet> getCloudletReceivedList() {
         return instances[HazelSimConstants.LAST].getMap("cloudletReceivedList");
     }
 }
