@@ -90,7 +90,7 @@ public class HzObjectCollection {
     }
 
     /**
-     * Gets the cloudlet submitted map.
+     * Gets the submitted cloudlets map.
      * Map: Cloudlet Id -> Cloudlet
      * @return the cloudlet submitted list
      */
