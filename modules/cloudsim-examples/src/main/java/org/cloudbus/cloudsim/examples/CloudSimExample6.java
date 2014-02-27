@@ -35,7 +35,7 @@ public class CloudSimExample6 {
 
 		//VM Parameters
 		long size = 10000; //image size (MB)
-		int ram = 512; //vm memory (MB)
+		int ram = 128; //vm memory (MB)
 		int mips = 200;
 		long bw = 1000;
 		int pesNumber = 1; //number of cpus
@@ -45,7 +45,7 @@ public class CloudSimExample6 {
 		Vm[] vm = new Vm[vms];
 
 		for(int i=0;i<vms;i++){
-			vm[i] = new Vm(i, userId, mips*(i+1), pesNumber, ram, bw, size, vmm, new CloudletSchedulerSpaceShared());
+			vm[i] = new Vm(i, userId, mips, pesNumber, ram, bw, size, vmm, new CloudletSchedulerSpaceShared());
   			HzObjectCollection.getUserVmList().put(i, vm[i]);
 		}
 	}
@@ -104,9 +104,9 @@ public class CloudSimExample6 {
 			int brokerId = broker.getId();
 
 			//Fourth step: Create VMs and Cloudlets and send them to broker
-			createVM(brokerId,5); //creating 20 vms
+			createVM(brokerId,2000); //creating 20 vms
 			/* The cloudlet list. */
-            createCloudlet(brokerId, 20000);
+            createCloudlet(brokerId, 2000);
 
             broker.submitVmList(HzObjectCollection.getUserVmList());
 			broker.submitCloudletList(HzObjectCollection.getUserCloudletList());
@@ -141,7 +141,7 @@ public class CloudSimExample6 {
 		//    a Machine.
 		List<Pe> peList1 = new ArrayList<Pe>();
 
-		int mips = 1000;
+		int mips = 400000;
 
 		// 3. Create PEs and add these into the list.
 		//for a quad-core machine, a list of 4 PEs is required:
@@ -158,10 +158,10 @@ public class CloudSimExample6 {
 
 		//4. Create Hosts with its id and list of PEs and add them to the list of machines
 		int hostId=0;
-		int ram = 2048; //host memory (MB)
-		long storage = 1000000; //host storage
-		int bw = 10000;
-/*
+		int ram = 204800; //host memory (MB)
+		long storage = 400000000; //host storage
+		int bw = 4000000;
+
 		hostList.add(
     			new Host(
     				hostId,
@@ -185,10 +185,10 @@ public class CloudSimExample6 {
     				new VmSchedulerTimeShared(peList2)
     			)
     		); // Second machine
-*/
+
 
 //		To create a host with a space-shared allocation policy for PEs to VMs:
-		hostList.add(
+/*		hostList.add(
     			new Host(
     				hostId,
     				new RamProvisionerSimple(ram),
@@ -211,7 +211,7 @@ public class CloudSimExample6 {
             )
         );
 
-
+*/
 //        To create a host with a opportunistic space-shared allocation policy for PEs to VMs:
 /*		hostList.add(
     			new Host(
