@@ -41,7 +41,7 @@ public class HzObjectCollection {
      * @return the map
      */
     public static Map<Integer, Integer> getHostForVm() {
-        return instances[0].getMap("hostForVm");
+        return instances[HazelSimConstants.LAST].getMap("hostForVm");
     }
 
     /**
@@ -50,7 +50,7 @@ public class HzObjectCollection {
      * @return the vm list
      */
     public static Map<Integer, Vm> getUserVmList() {
-        return instances[0].getMap("userVmList");
+        return instances[HazelSimConstants.LAST].getMap("userVmList");
     }
 
     /**
@@ -68,7 +68,7 @@ public class HzObjectCollection {
      * @return the vm list
      */
     public static Map<Integer, Vm> getVmList() {
-        return instances[0].getMap("vmList");
+        return instances[HazelSimConstants.LAST].getMap("vmList");
     }
 
     /**
@@ -77,7 +77,7 @@ public class HzObjectCollection {
      * @return the vm list
      */
     public static Map<Integer, Vm> getVmsCreatedList() {
-        return instances[0].getMap("vmCreatedList");
+        return instances[HazelSimConstants.LAST].getMap("vmCreatedList");
     }
 
     /**
@@ -95,7 +95,7 @@ public class HzObjectCollection {
      * @return the cloudlet submitted list
      */
     public static Map<Integer, Cloudlet> getCloudletSubmittedList() {
-        return instances[0].getMap("cloudletSubmittedList");
+        return instances[HazelSimConstants.LAST].getMap("cloudletSubmittedList");
     }
 
     /**
@@ -104,6 +104,6 @@ public class HzObjectCollection {
      * @return the cloudlet received list
      */
     public static Map<Integer, Cloudlet> getCloudletReceivedList() {
-        return instances[0].getMap("cloudletReceivedList");
+        return instances[HazelSimConstants.LAST].getMap("cloudletReceivedList");
     }
 }
