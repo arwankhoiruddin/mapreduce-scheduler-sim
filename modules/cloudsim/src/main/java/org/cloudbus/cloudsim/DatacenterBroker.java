@@ -22,6 +22,8 @@ import org.cloudbus.cloudsim.core.SimEvent;
 import org.cloudbus.cloudsim.core.hazelcast.HzObjectCollection;
 import org.cloudbus.cloudsim.core.hazelcast.runnables.SubmittedCloudletsRemover;
 import org.cloudbus.cloudsim.core.hazelcast.runnables.UserObjectsRemover;
+import org.cloudbus.cloudsim.core.hazelcast.threads.CloudletListSubmitter;
+import org.cloudbus.cloudsim.core.hazelcast.threads.VmListSubmitter;
 
 /**
  * DatacenterBroker represents a broker acting on behalf of a user. It hides VM management, as vm
@@ -98,9 +100,14 @@ public class DatacenterBroker extends SimEntity {
 		HzObjectCollection.getVmList().putAll(list);
 	}
 
-    public void submitCloudletsAndVms() {
-        submitVmList(HzObjectCollection.getUserVmList());
-        submitCloudletList(HzObjectCollection.getUserCloudletList());
+    public void submitCloudletsAndVms() throws InterruptedException {
+        Thread thread [] = new Thread[2];
+        thread[0] = new Thread(new VmListSubmitter());
+        thread[1] = new Thread(new CloudletListSubmitter());
+        for (Thread aThread : thread)
+            aThread.start();
+        for (Thread aThread : thread)
+            aThread.join();
         (new Thread(new UserObjectsRemover())).start();
     }
 

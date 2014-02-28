@@ -105,9 +105,9 @@ public class CloudSimExample6 {
 			int brokerId = broker.getId();
 
 			//Fourth step: Create VMs and Cloudlets and send them to broker
-			createVM(brokerId,200); //creating 20 vms //2000
+			createVM(brokerId,2000); //creating 20 vms //2000
 			/* The cloudlet list. */
-            createCloudlet(brokerId, 200); //2000
+            createCloudlet(brokerId, 2000); //2000
 
             long startTime = System.currentTimeMillis();
 
@@ -164,7 +164,7 @@ public class CloudSimExample6 {
 
 		//4. Create Hosts with its id and list of PEs and add them to the list of machines
 		int hostId=0;
-		int ram = 204800; //host memory (MB)
+		int ram = 2048000; //host memory (MB)
 		long storage = 400000000; //host storage
 		int bw = 4000000;
 
