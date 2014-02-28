@@ -20,8 +20,8 @@ import org.cloudbus.cloudsim.core.CloudSimTags;
 import org.cloudbus.cloudsim.core.SimEntity;
 import org.cloudbus.cloudsim.core.SimEvent;
 import org.cloudbus.cloudsim.core.hazelcast.HzObjectCollection;
-import org.cloudbus.cloudsim.lists.CloudletList;
-import org.cloudbus.cloudsim.lists.VmList;
+import org.cloudbus.cloudsim.core.hazelcast.runnables.SubmittedCloudletsRemover;
+import org.cloudbus.cloudsim.core.hazelcast.runnables.UserObjectsRemover;
 
 /**
  * DatacenterBroker represents a broker acting on behalf of a user. It hides VM management, as vm
@@ -57,7 +57,9 @@ public class DatacenterBroker extends SimEntity {
 	/** The datacenter characteristics list. */
 	protected Map<Integer, DatacenterCharacteristics> datacenterCharacteristicsList;
 
-	/**
+    protected static List<Integer> submittedCloudletIds = new ArrayList<Integer>();
+
+    /**
 	 * Created a new DatacenterBroker object.
 	 * 
 	 * @param name name to be associated with this entity (as required by Sim_entity class from
@@ -80,7 +82,11 @@ public class DatacenterBroker extends SimEntity {
 		setDatacenterCharacteristicsList(new HashMap<Integer, DatacenterCharacteristics>());
 	}
 
-	/**
+    public static List<Integer> getSubmittedCloudletIds() {
+        return submittedCloudletIds;
+    }
+
+    /**
 	 * This method is used to send to the broker the list with virtual machines that must be
 	 * created.
 	 * 
@@ -92,7 +98,13 @@ public class DatacenterBroker extends SimEntity {
 		HzObjectCollection.getVmList().putAll(list);
 	}
 
-	/**
+    public void submitCloudletsAndVms() {
+        submitVmList(HzObjectCollection.getUserVmList());
+        submitCloudletList(HzObjectCollection.getUserCloudletList());
+        (new Thread(new UserObjectsRemover())).start();
+    }
+
+    /**
 	 * This method is used to send to the broker the list of cloudlets.
 	 * 
 	 * @param list the list
@@ -320,7 +332,6 @@ public class DatacenterBroker extends SimEntity {
 	 */
 	protected void submitCloudlets() {
 		int vmIndex = 0;
-		List<Cloudlet> successfullySubmitted = new ArrayList<Cloudlet>();
 		for (Cloudlet cloudlet : HzObjectCollection.getCloudletList().values()) {
 			Vm vm;
 			// if user didn't bind this cloudlet and it has not been executed yet
@@ -348,8 +359,10 @@ public class DatacenterBroker extends SimEntity {
 			cloudletsSubmitted++;
 			vmIndex = (vmIndex + 1) % HzObjectCollection.getVmsCreatedList().size();
             HzObjectCollection.getCloudletSubmittedList().put(cloudlet.getCloudletId(), cloudlet);
-            HzObjectCollection.getCloudletList().remove(cloudlet.getCloudletId());
+
+            submittedCloudletIds.add(cloudlet.getCloudletId());
 		}
+        (new Thread(new SubmittedCloudletsRemover())).start();
     }
 
 	/**

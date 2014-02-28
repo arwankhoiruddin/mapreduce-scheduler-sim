@@ -105,14 +105,13 @@ public class CloudSimExample6 {
 			int brokerId = broker.getId();
 
 			//Fourth step: Create VMs and Cloudlets and send them to broker
-			createVM(brokerId,20); //creating 20 vms //2000
+			createVM(brokerId,200); //creating 20 vms //2000
 			/* The cloudlet list. */
-            createCloudlet(brokerId, 20); //2000
+            createCloudlet(brokerId, 200); //2000
 
             long startTime = System.currentTimeMillis();
 
-            broker.submitVmList(HzObjectCollection.getUserVmList());
-			broker.submitCloudletList(HzObjectCollection.getUserCloudletList());
+            broker.submitCloudletsAndVms();
 
             long endTime = System.currentTimeMillis();
             double totalTimeTaken = (endTime - startTime)/1000.0;
