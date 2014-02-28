@@ -14,6 +14,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import com.hazelcast.core.IMap;
 import org.cloudbus.cloudsim.lists.PeList;
 import org.cloudbus.cloudsim.provisioners.PeProvisioner;
 
@@ -130,7 +131,7 @@ public class VmSchedulerTimeShared extends VmScheduler {
 		PeProvisioner peProvisioner = pe.getPeProvisioner();
 		double availableMips = peProvisioner.getAvailableMips();
 
-		for (Map.Entry<String, List<Double>> entry : getMipsMap().entrySet()) {
+		for (IMap.Entry<String, List<Double>> entry : getMipsMap().entrySet()) {
 			String vmUid = entry.getKey();
 			getPeMap().put(vmUid, new LinkedList<Pe>());
 
@@ -176,7 +177,7 @@ public class VmSchedulerTimeShared extends VmScheduler {
 			pe.getPeProvisioner().deallocateMipsForVm(vm);
 		}
 
-		for (Map.Entry<String, List<Double>> entry : getMipsMapRequested().entrySet()) {
+		for (IMap.Entry<String, List<Double>> entry : getMipsMapRequested().entrySet()) {
 			allocatePesForVm(entry.getKey(), entry.getValue());
 		}
 

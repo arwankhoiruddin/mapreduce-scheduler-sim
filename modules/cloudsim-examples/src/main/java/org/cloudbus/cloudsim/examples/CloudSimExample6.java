@@ -9,6 +9,7 @@
 
 package org.cloudbus.cloudsim.examples;
 
+import com.hazelcast.core.IMap;
 import org.cloudbus.cloudsim.*;
 import org.cloudbus.cloudsim.app.AppUtil;
 import org.cloudbus.cloudsim.core.constants.Cloud2SimConstants;
@@ -104,12 +105,18 @@ public class CloudSimExample6 {
 			int brokerId = broker.getId();
 
 			//Fourth step: Create VMs and Cloudlets and send them to broker
-			createVM(brokerId,2000); //creating 20 vms
+			createVM(brokerId,20); //creating 20 vms //2000
 			/* The cloudlet list. */
-            createCloudlet(brokerId, 2000);
+            createCloudlet(brokerId, 20); //2000
+
+            long startTime = System.currentTimeMillis();
 
             broker.submitVmList(HzObjectCollection.getUserVmList());
 			broker.submitCloudletList(HzObjectCollection.getUserCloudletList());
+
+            long endTime = System.currentTimeMillis();
+            double totalTimeTaken = (endTime - startTime)/1000.0;
+            System.out.println("Total time taken for submitting the lists: " + totalTimeTaken);
 
 			// Fifth step: Starts the simulation
 			CloudSim.startSimulation();
@@ -210,31 +217,6 @@ public class CloudSimExample6 {
                 new VmSchedulerSpaceShared(peList2)
             )
         );
-
-*/
-//        To create a host with a opportunistic space-shared allocation policy for PEs to VMs:
-/*		hostList.add(
-    			new Host(
-    				hostId,
-    				new RamProvisionerSimple(ram),
-    				new BwProvisionerSimple(bw),
-    				storage,
-                    peList1,
-    				new VmSchedulerTimeSharedOverSubscription (peList1)
-    			)
-    		);
-        hostId++;
-        hostList.add(
-            new Host(
-                hostId,
-                new RamProvisionerSimple(ram),
-                new BwProvisionerSimple(bw),
-                storage,
-                peList2,
-                new VmSchedulerTimeSharedOverSubscription (peList2)
-            )
-        );
-
  */
         // 5. Create a DatacenterCharacteristics object that stores the
 		//    properties of a data center: architecture, OS, list of
@@ -295,7 +277,7 @@ public class CloudSimExample6 {
                 + indent + "Submission Time" + indent + "Processing Cost");
 
 		DecimalFormat dft = new DecimalFormat("###.##");
-		for (Map.Entry<Integer, Cloudlet> entry: list.entrySet()) {
+		for (IMap.Entry<Integer, Cloudlet> entry: list.entrySet()) {
 			cloudlet = entry.getValue();
             int cloudletId = entry.getKey();
 

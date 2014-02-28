@@ -27,12 +27,24 @@ public class HzObjectCollection {
         instances = hazelSim.getHazelcastInstances();
     }
 
+    public static HazelcastInstance[] getInstances() {
+        return instances;
+    }
+
+    public static HazelcastInstance getFirstInstance() {
+        return instances[HazelSimConstants.FIRST];
+    }
+
+    public static HazelcastInstance getLastInstance() {
+        return instances[HazelSimConstants.LAST];
+    }
+
     /**
      * Map: cloudletId -> cloudlet execution finished time
      * @return the map
      */
     public static IMap<Integer, Double> getCloudletFinishedTime() {
-        return instances[0].getMap("finishedTime");
+        return instances[HazelSimConstants.FIRST].getMap("finishedTime");
     }
 
     /**
@@ -58,7 +70,7 @@ public class HzObjectCollection {
      * @return the cloudlet map
      */
     public static IMap<Integer, Cloudlet> getUserCloudletList() {
-        return instances[0].getMap("userCloudletList");
+        return instances[HazelSimConstants.FIRST].getMap("userCloudletList");
     }
 
     /**
@@ -85,7 +97,7 @@ public class HzObjectCollection {
      * @return the cloudlet list
      */
     public static IMap<Integer, Cloudlet> getCloudletList() {
-        return instances[0].getMap("cloudletList");
+        return instances[HazelSimConstants.FIRST].getMap("cloudletList");
     }
 
     /**

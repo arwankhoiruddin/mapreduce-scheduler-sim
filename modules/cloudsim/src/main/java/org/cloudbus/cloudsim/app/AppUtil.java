@@ -29,9 +29,9 @@ public class AppUtil {
         long endTime = System.currentTimeMillis();
         double totalTimeTaken = (endTime - startTime)/1000.0;
         double timeTakenForSimulation = (endTime - CloudSim.getSimulationStartedTime())/1000.0;
-        Log.printLine("The total time taken for the execution: " + totalTimeTaken + " s.");
         Log.printLine("The time taken for the simulation: " + timeTakenForSimulation + " s.");
         Log.printLine("The time taken for Hazelcast initialization: " + (totalTimeTaken - timeTakenForSimulation) +
                 " s.");
+        Log.printLine("The total time taken for the execution: " + totalTimeTaken + " s.");
     }
 }

@@ -14,6 +14,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import com.hazelcast.core.IMap;
 import org.cloudbus.cloudsim.core.CloudSim;
 import org.cloudbus.cloudsim.core.CloudSimTags;
 import org.cloudbus.cloudsim.core.SimEntity;
@@ -296,7 +297,7 @@ public class DatacenterBroker extends SimEntity {
 		// send as much vms as possible for this datacenter before trying the next one
 		int requestedVms = 0;
 		String datacenterName = CloudSim.getEntityName(datacenterId);
-		for (Map.Entry<Integer, Vm> entry : HzObjectCollection.getVmList().entrySet()) {
+		for (IMap.Entry<Integer, Vm> entry : HzObjectCollection.getVmList().entrySet()) {
 			if (!getVmsToDatacentersMap().containsKey(entry.getKey())) {
 				Log.printLine(CloudSim.clock() + ": " + getName() + ": Trying to Create VM #" + entry.getKey() +
 						 " in " + datacenterName);
@@ -346,13 +347,10 @@ public class DatacenterBroker extends SimEntity {
 			sendNow(getVmsToDatacentersMap().get(vm.getId()), CloudSimTags.CLOUDLET_SUBMIT, cloudlet);
 			cloudletsSubmitted++;
 			vmIndex = (vmIndex + 1) % HzObjectCollection.getVmsCreatedList().size();
-			HzObjectCollection.getCloudletSubmittedList().put(cloudlet.getCloudletId(), cloudlet);
-			successfullySubmitted.add(cloudlet);
+            HzObjectCollection.getCloudletSubmittedList().put(cloudlet.getCloudletId(), cloudlet);
+            HzObjectCollection.getCloudletList().remove(cloudlet.getCloudletId());
 		}
-
-		// remove submitted cloudlets from waiting list
-		HzObjectCollection.getCloudletList().entrySet().removeAll(successfullySubmitted);
-	}
+    }
 
 	/**
 	 * Destroy the virtual machines running in datacenters.
@@ -361,12 +359,12 @@ public class DatacenterBroker extends SimEntity {
 	 * @post $none
 	 */
 	protected void clearDatacenters() {
-		for (Map.Entry<Integer, Vm> entry : HzObjectCollection.getVmsCreatedList().entrySet()) {
+		for (IMap.Entry<Integer, Vm> entry : HzObjectCollection.getVmsCreatedList().entrySet()) {
 			Log.printConcatLine(CloudSim.clock(), ": " + getName(), ": Destroying VM #", entry.getKey());
 			sendNow(getVmsToDatacentersMap().get(entry.getKey()), CloudSimTags.VM_DESTROY, entry.getValue());
 		}
-		HzObjectCollection.getVmsCreatedList().clear();
-	}
+        HzObjectCollection.getVmsCreatedList().clear();
+    }
 
 	/**
 	 * Send an internal event communicating the end of the simulation.

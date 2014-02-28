@@ -21,5 +21,6 @@ public final class HazelSimConstants {
     public static final String HAZELCAST_CONFIG_FILE_NOT_FOUND_ERROR =
         "Hazelcast Configuration File not found. Using the default.";
     public static final String DEFAULT_HAZELCAST_ADDRESS = "127.0.0.1:5701";
+    public static final int FIRST = 0;
     public static final int LAST = NO_OF_HAZELCAST_INSTANCES - 1;
 }
