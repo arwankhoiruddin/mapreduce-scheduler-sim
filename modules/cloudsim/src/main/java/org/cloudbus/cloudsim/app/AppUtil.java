@@ -17,7 +17,7 @@ import org.cloudbus.cloudsim.core.CloudSim;
 public class AppUtil {
     private static long startTime;
     private static boolean isMaster;
-    private static boolean isPrimaryWorker;
+    private static boolean isPrimaryWorker = true;
     private static int vmsInit;
     private static int vmsFinal;
     private static int cloudletsInit;

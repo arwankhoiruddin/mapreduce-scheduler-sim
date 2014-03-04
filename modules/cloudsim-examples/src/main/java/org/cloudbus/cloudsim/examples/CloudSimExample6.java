@@ -34,7 +34,7 @@ import java.util.Map;
  * scalable simulations.
  */
 public class CloudSimExample6 {
-    private static int noOfCloudlets = 2000;
+    private static int noOfCloudlets = 20000;
     private static int noOfVms = 2000;
 
     private static void createVM(int userId, int vms) {
@@ -47,13 +47,13 @@ public class CloudSimExample6 {
 		int pesNumber = 1; //number of cpus
 		String vmm = "Xen"; //VMM name
 
-        int vmsInit = vms / HazelSimConstants.EXECUTIONS_PER_NODE;
+        int vmsInit = (HazelSimConstants.EXECUTIONS_PER_NODE - 1) * vms / HazelSimConstants.EXECUTIONS_PER_NODE;
         AppUtil.setVmsInit(vmsInit);
         AppUtil.setVmsFinal(vms - 1);
         //create VMs
-        Vm[] vm = new Vm[(vms - vmsInit) + 1];
+        Vm[] vm = new Vm[vms - vmsInit];
 
-		for(int i = 0; i < (vms - vmsInit) + 1; i++){
+		for(int i = 0; i < (vms - vmsInit); i++){
 			vm[i] = new Vm(vmsInit + i, userId, mips, pesNumber, ram, bw, size, vmm, new CloudletSchedulerSpaceShared());
   			HzObjectCollection.getUserVmList().put(vmsInit + i, vm[i]);
 		}
@@ -70,14 +70,15 @@ public class CloudSimExample6 {
 		int pesNumber = 1;
 		UtilizationModel utilizationModel = new UtilizationModelFull();
 
-        int cloudletsInit = cloudlets / HazelSimConstants.EXECUTIONS_PER_NODE;
+        int cloudletsInit = (HazelSimConstants.EXECUTIONS_PER_NODE - 1) *
+                (cloudlets / HazelSimConstants.EXECUTIONS_PER_NODE);
 
         AppUtil.setCloudletsInit(cloudletsInit);
         AppUtil.setCloudletsFinal(cloudlets - 1);
 
-        Cloudlet[] cloudlet = new Cloudlet[(cloudlets - cloudletsInit) + 1];
+        Cloudlet[] cloudlet = new Cloudlet[cloudlets - cloudletsInit];
 
-		for(int i=0;i<(cloudlets - cloudletsInit) + 1;i++){
+		for(int i=0;i<(cloudlets - cloudletsInit);i++){
             int f = (int) ((Math.random() * 40) + 1);
 			cloudlet[i] = new Cloudlet(cloudletsInit + i, length*f, pesNumber, fileSize, outputSize, utilizationModel,
                     utilizationModel, utilizationModel);
@@ -95,8 +96,10 @@ public class CloudSimExample6 {
 	public static void main(String[] args) {
         AppUtil.start();
         AppUtil.setIsMaster(true);
-        AppUtil.setIsPrimaryWorker(false);
-		Log.printLine("# Starting CloudSimExample6...");
+        if (HazelSimConstants.EXECUTIONS_PER_NODE > 1) {
+            AppUtil.setIsPrimaryWorker(false);
+        }
+        Log.printLine("# Starting CloudSimExample6...");
 
 		try {
 			// First step: Initialize the CloudSim package. It should be called
