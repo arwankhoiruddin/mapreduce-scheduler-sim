@@ -46,6 +46,8 @@ import java.util.Map;
  * scalable simulations.
  */
 public class CloudSimExample6Sub {
+    private static int noOfCloudlets = 2000;
+    private static int noOfVms = 2000;
 
 	private static void createVM(int userId, int vms) {
 
@@ -60,6 +62,8 @@ public class CloudSimExample6Sub {
         int vmsHere = vms / HazelSimConstants.EXECUTIONS_PER_NODE;
 		//create VMs
 		Vm[] vm = new Vm[vmsHere];
+        AppUtil.setVmsInit(0);
+        AppUtil.setVmsFinal(vmsHere - 1);
 
 		for(int i=0;i<vmsHere;i++){
 			vm[i] = new Vm(i, userId, mips, pesNumber, ram, bw, size, vmm, new CloudletSchedulerSpaceShared());
@@ -82,6 +86,9 @@ public class CloudSimExample6Sub {
 
         Cloudlet[] cloudlet = new Cloudlet[cloudletsHere];
 
+        AppUtil.setCloudletsInit(0);
+        AppUtil.setCloudletsFinal(cloudletsHere - 1);
+
 		for(int i=0;i<cloudletsHere;i++){
             int f = (int) ((Math.random() * 40) + 1);
 			cloudlet[i] = new Cloudlet(i, length*f, pesNumber, fileSize, outputSize, utilizationModel,
@@ -99,6 +106,8 @@ public class CloudSimExample6Sub {
 	 */
 	public static void main(String[] args) {
         AppUtil.start();
+        AppUtil.setIsMaster(false);
+        AppUtil.setIsPrimaryWorker(true);
 		Log.printLine("# Starting CloudSimExample6...");
 
 		try {
@@ -123,13 +132,17 @@ public class CloudSimExample6Sub {
 			int brokerId = broker.getId();
 
 			//Fourth step: Create VMs and Cloudlets and send them to broker
-			createVM(brokerId,2000); //creating 20 vms //2000
+			createVM(brokerId,noOfVms); //creating 20 vms //2000
 			/* The cloudlet list. */
-            createCloudlet(brokerId, 2000); //2000
+            createCloudlet(brokerId, noOfCloudlets); //2000
+
+            AppUtil.setNoOfCloudlets(noOfCloudlets);
+            AppUtil.setNoOfVms(noOfVms);
+
 //
 //            long startTime = System.currentTimeMillis();
 //
-//            broker.submitCloudletsAndVms();
+            broker.submitCloudletsAndVms();
 //
 //            long endTime = System.currentTimeMillis();
 //            double totalTimeTaken = (endTime - startTime)/1000.0;

@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.hazelcast.core.IMap;
+import org.cloudbus.cloudsim.app.AppUtil;
 import org.cloudbus.cloudsim.core.CloudSim;
 import org.cloudbus.cloudsim.core.CloudSimTags;
 import org.cloudbus.cloudsim.core.SimEntity;
@@ -108,7 +109,9 @@ public class DatacenterBroker extends SimEntity {
             aThread.start();
         for (Thread aThread : thread)
             aThread.join();
-        (new Thread(new UserObjectsRemover())).start();
+        if (AppUtil.getIsPrimaryWorker()) {
+            (new Thread(new UserObjectsRemover())).start();
+        }
     }
 
     /**

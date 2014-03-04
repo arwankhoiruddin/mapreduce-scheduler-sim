@@ -10,10 +10,14 @@
 
 package org.cloudbus.cloudsim.core.hazelcast.threads;
 
+import org.cloudbus.cloudsim.app.AppUtil;
 import org.cloudbus.cloudsim.core.hazelcast.HzObjectCollection;
 
 public class VmListSubmitter extends Thread {
     public void run() {
-        HzObjectCollection.getVmList().putAll(HzObjectCollection.getUserVmList());
+        for (int i = AppUtil.getVmsInit(); i <= AppUtil.getVmsFinal(); i++) {
+            HzObjectCollection.getVmList().put(HzObjectCollection.getUserVmList().get(i).getId(),
+                    HzObjectCollection.getUserVmList().get(i));
+        }
     }
 }

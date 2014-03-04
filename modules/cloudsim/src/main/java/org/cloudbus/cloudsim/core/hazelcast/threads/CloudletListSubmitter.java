@@ -10,10 +10,14 @@
 
 package org.cloudbus.cloudsim.core.hazelcast.threads;
 
+import org.cloudbus.cloudsim.app.AppUtil;
 import org.cloudbus.cloudsim.core.hazelcast.HzObjectCollection;
 
 public class CloudletListSubmitter extends Thread {
     public void run() {
-        HzObjectCollection.getCloudletList().putAll(HzObjectCollection.getUserCloudletList());
+        for (int i = AppUtil.getCloudletsInit(); i <= AppUtil.getCloudletsFinal(); i++) {
+            HzObjectCollection.getCloudletList().put(HzObjectCollection.getUserCloudletList().get(i).getCloudletId(),
+                    HzObjectCollection.getUserCloudletList().get(i));
+        }
     }
 }

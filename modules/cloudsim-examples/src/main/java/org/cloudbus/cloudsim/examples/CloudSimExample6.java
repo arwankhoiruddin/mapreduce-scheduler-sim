@@ -10,6 +10,8 @@
 package org.cloudbus.cloudsim.examples;
 
 import com.hazelcast.core.IMap;
+import com.sun.deploy.ui.AppInfo;
+import com.sun.javaws.security.AppPolicy;
 import org.cloudbus.cloudsim.*;
 import org.cloudbus.cloudsim.app.AppUtil;
 import org.cloudbus.cloudsim.core.constants.Cloud2SimConstants;
@@ -32,8 +34,10 @@ import java.util.Map;
  * scalable simulations.
  */
 public class CloudSimExample6 {
+    private static int noOfCloudlets = 2000;
+    private static int noOfVms = 2000;
 
-	private static void createVM(int userId, int vms) {
+    private static void createVM(int userId, int vms) {
 
 		//VM Parameters
 		long size = 10000; //image size (MB)
@@ -44,6 +48,8 @@ public class CloudSimExample6 {
 		String vmm = "Xen"; //VMM name
 
         int vmsInit = vms / HazelSimConstants.EXECUTIONS_PER_NODE;
+        AppUtil.setVmsInit(vmsInit);
+        AppUtil.setVmsFinal(vms - 1);
         //create VMs
         Vm[] vm = new Vm[(vms - vmsInit) + 1];
 
@@ -66,6 +72,9 @@ public class CloudSimExample6 {
 
         int cloudletsInit = cloudlets / HazelSimConstants.EXECUTIONS_PER_NODE;
 
+        AppUtil.setCloudletsInit(cloudletsInit);
+        AppUtil.setCloudletsFinal(cloudlets - 1);
+
         Cloudlet[] cloudlet = new Cloudlet[(cloudlets - cloudletsInit) + 1];
 
 		for(int i=0;i<(cloudlets - cloudletsInit) + 1;i++){
@@ -85,6 +94,8 @@ public class CloudSimExample6 {
 	 */
 	public static void main(String[] args) {
         AppUtil.start();
+        AppUtil.setIsMaster(true);
+        AppUtil.setIsPrimaryWorker(false);
 		Log.printLine("# Starting CloudSimExample6...");
 
 		try {
@@ -109,9 +120,12 @@ public class CloudSimExample6 {
 			int brokerId = broker.getId();
 
 			//Fourth step: Create VMs and Cloudlets and send them to broker
-			createVM(brokerId,2000); //creating 20 vms //2000
+			createVM(brokerId,noOfVms); //creating 20 vms //2000
 			/* The cloudlet list. */
-            createCloudlet(brokerId, 2000); //2000
+            createCloudlet(brokerId, noOfCloudlets); //2000
+
+            AppUtil.setNoOfCloudlets(noOfCloudlets);
+            AppUtil.setNoOfVms(noOfVms);
 
             long startTime = System.currentTimeMillis();
 

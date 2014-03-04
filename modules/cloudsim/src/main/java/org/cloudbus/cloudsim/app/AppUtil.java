@@ -16,10 +16,84 @@ import org.cloudbus.cloudsim.core.CloudSim;
 
 public class AppUtil {
     private static long startTime;
+    private static boolean isMaster;
+    private static boolean isPrimaryWorker;
+    private static int vmsInit;
+    private static int vmsFinal;
+    private static int cloudletsInit;
+    private static int cloudletsFinal;
+    private static int noOfCloudlets;
+    private static int noOfVms;
+
 
     public static void start() {
         startTime = System.currentTimeMillis();
     }
+
+    public static int getNoOfCloudlets() {
+        return noOfCloudlets;
+    }
+
+    public static void setNoOfCloudlets(int noOfCloudlets) {
+        AppUtil.noOfCloudlets = noOfCloudlets;
+    }
+
+    public static int getNoOfVms() {
+        return noOfVms;
+    }
+
+    public static void setNoOfVms(int noOfVms) {
+        AppUtil.noOfVms = noOfVms;
+    }
+
+    public static boolean getIsMaster() {
+        return isMaster;
+    }
+
+    public static void setIsMaster(boolean isMaster) {
+        AppUtil.isMaster = isMaster;
+    }
+
+    public static int getVmsInit() {
+        return vmsInit;
+    }
+
+    public static void setVmsInit(int vmsInit) {
+        AppUtil.vmsInit = vmsInit;
+    }
+
+    public static int getVmsFinal() {
+        return vmsFinal;
+    }
+
+    public static void setVmsFinal(int vmsFinal) {
+        AppUtil.vmsFinal = vmsFinal;
+    }
+
+    public static int getCloudletsInit() {
+        return cloudletsInit;
+    }
+
+    public static void setCloudletsInit(int cloudletsInit) {
+        AppUtil.cloudletsInit = cloudletsInit;
+    }
+
+    public static int getCloudletsFinal() {
+        return cloudletsFinal;
+    }
+
+    public static void setCloudletsFinal(int cloudletsFinal) {
+        AppUtil.cloudletsFinal = cloudletsFinal;
+    }
+
+    public static boolean getIsPrimaryWorker() {
+        return isPrimaryWorker;
+    }
+
+    public static void setIsPrimaryWorker(boolean isPrimaryWorker) {
+        AppUtil.isPrimaryWorker = isPrimaryWorker;
+    }
+
     public static void shutdown() {
         shutdownLogs();
         Hazelcast.shutdownAll();
