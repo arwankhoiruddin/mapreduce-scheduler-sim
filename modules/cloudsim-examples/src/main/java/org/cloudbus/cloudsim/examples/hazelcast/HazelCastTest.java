@@ -17,7 +17,7 @@ import java.util.Map;
 public class HazelCastTest {
     public static void main(String[] args) {
 
-        HazelSim hazelSim = HazelSim.getHazelSim(HazelSimConstants.NO_OF_HAZELCAST_INSTANCES);
+        HazelSim hazelSim = HazelSim.getHazelSim(HazelSimConstants.HAZELCAST_INSTANCES_STARTED_SIMULTANIOUSLY);
         HazelcastInstance[] instances = hazelSim.getHazelcastInstances();
 
         Map<Integer, String> mapCustomers = instances[0].getMap("customers");

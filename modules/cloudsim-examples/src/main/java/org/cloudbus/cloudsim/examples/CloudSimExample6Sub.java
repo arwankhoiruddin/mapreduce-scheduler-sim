@@ -1,19 +1,33 @@
 /*
- * Title:        CloudSim Toolkit
- * Description:  CloudSim (Cloud Simulation) Toolkit for Modeling and Simulation
- *               of Clouds
+ * Title:        Cloud2Sim
+ * Description:  Distributed and Concurrent Cloud Simulation
+ *               Toolkit for Modeling and Simulation
+ *               of Clouds - Enhanced version of CloudSim.
  * Licence:      GPL - http://www.gnu.org/copyleft/gpl.html
  *
- * Copyright (c) 2009, The University of Melbourne, Australia
+ * Copyright (c) 2014, Pradeeban Kathiravelu <pradeeban.kathiravelu@tecnico.ulisboa.pt>
  */
 
 package org.cloudbus.cloudsim.examples;
 
 import com.hazelcast.core.IMap;
-import org.cloudbus.cloudsim.*;
+import org.cloudbus.cloudsim.Cloudlet;
+import org.cloudbus.cloudsim.CloudletSchedulerSpaceShared;
+import org.cloudbus.cloudsim.Datacenter;
+import org.cloudbus.cloudsim.DatacenterBroker;
+import org.cloudbus.cloudsim.DatacenterCharacteristics;
+import org.cloudbus.cloudsim.Host;
+import org.cloudbus.cloudsim.Log;
+import org.cloudbus.cloudsim.Pe;
+import org.cloudbus.cloudsim.Storage;
+import org.cloudbus.cloudsim.UtilizationModel;
+import org.cloudbus.cloudsim.UtilizationModelFull;
+import org.cloudbus.cloudsim.Vm;
+import org.cloudbus.cloudsim.VmAllocationPolicySimple;
+import org.cloudbus.cloudsim.VmSchedulerTimeShared;
 import org.cloudbus.cloudsim.app.AppUtil;
-import org.cloudbus.cloudsim.core.constants.Cloud2SimConstants;
 import org.cloudbus.cloudsim.core.CloudSim;
+import org.cloudbus.cloudsim.core.constants.Cloud2SimConstants;
 import org.cloudbus.cloudsim.core.constants.HazelSimConstants;
 import org.cloudbus.cloudsim.core.hazelcast.HzObjectCollection;
 import org.cloudbus.cloudsim.provisioners.BwProvisionerSimple;
@@ -31,7 +45,7 @@ import java.util.Map;
  * An example showing how to create
  * scalable simulations.
  */
-public class CloudSimExample6 {
+public class CloudSimExample6Sub {
 
 	private static void createVM(int userId, int vms) {
 
@@ -43,13 +57,13 @@ public class CloudSimExample6 {
 		int pesNumber = 1; //number of cpus
 		String vmm = "Xen"; //VMM name
 
-        int vmsInit = vms / HazelSimConstants.EXECUTIONS_PER_NODE;
-        //create VMs
-        Vm[] vm = new Vm[(vms - vmsInit) + 1];
+        int vmsHere = vms / HazelSimConstants.EXECUTIONS_PER_NODE;
+		//create VMs
+		Vm[] vm = new Vm[vmsHere];
 
-		for(int i = 0; i < (vms - vmsInit) + 1; i++){
-			vm[i] = new Vm(vmsInit + i, userId, mips, pesNumber, ram, bw, size, vmm, new CloudletSchedulerSpaceShared());
-  			HzObjectCollection.getUserVmList().put(vmsInit + i, vm[i]);
+		for(int i=0;i<vmsHere;i++){
+			vm[i] = new Vm(i, userId, mips, pesNumber, ram, bw, size, vmm, new CloudletSchedulerSpaceShared());
+  			HzObjectCollection.getUserVmList().put(i, vm[i]);
 		}
 	}
 
@@ -64,17 +78,17 @@ public class CloudSimExample6 {
 		int pesNumber = 1;
 		UtilizationModel utilizationModel = new UtilizationModelFull();
 
-        int cloudletsInit = cloudlets / HazelSimConstants.EXECUTIONS_PER_NODE;
+        int cloudletsHere = cloudlets / HazelSimConstants.EXECUTIONS_PER_NODE;
 
-        Cloudlet[] cloudlet = new Cloudlet[(cloudlets - cloudletsInit) + 1];
+        Cloudlet[] cloudlet = new Cloudlet[cloudletsHere];
 
-		for(int i=0;i<(cloudlets - cloudletsInit) + 1;i++){
+		for(int i=0;i<cloudletsHere;i++){
             int f = (int) ((Math.random() * 40) + 1);
-			cloudlet[i] = new Cloudlet(cloudletsInit + i, length*f, pesNumber, fileSize, outputSize, utilizationModel,
+			cloudlet[i] = new Cloudlet(i, length*f, pesNumber, fileSize, outputSize, utilizationModel,
                     utilizationModel, utilizationModel);
 			// setting the owner of these Cloudlets
 			cloudlet[i].setUserId(userId);
-            HzObjectCollection.getUserCloudletList().put(cloudletsInit + i, cloudlet[i]);
+            HzObjectCollection.getUserCloudletList().put(i, cloudlet[i]);
 		}
 	}
 
@@ -99,11 +113,11 @@ public class CloudSimExample6 {
 
 			// Second step: Create Datacenters
 			//Datacenters are the resource providers in CloudSim. We need at least one of them to run a CloudSim simulation
-//			@SuppressWarnings("unused")
-//			Datacenter datacenter0 = createDatacenter("Datacenter_0");
 			@SuppressWarnings("unused")
-			Datacenter datacenter1 = createDatacenter("Datacenter_1");
-
+			Datacenter datacenter0 = createDatacenter("Datacenter_0");
+//			@SuppressWarnings("unused")
+//			Datacenter datacenter1 = createDatacenter("Datacenter_1");
+//
 			//Third step: Create Broker
 			DatacenterBroker broker = createBroker();
 			int brokerId = broker.getId();
@@ -112,31 +126,31 @@ public class CloudSimExample6 {
 			createVM(brokerId,2000); //creating 20 vms //2000
 			/* The cloudlet list. */
             createCloudlet(brokerId, 2000); //2000
-
-            long startTime = System.currentTimeMillis();
-
-            broker.submitCloudletsAndVms();
-
-            long endTime = System.currentTimeMillis();
-            double totalTimeTaken = (endTime - startTime)/1000.0;
-            System.out.println("Total time taken for submitting the lists: " + totalTimeTaken);
-
-			// Fifth step: Starts the simulation
-			CloudSim.startSimulation();
-
-			// Final step: Print results when simulation is over
-			Map<Integer, Cloudlet> newList = HzObjectCollection.getCloudletReceivedList();
-
-			CloudSim.stopSimulation();
-
-			printCloudletList(newList);
-
+//
+//            long startTime = System.currentTimeMillis();
+//
+//            broker.submitCloudletsAndVms();
+//
+//            long endTime = System.currentTimeMillis();
+//            double totalTimeTaken = (endTime - startTime)/1000.0;
+//            System.out.println("Total time taken for submitting the lists: " + totalTimeTaken);
+//
+//			// Fifth step: Starts the simulation
+//			CloudSim.startSimulation();
+//
+//			// Final step: Print results when simulation is over
+//			Map<Integer, Cloudlet> newList = HzObjectCollection.getCloudletReceivedList();
+//
+//			CloudSim.stopSimulation();
+//
+//			printCloudletList(newList);
+//
 			Log.printLine("# CloudSimExample6 finished!");
 		} catch (Exception e) {
             e.printStackTrace();
             Log.printLine("# The simulation has been terminated due to an unexpected error");
         }
-        AppUtil.shutdown();
+        AppUtil.shutdownLogs();
     }
 
 	private static Datacenter createDatacenter(String name){
