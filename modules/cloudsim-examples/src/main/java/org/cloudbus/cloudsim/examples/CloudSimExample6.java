@@ -10,8 +10,6 @@
 package org.cloudbus.cloudsim.examples;
 
 import com.hazelcast.core.IMap;
-import com.sun.deploy.ui.AppInfo;
-import com.sun.javaws.security.AppPolicy;
 import org.cloudbus.cloudsim.*;
 import org.cloudbus.cloudsim.app.AppUtil;
 import org.cloudbus.cloudsim.core.constants.Cloud2SimConstants;
@@ -32,6 +30,7 @@ import java.util.Map;
 /**
  * An example showing how to create
  * scalable simulations.
+ *
  */
 public class CloudSimExample6 {
     private static int noOfCloudlets = 20000;
@@ -47,7 +46,7 @@ public class CloudSimExample6 {
 		int pesNumber = 1; //number of cpus
 		String vmm = "Xen"; //VMM name
 
-        int vmsInit = (HazelSimConstants.EXECUTIONS_PER_NODE - 1) * vms / HazelSimConstants.EXECUTIONS_PER_NODE;
+        int vmsInit = (HazelSimConstants.NO_OF_HAZELCAST_INSTANCES - 1) * vms / HazelSimConstants.NO_OF_HAZELCAST_INSTANCES;
         AppUtil.setVmsInit(vmsInit);
         AppUtil.setVmsFinal(vms - 1);
         //create VMs
@@ -70,8 +69,8 @@ public class CloudSimExample6 {
 		int pesNumber = 1;
 		UtilizationModel utilizationModel = new UtilizationModelFull();
 
-        int cloudletsInit = (HazelSimConstants.EXECUTIONS_PER_NODE - 1) *
-                (cloudlets / HazelSimConstants.EXECUTIONS_PER_NODE);
+        int cloudletsInit = (HazelSimConstants.NO_OF_HAZELCAST_INSTANCES - 1) *
+                (cloudlets / HazelSimConstants.NO_OF_HAZELCAST_INSTANCES);
 
         AppUtil.setCloudletsInit(cloudletsInit);
         AppUtil.setCloudletsFinal(cloudlets - 1);
@@ -96,7 +95,7 @@ public class CloudSimExample6 {
 	public static void main(String[] args) {
         AppUtil.start();
         AppUtil.setIsMaster(true);
-        if (HazelSimConstants.EXECUTIONS_PER_NODE > 1) {
+        if (HazelSimConstants.NO_OF_HAZELCAST_INSTANCES > 1) {
             AppUtil.setIsPrimaryWorker(false);
         }
         Log.printLine("# Starting CloudSimExample6...");
