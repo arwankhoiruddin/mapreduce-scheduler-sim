@@ -114,9 +114,19 @@ public class DatacenterBroker extends SimEntity {
             executor.executeOnKeyOwner(new VmListSubmitter(i), i);
         }
 
-        if (AppUtil.getIsPrimaryWorker()) {
-            (new Thread(new UserObjectsRemover())).start();
+        while (HzObjectCollection.getVmList().size() < AppUtil.getNoOfVms()
+                //|| HzObjectCollection.getCloudletList().size() < AppUtil.getNoOfCloudlets()
+                ) {
+            try {
+                Thread.sleep(10);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
+
+//        if (AppUtil.getIsPrimaryWorker()) {
+//            (new Thread(new UserObjectsRemover())).start();
+//        }
     }
 
     /**

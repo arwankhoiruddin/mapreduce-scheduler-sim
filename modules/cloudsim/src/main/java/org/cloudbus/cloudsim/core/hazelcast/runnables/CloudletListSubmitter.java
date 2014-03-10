@@ -27,6 +27,7 @@ public class CloudletListSubmitter implements Runnable, Serializable, HazelcastI
     public void run() {
         HzObjectCollection.getCloudletList().put(HzObjectCollection.getUserCloudletList().get(id).getCloudletId(),
                 HzObjectCollection.getUserCloudletList().get(id));
+        HzObjectCollection.getUserCloudletList().remove(id);
     }
 
     @Override

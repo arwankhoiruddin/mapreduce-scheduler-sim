@@ -27,6 +27,7 @@ public class VmListSubmitter implements Runnable, Serializable, HazelcastInstanc
     public void run() {
         HzObjectCollection.getVmList().put(HzObjectCollection.getUserVmList().get(id).getId(),
                 HzObjectCollection.getUserVmList().get(id));
+        HzObjectCollection.getUserVmList().remove(id);
     }
 
     @Override
