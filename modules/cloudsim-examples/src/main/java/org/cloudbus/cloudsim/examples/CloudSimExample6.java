@@ -33,7 +33,7 @@ import java.util.Map;
  *
  */
 public class CloudSimExample6 {
-    private static int noOfCloudlets = 20000;
+    private static int noOfCloudlets = 2000;
     private static int noOfVms = 2000;
 
     private static void createVM(int userId, int vms) {

@@ -46,7 +46,7 @@ import java.util.Map;
  * scalable simulations.
  */
 public class CloudSimExample6Sub {
-    private static int noOfCloudlets = 20000;
+    private static int noOfCloudlets = 2000;
     private static int noOfVms = 2000;
 
 	private static void createVM(int userId, int vms) {

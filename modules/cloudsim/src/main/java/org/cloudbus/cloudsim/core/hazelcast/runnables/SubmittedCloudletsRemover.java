@@ -10,14 +10,28 @@
 
 package org.cloudbus.cloudsim.core.hazelcast.runnables;
 
+import com.hazelcast.core.HazelcastInstance;
+import com.hazelcast.core.HazelcastInstanceAware;
 import org.cloudbus.cloudsim.DatacenterBroker;
 import org.cloudbus.cloudsim.core.hazelcast.HzObjectCollection;
 
-public class SubmittedCloudletsRemover implements Runnable {
+import java.io.Serializable;
+
+public class SubmittedCloudletsRemover implements Runnable, Serializable, HazelcastInstanceAware {
+    private transient HazelcastInstance hazelcastInstance;
+    private final int cloudletId;
+
+    public SubmittedCloudletsRemover(int cloudletId) {
+        this.cloudletId = cloudletId;
+    }
 
     @Override
     public void run() {
-        for (int cloudletId : DatacenterBroker.getSubmittedCloudletIds())
-            HzObjectCollection.getCloudletList().remove(cloudletId);
+        HzObjectCollection.getCloudletList().remove(cloudletId);
+    }
+
+    @Override
+    public void setHazelcastInstance(HazelcastInstance hazelcastInstance) {
+        this.hazelcastInstance = hazelcastInstance;
     }
 }
