@@ -21,12 +21,11 @@ import org.cloudbus.cloudsim.core.CloudSim;
 import org.cloudbus.cloudsim.core.CloudSimTags;
 import org.cloudbus.cloudsim.core.SimEntity;
 import org.cloudbus.cloudsim.core.SimEvent;
-import org.cloudbus.cloudsim.core.hazelcast.HazelSim;
 import org.cloudbus.cloudsim.core.hazelcast.HzObjectCollection;
 import org.cloudbus.cloudsim.core.hazelcast.runnables.SubmittedCloudletsRemover;
 import org.cloudbus.cloudsim.core.hazelcast.runnables.UserObjectsRemover;
-import org.cloudbus.cloudsim.core.hazelcast.threads.CloudletListSubmitter;
-import org.cloudbus.cloudsim.core.hazelcast.threads.VmListSubmitter;
+import org.cloudbus.cloudsim.core.hazelcast.runnables.CloudletListSubmitter;
+import org.cloudbus.cloudsim.core.hazelcast.runnables.VmListSubmitter;
 
 /**
  * DatacenterBroker represents a broker acting on behalf of a user. It hides VM management, as vm
@@ -40,6 +39,8 @@ public class DatacenterBroker extends SimEntity {
 
 	/** The cloudlets submitted. */
 	protected int cloudletsSubmitted;
+
+    private IExecutorService executor;
 
 	/** The vms requested. */
 	protected int vmsRequested;
@@ -76,6 +77,7 @@ public class DatacenterBroker extends SimEntity {
 	public DatacenterBroker(String name) throws Exception {
 		super(name);
 
+        executor = HzObjectCollection.getFirstInstance().getExecutorService("broker");
         cloudletsSubmitted = 0;
 		setVmsRequested(0);
 		setVmsAcks(0);
@@ -104,13 +106,14 @@ public class DatacenterBroker extends SimEntity {
 	}
 
     public void submitCloudletsAndVms() throws InterruptedException {
-        Thread thread [] = new Thread[2];
-        thread[0] = new Thread(new VmListSubmitter());
-        thread[1] = new Thread(new CloudletListSubmitter());
-        for (Thread aThread : thread)
-            aThread.start();
-        for (Thread aThread : thread)
-            aThread.join();
+        for (int i = AppUtil.getCloudletsInit(); i <= AppUtil.getCloudletsFinal(); i++) {
+            executor.executeOnKeyOwner(new CloudletListSubmitter(i), i);
+        }
+
+        for (int i = AppUtil.getVmsInit(); i <= AppUtil.getVmsFinal(); i++) {
+            executor.executeOnKeyOwner(new VmListSubmitter(i), i);
+        }
+
         if (AppUtil.getIsPrimaryWorker()) {
             (new Thread(new UserObjectsRemover())).start();
         }
@@ -374,7 +377,7 @@ public class DatacenterBroker extends SimEntity {
 
             submittedCloudletIds.add(cloudlet.getCloudletId());
 		}
-        IExecutorService executor = HzObjectCollection.getFirstInstance().getExecutorService("exec");
+
         for (int cloudletId : DatacenterBroker.getSubmittedCloudletIds()) {
             executor.executeOnKeyOwner(new SubmittedCloudletsRemover(cloudletId), cloudletId);
         }
