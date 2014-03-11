@@ -129,13 +129,7 @@ public class CloudSimExample6 {
             AppUtil.setNoOfCloudlets(noOfCloudlets);
             AppUtil.setNoOfVms(noOfVms);
 
-            long startTime = System.currentTimeMillis();
-
             broker.submitCloudletsAndVms();
-
-            long endTime = System.currentTimeMillis();
-            double totalTimeTaken = (endTime - startTime)/1000.0;
-            System.out.println("Total time taken for submitting the lists: " + totalTimeTaken);
 
 			// Fifth step: Starts the simulation
 			CloudSim.startSimulation();

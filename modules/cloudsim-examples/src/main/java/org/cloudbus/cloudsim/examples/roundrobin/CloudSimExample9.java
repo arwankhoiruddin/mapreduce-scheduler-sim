@@ -24,6 +24,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import com.hazelcast.core.IMap;
 import org.cloudbus.cloudsim.Cloudlet;
 import org.cloudbus.cloudsim.CloudletSchedulerTimeShared;
 import org.cloudbus.cloudsim.Datacenter;
@@ -37,29 +38,23 @@ import org.cloudbus.cloudsim.UtilizationModel;
 import org.cloudbus.cloudsim.UtilizationModelFull;
 import org.cloudbus.cloudsim.Vm;
 import org.cloudbus.cloudsim.VmSchedulerTimeShared;
+import org.cloudbus.cloudsim.app.AppUtil;
 import org.cloudbus.cloudsim.core.CloudSim;
+import org.cloudbus.cloudsim.core.constants.Cloud2SimConstants;
+import org.cloudbus.cloudsim.core.constants.HazelSimConstants;
+import org.cloudbus.cloudsim.core.hazelcast.HzObjectCollection;
 import org.cloudbus.cloudsim.provisioners.BwProvisionerSimple;
 import org.cloudbus.cloudsim.provisioners.PeProvisionerSimple;
 import org.cloudbus.cloudsim.provisioners.RamProvisionerSimple;
 
 
 public class CloudSimExample9 {
+    private static int noOfVms = 5;
+    private static int noOfCloudlets = 2000;
 
-    /**
-     * The cloudlet list.
-     */
-    private static List<Cloudlet> cloudletList;
 
-    /**
-     * The vmList.
-     */
-    private static List<Vm> vmList;
-
-    private static List<Vm> createVM(int userId, int vms, int idShift) {
-//Creates a container to store VMs. This list is passed to the broker later
-        LinkedList<Vm> list = new LinkedList<Vm>();
-
-//VM Parameters
+    private static void createVM(int userId, int vms) {
+        //VM Parameters
         long size = 10000; //image size (MB)
         int ram = 512; //vm memory (MB)
         int mips = 250;
@@ -67,19 +62,21 @@ public class CloudSimExample9 {
         int pesNumber = 1; //number of cpus       - 1
         String vmm = "Xen"; //VMM name
 
-//create VMs
-        Vm[] vm = new Vm[vms];
+        int vmsInit = (HazelSimConstants.NO_OF_HAZELCAST_INSTANCES - 1) *
+                vms / HazelSimConstants.NO_OF_HAZELCAST_INSTANCES;
+        AppUtil.setVmsInit(vmsInit);
+        AppUtil.setVmsFinal(vms - 1);
+        //create VMs
+        Vm[] vm = new Vm[vms - vmsInit];
 
-        for (int i = 0; i < vms; i++) {
-            vm[i] = new Vm(idShift + i, userId, mips, pesNumber, ram, bw, size, vmm, new CloudletSchedulerTimeShared());
-            list.add(vm[i]);
+        for(int i = 0; i < (vms - vmsInit); i++){
+            vm[i] = new Vm(vmsInit + i, userId, mips, pesNumber, ram, bw, size, vmm, new CloudletSchedulerTimeShared());
+            HzObjectCollection.getUserVmList().put(vmsInit + i, vm[i]);
         }
-
-        return list;
     }
 
 
-    private static List<Cloudlet> createCloudlet(int userId, int cloudlets, int idShift) {
+    private static void createCloudlet(int userId, int cloudlets) {
 // Creates a container to store Cloudlets
         LinkedList<Cloudlet> list = new LinkedList<Cloudlet>();
 
@@ -90,16 +87,22 @@ public class CloudSimExample9 {
         int pesNumber = 1;
         UtilizationModel utilizationModel = new UtilizationModelFull();
 
-        Cloudlet[] cloudlet = new Cloudlet[cloudlets];
+        int cloudletsInit = (HazelSimConstants.NO_OF_HAZELCAST_INSTANCES - 1) *
+                (cloudlets / HazelSimConstants.NO_OF_HAZELCAST_INSTANCES);
 
-        for (int i = 0; i < cloudlets; i++) {
-            cloudlet[i] = new Cloudlet(idShift + i, length, pesNumber, fileSize, outputSize, utilizationModel, utilizationModel, utilizationModel);
-// setting the owner of these Cloudlets
+        AppUtil.setCloudletsInit(cloudletsInit);
+        AppUtil.setCloudletsFinal(cloudlets - 1);
+
+        Cloudlet[] cloudlet = new Cloudlet[cloudlets - cloudletsInit];
+
+        for(int i=0;i<(cloudlets - cloudletsInit);i++){
+            int f = (int) ((Math.random() * 40) + 1);
+            cloudlet[i] = new Cloudlet(cloudletsInit + i, length*f, pesNumber, fileSize, outputSize, utilizationModel,
+                    utilizationModel, utilizationModel);
+            // setting the owner of these Cloudlets
             cloudlet[i].setUserId(userId);
-            list.add(cloudlet[i]);
+            HzObjectCollection.getUserCloudletList().put(cloudletsInit + i, cloudlet[i]);
         }
-
-        return list;
     }
 
 
@@ -107,46 +110,43 @@ public class CloudSimExample9 {
      * Creates main() to run this example
      */
     public static void main(String[] args) {
+        AppUtil.start();
+        AppUtil.setIsMaster(true);
+        if (HazelSimConstants.NO_OF_HAZELCAST_INSTANCES > 1) {
+            AppUtil.setIsPrimaryWorker(false);
+        }
+
         Log.printLine("Starting CloudSimExample10...");
 
         try {
-// First step: Initialize the CloudSim package. It should be called
-// before creating any entities.
             int num_user = 2; // number of grid users                 2
             Calendar calendar = Calendar.getInstance();
             boolean trace_flag = false; // mean trace events
 
-// Initialize the CloudSim library
             CloudSim.init(num_user, calendar, trace_flag);
 
-//GlobalBroker globalBroker = new GlobalBroker("GlobalBroker");
-
-// Second step: Create Datacenters
             @SuppressWarnings("unused")
             Datacenter datacenter0 = createDatacenter("Datacenter_0");
             @SuppressWarnings("unused")
             Datacenter datacenter1 = createDatacenter("Datacenter_1");
 
-//Third step: Create Broker
             DatacenterBroker broker = createBroker("Broker_0");
             int brokerId = broker.getId();
 
-//Fourth step: Create VMs and Cloudlets and send them to broker
-            vmList = createVM(brokerId, 5, 0); //creating 5 vms
-            cloudletList = createCloudlet(brokerId, 10, 0); // creating 10 cloudlets
+            createVM(brokerId, noOfVms); //creating 5 vms
+            createCloudlet(brokerId, noOfCloudlets); // creating 20000 cloudlets
 
-            broker.submitVmList(vmList);
-            broker.submitCloudletList(cloudletList);
+            AppUtil.setNoOfCloudlets(noOfCloudlets);
+            AppUtil.setNoOfVms(noOfVms);
 
-// Fifth step: Starts the simulation
+            broker.submitCloudletsAndVms();
+
             CloudSim.startSimulation();
 
-// Final step: Print results when simulation is over
-            List<Cloudlet> newList = broker.getCloudletReceivedList();
-//newList.addAll(globalBroker.getBroker().getCloudletReceivedList());
+            // Final step: Print results when simulation is over
+            Map<Integer, Cloudlet> newList = HzObjectCollection.getCloudletReceivedList();
 
             CloudSim.stopSimulation();
-
             printCloudletList(newList);
 
             Log.printLine(CloudSimExample9.class.getName() + " finished!");
@@ -154,13 +154,11 @@ public class CloudSimExample9 {
             e.printStackTrace();
             Log.printLine("The simulation has been terminated due to an unexpected error");
         }
+        AppUtil.shutdown();
     }
 
     private static Datacenter createDatacenter(String name) {
 
-// Here are the steps needed to create a PowerDatacenter:
-// 1. We need to create a list to store one or more
-// Machines
         List<Host> hostList = new ArrayList<Host>();
 
 // 2. A Machine contains one or more PEs or CPUs/Cores. Therefore, should
@@ -252,31 +250,37 @@ public class CloudSimExample9 {
      *
      * @param list list of Cloudlets
      */
-    private static void printCloudletList(List<Cloudlet> list) {
-        int size = list.size();
+    /**
+     * Prints the Cloudlet objects
+     * @param list  list of Cloudlets
+     */
+    private static void printCloudletList(Map<Integer, Cloudlet> list) {
         Cloudlet cloudlet;
 
-        String indent = " ";
+        String indent = "    ";
         Log.printLine();
-        Log.printLine("========== OUTPUT ==========");
-        Log.printLine("Cloudlet ID" + indent + "STATUS" + indent +
-                      "Data center ID" + indent + "VM ID" + indent + indent + "Time" + indent + "Start Time" + indent + "Finish Time");
+        Log.printLine("# ========== OUTPUT ==========");
+        Log.printLine("# Cloudlet ID" + indent + "STATUS" + indent +
+                "Data center ID" + indent + "VM ID" + indent + indent + "Time" + indent +
+                "Start Time" + indent + "Finish Time"
+                + indent + "Submission Time" + indent + "Processing Cost");
 
         DecimalFormat dft = new DecimalFormat("###.##");
-        for (int i = 0; i < size; i++) {
-            cloudlet = list.get(i);
-            Log.print(indent + cloudlet.getCloudletId() + indent + indent);
+        for (IMap.Entry<Integer, Cloudlet> entry: list.entrySet()) {
+            cloudlet = entry.getValue();
+            int cloudletId = entry.getKey();
 
-            if (cloudlet.getCloudletStatus() == Cloudlet.SUCCESS) {
+            Log.print(indent + cloudletId + indent + indent);
+
+            if (cloudlet.getCloudletStatus() == Cloud2SimConstants.SUCCESS){
                 Log.print("SUCCESS");
 
-                Log.printLine(indent + indent + cloudlet
-                    .getResourceId() + indent + indent + indent + cloudlet.getVmId() +
-                              indent + indent + indent + dft.format(cloudlet.getActualCPUTime()) +
-                              indent + indent + dft
-                    .format(cloudlet.getExecStartTime()) + indent + indent + indent + dft
-                    .format(cloudlet.getFinishTime()));
+                Log.printLine( indent + indent + cloudlet.getResourceId() + indent + indent + indent + cloudlet.getVmId() +
+                        indent + indent + indent + dft.format(cloudlet.getActualCPUTime()) +
+                        indent + indent + dft.format(cloudlet.getExecStartTime())+ indent + indent + indent + dft.format(cloudlet.getFinishTime())
+                        + indent + indent + dft.format(cloudlet.getSubmissionTime())+ indent + indent + dft.format(cloudlet.getCostPerSec()));
             }
         }
+
     }
 }

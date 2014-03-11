@@ -24,6 +24,7 @@ import org.cloudbus.cloudsim.Vm;
 import org.cloudbus.cloudsim.core.CloudSim;
 import org.cloudbus.cloudsim.core.CloudSimTags;
 import org.cloudbus.cloudsim.core.SimEvent;
+import org.cloudbus.cloudsim.core.hazelcast.HzObjectCollection;
 
 /**
  * This broker allocates VMs to data centers following the <a href="http://en.wikipedia.org/wiki/Round-robin_scheduling">Round-robin</a>
@@ -62,7 +63,7 @@ public class RoundRobinDatacenterBroker extends DatacenterBroker {
         int numberOfVmsAllocated = 0;
         int i = 0;
         final List<Integer> availableDatacenters = getDatacenterIdsList();
-        for (Vm vm : getVmList()) {
+        for (Vm vm : HzObjectCollection.getVmList().values()) {
             int datacenterId = availableDatacenters.get(i++ % availableDatacenters.size());
             String datacenterName = CloudSim.getEntityName(datacenterId);
             if (!getVmsToDatacentersMap().containsKey(vm.getId())) {
