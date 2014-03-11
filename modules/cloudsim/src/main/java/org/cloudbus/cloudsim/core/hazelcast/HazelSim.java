@@ -59,7 +59,8 @@ public class HazelSim {
         cfg.getSerializationConfig().addSerializerConfig(sc0);
         cfg.getSerializationConfig().addSerializerConfig(sc1);
         cfg.getSerializationConfig().addSerializerConfig(sc2);
-        cfg.setProperty("hazelcast.initial.min.cluster.size", String.valueOf(HazelSimConstants.NO_OF_HAZELCAST_INSTANCES));
+        // wait for all executions to come alive
+        cfg.setProperty("hazelcast.initial.min.cluster.size", String.valueOf(HazelSimConstants.NO_OF_PARALLEL_EXECUTIONS));
     }
 
     /**
