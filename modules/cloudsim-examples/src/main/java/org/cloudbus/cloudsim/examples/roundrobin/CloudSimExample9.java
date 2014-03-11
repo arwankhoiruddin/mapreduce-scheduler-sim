@@ -19,7 +19,6 @@ package org.cloudbus.cloudsim.examples.roundrobin;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -50,7 +49,7 @@ import org.cloudbus.cloudsim.provisioners.RamProvisionerSimple;
 
 public class CloudSimExample9 {
     private static int noOfVms = 5;
-    private static int noOfCloudlets = 2000;
+    private static int noOfCloudlets = 20000;
 
 
     private static void createVM(int userId, int vms) {
@@ -62,8 +61,8 @@ public class CloudSimExample9 {
         int pesNumber = 1; //number of cpus       - 1
         String vmm = "Xen"; //VMM name
 
-        int vmsInit = (HazelSimConstants.NO_OF_HAZELCAST_INSTANCES - 1) *
-                vms / HazelSimConstants.NO_OF_HAZELCAST_INSTANCES;
+        int vmsInit = (HazelSimConstants.NO_OF_PARALLEL_EXECUTIONS - 1) *
+                vms / HazelSimConstants.NO_OF_PARALLEL_EXECUTIONS;
         AppUtil.setVmsInit(vmsInit);
         AppUtil.setVmsFinal(vms - 1);
         //create VMs
@@ -87,8 +86,8 @@ public class CloudSimExample9 {
         int pesNumber = 1;
         UtilizationModel utilizationModel = new UtilizationModelFull();
 
-        int cloudletsInit = (HazelSimConstants.NO_OF_HAZELCAST_INSTANCES - 1) *
-                (cloudlets / HazelSimConstants.NO_OF_HAZELCAST_INSTANCES);
+        int cloudletsInit = (HazelSimConstants.NO_OF_PARALLEL_EXECUTIONS - 1) *
+                (cloudlets / HazelSimConstants.NO_OF_PARALLEL_EXECUTIONS);
 
         AppUtil.setCloudletsInit(cloudletsInit);
         AppUtil.setCloudletsFinal(cloudlets - 1);
@@ -112,11 +111,11 @@ public class CloudSimExample9 {
     public static void main(String[] args) {
         AppUtil.start();
         AppUtil.setIsMaster(true);
-        if (HazelSimConstants.NO_OF_HAZELCAST_INSTANCES > 1) {
+        if (HazelSimConstants.NO_OF_PARALLEL_EXECUTIONS > 1) {
             AppUtil.setIsPrimaryWorker(false);
         }
 
-        Log.printLine("Starting CloudSimExample10...");
+        Log.printLine("Starting CloudSimExample9...");
 
         try {
             int num_user = 2; // number of grid users                 2

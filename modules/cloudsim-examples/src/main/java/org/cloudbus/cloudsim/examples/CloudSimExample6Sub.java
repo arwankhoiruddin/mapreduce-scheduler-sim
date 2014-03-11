@@ -59,7 +59,7 @@ public class CloudSimExample6Sub {
 		int pesNumber = 1; //number of cpus
 		String vmm = "Xen"; //VMM name
 
-        int vmsHere = vms / HazelSimConstants.NO_OF_HAZELCAST_INSTANCES;
+        int vmsHere = vms / HazelSimConstants.NO_OF_PARALLEL_EXECUTIONS;
 		//create VMs
 		Vm[] vm = new Vm[vmsHere];
         AppUtil.setVmsInit(0);
@@ -82,7 +82,7 @@ public class CloudSimExample6Sub {
 		int pesNumber = 1;
 		UtilizationModel utilizationModel = new UtilizationModelFull();
 
-        int cloudletsHere = cloudlets / HazelSimConstants.NO_OF_HAZELCAST_INSTANCES;
+        int cloudletsHere = cloudlets / HazelSimConstants.NO_OF_PARALLEL_EXECUTIONS;
 
         Cloudlet[] cloudlet = new Cloudlet[cloudletsHere];
 

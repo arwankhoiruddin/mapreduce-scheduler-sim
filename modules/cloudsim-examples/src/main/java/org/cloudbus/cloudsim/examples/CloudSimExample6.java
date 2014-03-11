@@ -46,7 +46,7 @@ public class CloudSimExample6 {
 		int pesNumber = 1; //number of cpus
 		String vmm = "Xen"; //VMM name
 
-        int vmsInit = (HazelSimConstants.NO_OF_HAZELCAST_INSTANCES - 1) * vms / HazelSimConstants.NO_OF_HAZELCAST_INSTANCES;
+        int vmsInit = (HazelSimConstants.NO_OF_PARALLEL_EXECUTIONS - 1) * vms / HazelSimConstants.NO_OF_PARALLEL_EXECUTIONS;
         AppUtil.setVmsInit(vmsInit);
         AppUtil.setVmsFinal(vms - 1);
         //create VMs
@@ -69,8 +69,8 @@ public class CloudSimExample6 {
 		int pesNumber = 1;
 		UtilizationModel utilizationModel = new UtilizationModelFull();
 
-        int cloudletsInit = (HazelSimConstants.NO_OF_HAZELCAST_INSTANCES - 1) *
-                (cloudlets / HazelSimConstants.NO_OF_HAZELCAST_INSTANCES);
+        int cloudletsInit = (HazelSimConstants.NO_OF_PARALLEL_EXECUTIONS - 1) *
+                (cloudlets / HazelSimConstants.NO_OF_PARALLEL_EXECUTIONS);
 
         AppUtil.setCloudletsInit(cloudletsInit);
         AppUtil.setCloudletsFinal(cloudlets - 1);
@@ -95,7 +95,7 @@ public class CloudSimExample6 {
 	public static void main(String[] args) {
         AppUtil.start();
         AppUtil.setIsMaster(true);
-        if (HazelSimConstants.NO_OF_HAZELCAST_INSTANCES > 1) {
+        if (HazelSimConstants.NO_OF_PARALLEL_EXECUTIONS > 1) {
             AppUtil.setIsPrimaryWorker(false);
         }
         Log.printLine("# Starting CloudSimExample6...");
