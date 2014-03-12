@@ -40,7 +40,9 @@ public class DatacenterBroker extends SimEntity {
 	/** The cloudlets submitted. */
 	protected int cloudletsSubmitted;
 
-    private IExecutorService executor;
+    private IExecutorService vmExecutor;
+    private IExecutorService cloudletExecutor;
+    private IExecutorService cloudletRemoverExecutor;
 
 	/** The vms requested. */
 	protected int vmsRequested;
@@ -77,7 +79,10 @@ public class DatacenterBroker extends SimEntity {
 	public DatacenterBroker(String name) throws Exception {
 		super(name);
 
-        executor = HzObjectCollection.getFirstInstance().getExecutorService("broker");
+        vmExecutor = HzObjectCollection.getFirstInstance().getExecutorService("vmExecutor");
+        cloudletExecutor = HzObjectCollection.getFirstInstance().getExecutorService("cloudletExecutor");
+        cloudletRemoverExecutor = HzObjectCollection.getFirstInstance().getExecutorService("cloudletRemoverExecutor");
+
         cloudletsSubmitted = 0;
 		setVmsRequested(0);
 		setVmsAcks(0);
@@ -106,27 +111,35 @@ public class DatacenterBroker extends SimEntity {
 	}
 
     public void submitCloudletsAndVms() throws InterruptedException {
-        for (int i = AppUtil.getCloudletsInit(); i <= AppUtil.getCloudletsFinal(); i++) {
-            executor.executeOnKeyOwner(new CloudletListSubmitter(i), i);
-        }
+        int bigInteger = 0;
+         do {
 
+            System.out.println("*************************************************************************** " + 0);
         for (int i = AppUtil.getVmsInit(); i <= AppUtil.getVmsFinal(); i++) {
-            executor.executeOnKeyOwner(new VmListSubmitter(i), i);
+            System.out.println("VM ---- Attempt to execute on, " + i);
+            vmExecutor.executeOnKeyOwner(new VmListSubmitter(i), i);
+        }
+             bigInteger++;
+
+        for (int i = AppUtil.getCloudletsInit(); i <= AppUtil.getCloudletsFinal(); i++) {
+            System.out.println("Cloudlet ---- Attempt to execute on, " + i);
+            cloudletExecutor.executeOnKeyOwner(new CloudletListSubmitter(i), i);
         }
 
-        while (HzObjectCollection.getVmList().size() < AppUtil.getNoOfVms()
-                //|| HzObjectCollection.getCloudletList().size() < AppUtil.getNoOfCloudlets()
-                ) {
-            try {
-                Thread.sleep(10);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
 
-//        if (AppUtil.getIsPrimaryWorker()) {
-//            (new Thread(new UserObjectsRemover())).start();
-//        }
+//        while (HzObjectCollection.getVmList().size() < AppUtil.getNoOfVms()
+//                //|| HzObjectCollection.getCloudletList().size() < AppUtil.getNoOfCloudlets()
+//                ) {
+//            try {
+////                System.out.println(" My size: " + HzObjectCollection.getVmList().size() + " Expected Size: " + AppUtil.getNoOfVms());
+////                System.out.println(" Cloudlet size: " + HzObjectCollection.getCloudletList().size() + " Expected Size: " + AppUtil.getNoOfCloudlets());
+//                Thread.sleep(10);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+        } while (HzObjectCollection.getVmList().size() < AppUtil.getNoOfVms()
+                 || HzObjectCollection.getCloudletList().size() < AppUtil.getNoOfCloudlets()
+                 );
     }
 
     /**
@@ -389,7 +402,7 @@ public class DatacenterBroker extends SimEntity {
 		}
 
         for (int cloudletId : DatacenterBroker.getSubmittedCloudletIds()) {
-            executor.executeOnKeyOwner(new SubmittedCloudletsRemover(cloudletId), cloudletId);
+            cloudletRemoverExecutor.executeOnKeyOwner(new SubmittedCloudletsRemover(cloudletId), cloudletId);
         }
     }
 

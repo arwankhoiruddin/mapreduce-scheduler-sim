@@ -9,18 +9,18 @@
 
 package org.cloudbus.cloudsim.examples;
 
-import com.hazelcast.core.IMap;
 import org.cloudbus.cloudsim.*;
 import org.cloudbus.cloudsim.app.AppUtil;
-import org.cloudbus.cloudsim.core.constants.Cloud2SimConstants;
+import org.cloudbus.cloudsim.app.OutputLogger;
 import org.cloudbus.cloudsim.core.CloudSim;
 import org.cloudbus.cloudsim.core.constants.HazelSimConstants;
 import org.cloudbus.cloudsim.core.hazelcast.HzObjectCollection;
+import org.cloudbus.cloudsim.examples.roundrobin.RoundRobinDatacenterBroker;
+import org.cloudbus.cloudsim.examples.roundrobin.RoundRobinVmAllocationPolicy;
 import org.cloudbus.cloudsim.provisioners.BwProvisionerSimple;
 import org.cloudbus.cloudsim.provisioners.PeProvisionerSimple;
 import org.cloudbus.cloudsim.provisioners.RamProvisionerSimple;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.LinkedList;
@@ -30,21 +30,21 @@ import java.util.Map;
 /**
  * An example showing how to create
  * scalable simulations.
- *
  */
 public class CloudSimExample6 {
-    private static int noOfCloudlets = 2000;
-    private static int noOfVms = 2000;
+    public static int noOfVms = 5;
+    public static int noOfCloudlets = 2000;
+    public static boolean isRR = true;
 
     private static void createVM(int userId, int vms) {
 
-		//VM Parameters
-		long size = 10000; //image size (MB)
-		int ram = 128; //vm memory (MB)
-		int mips = 200;
-		long bw = 1000;
-		int pesNumber = 1; //number of cpus
-		String vmm = "Xen"; //VMM name
+        //VM Parameters
+        long size = 10000; //image size (MB)
+        int ram = 128; //vm memory (MB)
+        int mips = 200;
+        long bw = 1000;
+        int pesNumber = 1; //number of cpus
+        String vmm = "Xen"; //VMM name
 
         int vmsInit = (HazelSimConstants.NO_OF_PARALLEL_EXECUTIONS - 1) * vms / HazelSimConstants.NO_OF_PARALLEL_EXECUTIONS;
         AppUtil.setVmsInit(vmsInit);
@@ -52,22 +52,26 @@ public class CloudSimExample6 {
         //create VMs
         Vm[] vm = new Vm[vms - vmsInit];
 
-		for(int i = 0; i < (vms - vmsInit); i++){
-			vm[i] = new Vm(vmsInit + i, userId, mips, pesNumber, ram, bw, size, vmm, new CloudletSchedulerSpaceShared());
-  			HzObjectCollection.getUserVmList().put(vmsInit + i, vm[i]);
-		}
-	}
+        for (int i = 0; i < (vms - vmsInit); i++) {
+            if (isRR) {
+                vm[i] = new Vm(vmsInit + i, userId, mips, pesNumber, ram, bw, size, vmm, new CloudletSchedulerTimeShared());
+            } else {
+                vm[i] = new Vm(vmsInit + i, userId, mips, pesNumber, ram, bw, size, vmm, new CloudletSchedulerSpaceShared());
+            }
+            HzObjectCollection.getUserVmList().put((vmsInit + i), vm[i]);
+        }
+    }
 
 
-	private static void createCloudlet(int userId, int cloudlets){
-		// Creates a container to store Cloudlets
+    private static void createCloudlet(int userId, int cloudlets) {
+        // Creates a container to store Cloudlets
 
-		//cloudlet parameters
-		long length = 10; //100
-		long fileSize = 30; // 300
-		long outputSize = 30; // 300
-		int pesNumber = 1;
-		UtilizationModel utilizationModel = new UtilizationModelFull();
+        //cloudlet parameters
+        long length = 10; //100
+        long fileSize = 30; // 300
+        long outputSize = 30; // 300
+        int pesNumber = 1;
+        UtilizationModel utilizationModel = new UtilizationModelFull();
 
         int cloudletsInit = (HazelSimConstants.NO_OF_PARALLEL_EXECUTIONS - 1) *
                 (cloudlets / HazelSimConstants.NO_OF_PARALLEL_EXECUTIONS);
@@ -77,22 +81,23 @@ public class CloudSimExample6 {
 
         Cloudlet[] cloudlet = new Cloudlet[cloudlets - cloudletsInit];
 
-		for(int i=0;i<(cloudlets - cloudletsInit);i++){
+        for (int i = 0; i < (cloudlets - cloudletsInit); i++) {
             int f = (int) ((Math.random() * 40) + 1);
-			cloudlet[i] = new Cloudlet(cloudletsInit + i, length*f, pesNumber, fileSize, outputSize, utilizationModel,
+            cloudlet[i] = new Cloudlet(cloudletsInit + i, length * f, pesNumber, fileSize, outputSize, utilizationModel,
                     utilizationModel, utilizationModel);
-			// setting the owner of these Cloudlets
-			cloudlet[i].setUserId(userId);
-            HzObjectCollection.getUserCloudletList().put(cloudletsInit + i, cloudlet[i]);
-		}
-	}
+            // setting the owner of these Cloudlets
+            cloudlet[i].setUserId(userId);
+            HzObjectCollection.getUserCloudletList().put((cloudletsInit + i), cloudlet[i]);
+            System.out.println("putting cloudlet of key: " + (cloudletsInit + i));
+        }
+    }
 
-	////////////////////////// STATIC METHODS ///////////////////////
+    ////////////////////////// STATIC METHODS ///////////////////////
 
-	/**
-	 * Creates main() to run this example
-	 */
-	public static void main(String[] args) {
+    /**
+     * Creates main() to run this example
+     */
+    public static void main(String[] args) {
         AppUtil.start();
         AppUtil.setIsMaster(true);
         if (HazelSimConstants.NO_OF_PARALLEL_EXECUTIONS > 1) {
@@ -100,30 +105,31 @@ public class CloudSimExample6 {
         }
         Log.printLine("# Starting CloudSimExample6...");
 
-		try {
-			// First step: Initialize the CloudSim package. It should be called
-			// before creating any entities.
-			int num_user = 200;   // number of grid users
-			Calendar calendar = Calendar.getInstance();
-			boolean trace_flag = false;  // mean trace events
+        try {
+            // First step: Initialize the CloudSim package. It should be called
+            // before creating any entities.
+            int num_user = 200;   // number of grid users
+            Calendar calendar = Calendar.getInstance();
+            boolean trace_flag = false;  // mean trace events
 
-			// Initialize the CloudSim library
-			CloudSim.init(num_user, calendar, trace_flag);
+            // Initialize the CloudSim library
+            CloudSim.init(num_user, calendar, trace_flag);
 
-			// Second step: Create Datacenters
-			//Datacenters are the resource providers in CloudSim. We need at least one of them to run a CloudSim simulation
-//			@SuppressWarnings("unused")
-//			Datacenter datacenter0 = createDatacenter("Datacenter_0");
-			@SuppressWarnings("unused")
-			Datacenter datacenter1 = createDatacenter("Datacenter_1");
+            // Second step: Create Datacenters
+            //Datacenters are the resource providers in CloudSim. We need at least one of them to run a CloudSim simulation
+            @SuppressWarnings("unused")
+            Datacenter[] datacenters = new Datacenter[1500];
+            for (int i = 0; i < 1500; i++) {
+                datacenters[i] = createDatacenter("Datacenter_" + i);
+            }
 
-			//Third step: Create Broker
-			DatacenterBroker broker = createBroker();
-			int brokerId = broker.getId();
+            //Third step: Create Broker
+            DatacenterBroker broker = createBroker("Broker_1");
+            int brokerId = broker.getId();
 
-			//Fourth step: Create VMs and Cloudlets and send them to broker
-			createVM(brokerId,noOfVms); //creating 20 vms //2000
-			/* The cloudlet list. */
+            //Fourth step: Create VMs and Cloudlets and send them to broker
+            createVM(brokerId, noOfVms); //creating 20 vms //2000
+            /* The cloudlet list. */
             createCloudlet(brokerId, noOfCloudlets); //2000
 
             AppUtil.setNoOfCloudlets(noOfCloudlets);
@@ -131,80 +137,80 @@ public class CloudSimExample6 {
 
             broker.submitCloudletsAndVms();
 
-			// Fifth step: Starts the simulation
-			CloudSim.startSimulation();
+            // Fifth step: Starts the simulation
+            CloudSim.startSimulation();
 
-			// Final step: Print results when simulation is over
-			Map<Integer, Cloudlet> newList = HzObjectCollection.getCloudletReceivedList();
+            // Final step: Print results when simulation is over
+            Map<Integer, Cloudlet> newList = HzObjectCollection.getCloudletReceivedList();
 
-			CloudSim.stopSimulation();
+            CloudSim.stopSimulation();
 
-			printCloudletList(newList);
+            OutputLogger.printCloudletList(newList);
 
-			Log.printLine("# CloudSimExample6 finished!");
-		} catch (Exception e) {
+            Log.printLine("# CloudSimExample6 finished!");
+        } catch (Exception e) {
             e.printStackTrace();
             Log.printLine("# The simulation has been terminated due to an unexpected error");
         }
         AppUtil.shutdown();
     }
 
-	private static Datacenter createDatacenter(String name){
+    private static Datacenter createDatacenter(String name) {
 
-		// Here are the steps needed to create a PowerDatacenter:
-		// 1. We need to create a list to store one or more
-		//    Machines
-		List<Host> hostList = new ArrayList<Host>();
+        // Here are the steps needed to create a PowerDatacenter:
+        // 1. We need to create a list to store one or more
+        //    Machines
+        List<Host> hostList = new ArrayList<Host>();
 
-		// 2. A Machine contains one or more PEs or CPUs/Cores. Therefore, should
-		//    create a list to store these PEs before creating
-		//    a Machine.
-		List<Pe> peList1 = new ArrayList<Pe>();
+        // 2. A Machine contains one or more PEs or CPUs/Cores. Therefore, should
+        //    create a list to store these PEs before creating
+        //    a Machine.
+        List<Pe> peList1 = new ArrayList<Pe>();
 
-		int mips = 400000;
+        int mips = 400000;
 
-		// 3. Create PEs and add these into the list.
-		//for a quad-core machine, a list of 4 PEs is required:
-		peList1.add(new Pe(0, new PeProvisionerSimple(mips))); // need to store Pe id and MIPS Rating
-		peList1.add(new Pe(1, new PeProvisionerSimple(mips)));
-		peList1.add(new Pe(2, new PeProvisionerSimple(mips)));
-		peList1.add(new Pe(3, new PeProvisionerSimple(mips)));
+        // 3. Create PEs and add these into the list.
+        //for a quad-core machine, a list of 4 PEs is required:
+        peList1.add(new Pe(0, new PeProvisionerSimple(mips))); // need to store Pe id and MIPS Rating
+        peList1.add(new Pe(1, new PeProvisionerSimple(mips)));
+        peList1.add(new Pe(2, new PeProvisionerSimple(mips)));
+        peList1.add(new Pe(3, new PeProvisionerSimple(mips)));
 
-		//Another list, for a dual-core machine
-		List<Pe> peList2 = new ArrayList<Pe>();
+        //Another list, for a dual-core machine
+        List<Pe> peList2 = new ArrayList<Pe>();
 
-		peList2.add(new Pe(0, new PeProvisionerSimple(mips)));
-		peList2.add(new Pe(1, new PeProvisionerSimple(mips)));
+        peList2.add(new Pe(0, new PeProvisionerSimple(mips)));
+        peList2.add(new Pe(1, new PeProvisionerSimple(mips)));
 
-		//4. Create Hosts with its id and list of PEs and add them to the list of machines
-		int hostId=0;
-		int ram = 2048000; //host memory (MB)
-		long storage = 400000000; //host storage
-		int bw = 4000000;
+        //4. Create Hosts with its id and list of PEs and add them to the list of machines
+        int hostId = 0;
+        int ram = 2048000; //host memory (MB)
+        long storage = 400000000; //host storage
+        int bw = 4000000;
 
-		hostList.add(
-    			new Host(
-    				hostId,
-    				new RamProvisionerSimple(ram),
-    				new BwProvisionerSimple(bw),
-    				storage,
-    				peList1,
-    				new VmSchedulerTimeShared(peList1)
-    			)
-    		); // This is our first machine
+        hostList.add(
+                new Host(
+                        hostId,
+                        new RamProvisionerSimple(ram),
+                        new BwProvisionerSimple(bw),
+                        storage,
+                        peList1,
+                        new VmSchedulerTimeShared(peList1)
+                )
+        ); // This is our first machine
 
-		hostId++;
+        hostId++;
 
-		hostList.add(
-    			new Host(
-    				hostId,
-    				new RamProvisionerSimple(ram),
-    				new BwProvisionerSimple(bw),
-    				storage,
-    				peList2,
-    				new VmSchedulerTimeShared(peList2)
-    			)
-    		); // Second machine
+        hostList.add(
+                new Host(
+                        hostId,
+                        new RamProvisionerSimple(ram),
+                        new BwProvisionerSimple(bw),
+                        storage,
+                        peList2,
+                        new VmSchedulerTimeShared(peList2)
+                )
+        ); // Second machine
 
 
 //		To create a host with a space-shared allocation policy for PEs to VMs:
@@ -232,79 +238,44 @@ public class CloudSimExample6 {
         );
  */
         // 5. Create a DatacenterCharacteristics object that stores the
-		//    properties of a data center: architecture, OS, list of
-		//    Machines, allocation policy: time- or space-shared, time zone
-		//    and its price (G$/Pe time unit).
-		String arch = "x86";      // system architecture
-		String os = "Windows";          // operating system
-		String vmm = "Xen";
-		double time_zone = 10.0;         // time zone this resource located
-		double cost = 3.0;              // the cost of using processing in this resource
-		double costPerMem = 0.05;		// the cost of using memory in this resource
-		double costPerStorage = 0.1;	// the cost of using storage in this resource
-		double costPerBw = 0.1;			// the cost of using bw in this resource
-		LinkedList<Storage> storageList = new LinkedList<Storage>();	//we are not adding SAN devices by now
+        //    properties of a data center: architecture, OS, list of
+        //    Machines, allocation policy: time- or space-shared, time zone
+        //    and its price (G$/Pe time unit).
+        String arch = "x86";      // system architecture
+        String os = "Windows";          // operating system
+        String vmm = "Xen";
+        double time_zone = 10.0;         // time zone this resource located
+        double cost = 3.0;              // the cost of using processing in this resource
+        double costPerMem = 0.05;        // the cost of using memory in this resource
+        double costPerStorage = 0.1;    // the cost of using storage in this resource
+        double costPerBw = 0.1;            // the cost of using bw in this resource
+        LinkedList<Storage> storageList = new LinkedList<Storage>();    //we are not adding SAN devices by now
 
-		DatacenterCharacteristics characteristics = new DatacenterCharacteristics(
+        DatacenterCharacteristics characteristics = new DatacenterCharacteristics(
                 arch, os, vmm, hostList, time_zone, cost, costPerMem, costPerStorage, costPerBw);
 
 
-		// 6. Finally, we need to create a PowerDatacenter object.
-		Datacenter datacenter = null;
-		try {
-			datacenter = new Datacenter(name, characteristics, new VmAllocationPolicySimple(hostList), storageList, 0);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		return datacenter;
-	}
-
-	//We strongly encourage users to develop their own broker policies, to submit vms and cloudlets according
-	//to the specific rules of the simulated scenario
-	private static DatacenterBroker createBroker(){
-
-		DatacenterBroker broker;
-		try {
-			broker = new DatacenterBroker("Broker");
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		}
-		return broker;
-	}
-
-    /**
-	 * Prints the Cloudlet objects
-	 * @param list  list of Cloudlets
-	 */
-	private static void printCloudletList(Map<Integer, Cloudlet> list) {
-		Cloudlet cloudlet;
-
-		String indent = "    ";
-		Log.printLine();
-		Log.printLine("# ========== OUTPUT ==========");
-		Log.printLine("# Cloudlet ID" + indent + "STATUS" + indent +
-				"Data center ID" + indent + "VM ID" + indent + indent + "Time" + indent +
-                "Start Time" + indent + "Finish Time"
-                + indent + "Submission Time" + indent + "Processing Cost");
-
-		DecimalFormat dft = new DecimalFormat("###.##");
-		for (IMap.Entry<Integer, Cloudlet> entry: list.entrySet()) {
-			cloudlet = entry.getValue();
-            int cloudletId = entry.getKey();
-
-			Log.print(indent + cloudletId + indent + indent);
-
-			if (cloudlet.getCloudletStatus() == Cloud2SimConstants.SUCCESS){
-				Log.print("SUCCESS");
-
-				Log.printLine( indent + indent + cloudlet.getResourceId() + indent + indent + indent + cloudlet.getVmId() +
-						indent + indent + indent + dft.format(cloudlet.getActualCPUTime()) +
-						indent + indent + dft.format(cloudlet.getExecStartTime())+ indent + indent + indent + dft.format(cloudlet.getFinishTime())
-                                             + indent + indent + dft.format(cloudlet.getSubmissionTime())+ indent + indent + dft.format(cloudlet.getCostPerSec()));
+        // 6. Finally, we need to create a PowerDatacenter object.
+        Datacenter datacenter = null;
+        try {
+            if (isRR) {
+                datacenter = new Datacenter(name, characteristics, new RoundRobinVmAllocationPolicy(hostList), storageList, 0);
+            } else {
+                datacenter = new Datacenter(name, characteristics, new VmAllocationPolicySimple(hostList), storageList, 0);
             }
-		}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-	}
+        return datacenter;
+    }
+
+    private static DatacenterBroker createBroker(String name) throws Exception {
+        if (isRR) {
+            return new RoundRobinDatacenterBroker(name);
+        } else {
+            return new DatacenterBroker(name);
+        }
+    }
+
 }

@@ -46,8 +46,6 @@ import java.util.Map;
  * scalable simulations.
  */
 public class CloudSimExample6Sub {
-    private static int noOfCloudlets = 2000;
-    private static int noOfVms = 2000;
 
 	private static void createVM(int userId, int vms) {
 
@@ -60,6 +58,7 @@ public class CloudSimExample6Sub {
 		String vmm = "Xen"; //VMM name
 
         int vmsHere = vms / HazelSimConstants.NO_OF_PARALLEL_EXECUTIONS;
+
 		//create VMs
 		Vm[] vm = new Vm[vmsHere];
         AppUtil.setVmsInit(0);
@@ -68,7 +67,8 @@ public class CloudSimExample6Sub {
 		for(int i=0;i<vmsHere;i++){
 			vm[i] = new Vm(i, userId, mips, pesNumber, ram, bw, size, vmm, new CloudletSchedulerSpaceShared());
   			HzObjectCollection.getUserVmList().put(i, vm[i]);
-		}
+            System.out.println("putting vm of key: " + i);
+        }
 	}
 
 
@@ -96,6 +96,7 @@ public class CloudSimExample6Sub {
 			// setting the owner of these Cloudlets
 			cloudlet[i].setUserId(userId);
             HzObjectCollection.getUserCloudletList().put(i, cloudlet[i]);
+            System.out.println("putting cloudlet of key: " + i);
 		}
 	}
 
@@ -132,22 +133,15 @@ public class CloudSimExample6Sub {
 			int brokerId = broker.getId();
 
 			//Fourth step: Create VMs and Cloudlets and send them to broker
-			createVM(brokerId,noOfVms); //creating 20 vms //2000
+			createVM(brokerId,CloudSimExample6.noOfVms); //creating 20 vms //2000
 			/* The cloudlet list. */
-            createCloudlet(brokerId, noOfCloudlets); //2000
+            createCloudlet(brokerId, CloudSimExample6.noOfCloudlets); //2000
 
-            AppUtil.setNoOfCloudlets(noOfCloudlets);
-            AppUtil.setNoOfVms(noOfVms);
+            AppUtil.setNoOfCloudlets(CloudSimExample6.noOfCloudlets);
+            AppUtil.setNoOfVms(CloudSimExample6.noOfVms);
 
-//
-//            long startTime = System.currentTimeMillis();
-//
             broker.submitCloudletsAndVms();
-//
-//            long endTime = System.currentTimeMillis();
-//            double totalTimeTaken = (endTime - startTime)/1000.0;
-//            System.out.println("Total time taken for submitting the lists: " + totalTimeTaken);
-//
+
 //			// Fifth step: Starts the simulation
 //			CloudSim.startSimulation();
 //
@@ -283,7 +277,7 @@ public class CloudSimExample6Sub {
 
 		DatacenterBroker broker;
 		try {
-			broker = new DatacenterBroker("Broker");
+			broker = new DatacenterBroker("Broker_0");
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
