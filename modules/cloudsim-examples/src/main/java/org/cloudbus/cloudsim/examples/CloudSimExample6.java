@@ -19,7 +19,6 @@ import org.cloudbus.cloudsim.core.hazelcast.HzObjectCollection;
 import org.cloudbus.cloudsim.examples.roundrobin.RoundRobinDatacenterBroker;
 import org.cloudbus.cloudsim.examples.roundrobin.RoundRobinVmAllocationPolicy;
 import org.cloudbus.cloudsim.provisioners.BwProvisionerSimple;
-import org.cloudbus.cloudsim.provisioners.PeProvisionerSimple;
 import org.cloudbus.cloudsim.provisioners.RamProvisionerSimple;
 
 import java.util.ArrayList;
@@ -35,6 +34,9 @@ import java.util.Map;
 public class CloudSimExample6 {
     public static int noOfVms = 2000;
     public static int noOfCloudlets = 200;
+    public static int noOfHosts = 200;
+    public static int noOfDatacenters = 1500;
+
     public static boolean isRR = true;
 
     private static void createVM(int userId, int vms) {
@@ -118,8 +120,8 @@ public class CloudSimExample6 {
             // Second step: Create Datacenters
             //Datacenters are the resource providers in CloudSim. We need at least one of them to run a CloudSim simulation
             @SuppressWarnings("unused")
-            Datacenter[] datacenters = new Datacenter[1500];
-            for (int i = 0; i < 1500; i++) {
+            Datacenter[] datacenters = new Datacenter[noOfDatacenters];
+            for (int i = 0; i < noOfDatacenters; i++) {
                 datacenters[i] = createDatacenter("Datacenter_" + i);
             }
 
@@ -173,34 +175,36 @@ public class CloudSimExample6 {
         List<Pe> peList2 = AppBuilder.createMachines(mips, 2);
 
         //4. Create Hosts with its id and list of PEs and add them to the list of machines
-        int hostId = 0;
         int ram = 2048000; //host memory (MB)
         long storage = 400000000; //host storage
         int bw = 4000000;
 
-        hostList.add(
-                new Host(
-                        hostId,
-                        new RamProvisionerSimple(ram),
-                        new BwProvisionerSimple(bw),
-                        storage,
-                        peList1,
-                        new VmSchedulerTimeShared(peList1)
-                )
-        ); // This is our first machine
 
-        hostId++;
-
-        hostList.add(
-                new Host(
-                        hostId,
-                        new RamProvisionerSimple(ram),
-                        new BwProvisionerSimple(bw),
-                        storage,
-                        peList2,
-                        new VmSchedulerTimeShared(peList2)
-                )
-        ); // Second machine
+        for (int hostId = 0; hostId < noOfHosts; hostId++) {
+            if (hostId % 2 == 0) {
+                hostList.add(
+                        new Host(
+                                hostId,
+                                new RamProvisionerSimple(ram),
+                                new BwProvisionerSimple(bw),
+                                storage,
+                                peList1,
+                                new VmSchedulerTimeShared(peList1)
+                        )
+                ); // This is our first machine
+            } else {
+                hostList.add(
+                        new Host(
+                                hostId,
+                                new RamProvisionerSimple(ram),
+                                new BwProvisionerSimple(bw),
+                                storage,
+                                peList2,
+                                new VmSchedulerTimeShared(peList2)
+                        )
+                ); // Second machine
+            }
+        }
 
 
         // 5. Create a DatacenterCharacteristics object that stores the

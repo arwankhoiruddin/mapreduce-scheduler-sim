@@ -23,7 +23,6 @@ import org.cloudbus.cloudsim.core.SimEntity;
 import org.cloudbus.cloudsim.core.SimEvent;
 import org.cloudbus.cloudsim.core.hazelcast.HzObjectCollection;
 import org.cloudbus.cloudsim.core.hazelcast.runnables.SubmittedCloudletsRemover;
-import org.cloudbus.cloudsim.core.hazelcast.runnables.UserObjectsRemover;
 import org.cloudbus.cloudsim.core.hazelcast.runnables.CloudletListSubmitter;
 import org.cloudbus.cloudsim.core.hazelcast.runnables.VmListSubmitter;
 
