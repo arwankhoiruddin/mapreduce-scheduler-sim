@@ -88,7 +88,6 @@ public class CloudSimExample6 {
             // setting the owner of these Cloudlets
             cloudlet[i].setUserId(userId);
             HzObjectCollection.getUserCloudletList().put((cloudletsInit + i), cloudlet[i]);
-            System.out.println("putting cloudlet of key: " + (cloudletsInit + i));
         }
     }
 
