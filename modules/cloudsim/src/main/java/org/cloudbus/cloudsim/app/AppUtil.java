@@ -13,6 +13,8 @@ package org.cloudbus.cloudsim.app;
 import com.hazelcast.core.Hazelcast;
 import org.cloudbus.cloudsim.Log;
 import org.cloudbus.cloudsim.core.CloudSim;
+import org.cloudbus.cloudsim.core.constants.HazelSimConstants;
+import org.cloudbus.cloudsim.core.hazelcast.HzObjectCollection;
 
 public class AppUtil {
     private static long startTime;
@@ -28,6 +30,13 @@ public class AppUtil {
 
     public static void start() {
         startTime = System.currentTimeMillis();
+    }
+
+    public static int getOffset() {
+        int size = HzObjectCollection.getDeploymentInformation().size();
+        HzObjectCollection.getDeploymentInformation().
+                put(startTime, HazelSimConstants.HAZELCAST_INSTANCES_STARTED_SIMULTANIOUSLY);
+        return size;
     }
 
     public static int getNoOfCloudlets() {

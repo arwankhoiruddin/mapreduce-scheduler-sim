@@ -117,4 +117,14 @@ public class HzObjectCollection {
     public static IMap<Integer, Cloudlet> getCloudletReceivedList() {
         return instances[HazelSimConstants.LAST].getMap("cloudletReceivedList");
     }
+
+    /**
+     * Gets the cloudlet map.
+     * Map: Cloudlet Id -> Cloudlet
+     * @return the cloudlet list
+     */
+    public static IMap<Long, Integer> getDeploymentInformation() {
+        return instances[HazelSimConstants.FIRST].getMap("deploymentList");
+    }
+
 }

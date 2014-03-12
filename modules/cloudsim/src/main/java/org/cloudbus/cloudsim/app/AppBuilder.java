@@ -11,6 +11,7 @@
 package org.cloudbus.cloudsim.app;
 
 import org.cloudbus.cloudsim.Pe;
+import org.cloudbus.cloudsim.core.constants.HazelSimConstants;
 import org.cloudbus.cloudsim.provisioners.PeProvisionerSimple;
 
 import java.util.ArrayList;
@@ -26,5 +27,19 @@ public class AppBuilder {
             peList.add(new Pe(i, new PeProvisionerSimple(mips)));
         }
         return peList;
+    }
+
+    public static int getPartitionInit(int noOfParams, int offset) {
+        return (int) (offset * Math.ceil((noOfParams / (double) HazelSimConstants.NO_OF_PARALLEL_EXECUTIONS)));
+    }
+
+    public static int getPartitionFinal(int noOfParams, int offset) {
+        int temp = (int) ((offset + 1) * Math.ceil((noOfParams /
+                (double) HazelSimConstants.NO_OF_PARALLEL_EXECUTIONS)));
+        return temp < noOfParams ? temp : noOfParams;
+    }
+
+    public static int getPartitionSize(int noOfParams) {
+        return (int) Math.ceil((noOfParams / (double) HazelSimConstants.NO_OF_PARALLEL_EXECUTIONS));
     }
 }

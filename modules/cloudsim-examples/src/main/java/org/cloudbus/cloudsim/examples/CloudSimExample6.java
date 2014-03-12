@@ -32,14 +32,15 @@ import java.util.Map;
  * scalable simulations.
  */
 public class CloudSimExample6 {
-    public static int noOfVms = 2000;
-    public static int noOfCloudlets = 200;
-    public static int noOfHosts = 200;
-    public static int noOfDatacenters = 1500;
+    private static int noOfVms = 2000;
+    private static int noOfCloudlets = 200;
+    private static int noOfHosts = 200;  //2000 fills up the memory
+    private static int noOfDatacenters = 1500;
+    private static int offset;
 
     public static boolean isRR = true;
 
-    private static void createVM(int userId, int vms) {
+    private static void createVM(int userId) {
 
         //VM Parameters
         long size = 10000; //image size (MB)
@@ -49,26 +50,26 @@ public class CloudSimExample6 {
         int pesNumber = 1; //number of cpus
         String vmm = "Xen"; //VMM name
 
-        int vmsInit = (HazelSimConstants.NO_OF_PARALLEL_EXECUTIONS - 1) * vms / HazelSimConstants.NO_OF_PARALLEL_EXECUTIONS;
-        AppUtil.setVmsInit(vmsInit);
-        AppUtil.setVmsFinal(vms - 1);
         //create VMs
-        Vm[] vm = new Vm[vms - vmsInit];
+        Vm[] vm = new Vm[AppBuilder.getPartitionSize(noOfVms)];
 
-        for (int i = 0; i < (vms - vmsInit); i++) {
+        int init = AppBuilder.getPartitionInit(noOfVms, offset);
+        int end = AppBuilder.getPartitionFinal(noOfVms, offset);
+
+        AppUtil.setVmsInit(init);
+        AppUtil.setVmsFinal(end);
+
+        for (int i = init; i< end; i++) {
             if (isRR) {
-                vm[i] = new Vm(vmsInit + i, userId, mips, pesNumber, ram, bw, size, vmm, new CloudletSchedulerTimeShared());
+                vm[i] = new Vm(i, userId, mips, pesNumber, ram, bw, size, vmm, new CloudletSchedulerTimeShared());
             } else {
-                vm[i] = new Vm(vmsInit + i, userId, mips, pesNumber, ram, bw, size, vmm, new CloudletSchedulerSpaceShared());
+                vm[i] = new Vm(i, userId, mips, pesNumber, ram, bw, size, vmm, new CloudletSchedulerSpaceShared());
             }
-            HzObjectCollection.getUserVmList().put((vmsInit + i), vm[i]);
+            HzObjectCollection.getUserVmList().put(i, vm[i]);
         }
     }
 
-
-    private static void createCloudlet(int userId, int cloudlets) {
-        // Creates a container to store Cloudlets
-
+    private static void createCloudlet(int userId) {
         //cloudlet parameters
         long length = 10; //100
         long fileSize = 30; // 300
@@ -76,35 +77,29 @@ public class CloudSimExample6 {
         int pesNumber = 1;
         UtilizationModel utilizationModel = new UtilizationModelFull();
 
-        int cloudletsInit = (HazelSimConstants.NO_OF_PARALLEL_EXECUTIONS - 1) *
-                (cloudlets / HazelSimConstants.NO_OF_PARALLEL_EXECUTIONS);
+        Cloudlet[] cloudlet = new Cloudlet[AppBuilder.getPartitionSize(noOfCloudlets)];
 
-        AppUtil.setCloudletsInit(cloudletsInit);
-        AppUtil.setCloudletsFinal(cloudlets - 1);
+        int init = AppBuilder.getPartitionInit(noOfCloudlets, offset);
+        int end = AppBuilder.getPartitionFinal(noOfCloudlets, offset);
 
-        Cloudlet[] cloudlet = new Cloudlet[cloudlets - cloudletsInit];
+        AppUtil.setCloudletsInit(init);
+        AppUtil.setCloudletsFinal(end);
 
-        for (int i = 0; i < (cloudlets - cloudletsInit); i++) {
+        for (int i = init; i< end; i++) {
             int f = (int) ((Math.random() * 40) + 1);
-            cloudlet[i] = new Cloudlet(cloudletsInit + i, length * f, pesNumber, fileSize, outputSize, utilizationModel,
+            cloudlet[i] = new Cloudlet(i, length * f, pesNumber, fileSize, outputSize, utilizationModel,
                     utilizationModel, utilizationModel);
             // setting the owner of these Cloudlets
             cloudlet[i].setUserId(userId);
-            HzObjectCollection.getUserCloudletList().put((cloudletsInit + i), cloudlet[i]);
+            HzObjectCollection.getUserCloudletList().put(i, cloudlet[i]);
         }
     }
-
-    ////////////////////////// STATIC METHODS ///////////////////////
 
     /**
      * Creates main() to run this example
      */
     public static void main(String[] args) {
         AppUtil.start();
-        AppUtil.setIsMaster(true);
-        if (HazelSimConstants.NO_OF_PARALLEL_EXECUTIONS > 1) {
-            AppUtil.setIsPrimaryWorker(false);
-        }
         Log.printLine("# Starting CloudSimExample6...");
 
         try {
@@ -116,23 +111,37 @@ public class CloudSimExample6 {
 
             // Initialize the CloudSim library
             CloudSim.init(num_user, calendar, trace_flag);
+            offset = AppUtil.getOffset();
+
+            if (offset < HazelSimConstants.NO_OF_PARALLEL_EXECUTIONS - 1) {
+                AppUtil.setIsPrimaryWorker(false);
+            }
+
+            if (offset == 0) {
+                AppUtil.setIsMaster(true);
+            }
 
             // Second step: Create Datacenters
             //Datacenters are the resource providers in CloudSim. We need at least one of them to run a CloudSim simulation
+
+
             @SuppressWarnings("unused")
-            Datacenter[] datacenters = new Datacenter[noOfDatacenters];
-            for (int i = 0; i < noOfDatacenters; i++) {
+            Datacenter[] datacenters = new Datacenter[AppBuilder.getPartitionSize(noOfDatacenters)];
+            int init = AppBuilder.getPartitionInit(noOfDatacenters, offset);
+            int end = AppBuilder.getPartitionFinal(noOfDatacenters, offset);
+
+            for (int i = init; i< end; i++) {
                 datacenters[i] = createDatacenter("Datacenter_" + i);
             }
 
             //Third step: Create Broker
-            DatacenterBroker broker = createBroker("Broker_1");
+            DatacenterBroker broker = createBroker("Broker_" + offset);
             int brokerId = broker.getId();
 
             //Fourth step: Create VMs and Cloudlets and send them to broker
-            createVM(brokerId, noOfVms); //creating 20 vms //2000
+            createVM(brokerId); //creating 20 vms //2000
             /* The cloudlet list. */
-            createCloudlet(brokerId, noOfCloudlets); //2000
+            createCloudlet(brokerId); //2000
 
             AppUtil.setNoOfCloudlets(noOfCloudlets);
             AppUtil.setNoOfVms(noOfVms);
