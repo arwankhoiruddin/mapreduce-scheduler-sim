@@ -10,6 +10,7 @@
 package org.cloudbus.cloudsim.examples;
 
 import org.cloudbus.cloudsim.*;
+import org.cloudbus.cloudsim.app.AppBuilder;
 import org.cloudbus.cloudsim.app.AppUtil;
 import org.cloudbus.cloudsim.app.OutputLogger;
 import org.cloudbus.cloudsim.core.CloudSim;
@@ -32,8 +33,8 @@ import java.util.Map;
  * scalable simulations.
  */
 public class CloudSimExample6 {
-    public static int noOfVms = 5;
-    public static int noOfCloudlets = 2000;
+    public static int noOfVms = 2000;
+    public static int noOfCloudlets = 200;
     public static boolean isRR = true;
 
     private static void createVM(int userId, int vms) {
@@ -164,22 +165,12 @@ public class CloudSimExample6 {
         // 2. A Machine contains one or more PEs or CPUs/Cores. Therefore, should
         //    create a list to store these PEs before creating
         //    a Machine.
-        List<Pe> peList1 = new ArrayList<Pe>();
 
         int mips = 400000;
-
-        // 3. Create PEs and add these into the list.
-        //for a quad-core machine, a list of 4 PEs is required:
-        peList1.add(new Pe(0, new PeProvisionerSimple(mips))); // need to store Pe id and MIPS Rating
-        peList1.add(new Pe(1, new PeProvisionerSimple(mips)));
-        peList1.add(new Pe(2, new PeProvisionerSimple(mips)));
-        peList1.add(new Pe(3, new PeProvisionerSimple(mips)));
+        List<Pe> peList1 = AppBuilder.createMachines(mips, 4);
 
         //Another list, for a dual-core machine
-        List<Pe> peList2 = new ArrayList<Pe>();
-
-        peList2.add(new Pe(0, new PeProvisionerSimple(mips)));
-        peList2.add(new Pe(1, new PeProvisionerSimple(mips)));
+        List<Pe> peList2 = AppBuilder.createMachines(mips, 2);
 
         //4. Create Hosts with its id and list of PEs and add them to the list of machines
         int hostId = 0;
@@ -212,30 +203,6 @@ public class CloudSimExample6 {
         ); // Second machine
 
 
-//		To create a host with a space-shared allocation policy for PEs to VMs:
-/*		hostList.add(
-    			new Host(
-    				hostId,
-    				new RamProvisionerSimple(ram),
-    				new BwProvisionerSimple(bw),
-    				storage,
-                    peList1,
-    				new VmSchedulerSpaceShared(peList1)
-    			)
-    		);
-		hostId++;
-
-        hostList.add(
-            new Host(
-                hostId,
-                new RamProvisionerSimple(ram),
-                new BwProvisionerSimple(bw),
-                storage,
-                peList2,
-                new VmSchedulerSpaceShared(peList2)
-            )
-        );
- */
         // 5. Create a DatacenterCharacteristics object that stores the
         //    properties of a data center: architecture, OS, list of
         //    Machines, allocation policy: time- or space-shared, time zone
