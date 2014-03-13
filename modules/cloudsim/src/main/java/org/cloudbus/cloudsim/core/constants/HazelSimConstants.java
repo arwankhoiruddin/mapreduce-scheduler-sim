@@ -16,7 +16,8 @@ public final class HazelSimConstants {
     private HazelSimConstants() {
     }
 
-    public static final int HAZELCAST_INSTANCES_STARTED_SIMULTANIOUSLY = 4;
+    @Deprecated
+    public static final int HAZELCAST_INSTANCES_STARTED_SIMULTANIOUSLY = 1;  //testing purposes only
     public static final int NO_OF_PARALLEL_EXECUTIONS = 1;
     public static final int NO_OF_HAZELCAST_INSTANCES = NO_OF_PARALLEL_EXECUTIONS *
             HAZELCAST_INSTANCES_STARTED_SIMULTANIOUSLY;

@@ -127,28 +127,19 @@ public class DatacenterBroker extends SimEntity {
 
     public void submitCloudletsAndVms() throws InterruptedException {
         do {
-            for (int i = AppUtil.getVmsInit(); i <= AppUtil.getVmsFinal(); i++) {
-                vmExecutor.executeOnKeyOwner(new VmListSubmitter(i), i);
+            if (AppUtil.getIsMaster()) {
+                for (int i = 0; i <= AppUtil.getNoOfVms(); i++) {
+                    vmExecutor.executeOnKeyOwner(new VmListSubmitter(i), i);
+                }
             }
 
-            for (int i = AppUtil.getCloudletsInit(); i <= AppUtil.getCloudletsFinal(); i++) {
-                cloudletExecutor.executeOnKeyOwner(new CloudletListSubmitter(i), i);
+            if (AppUtil.getIsPrimaryWorker()) {
+                for (int i = 0; i <= AppUtil.getNoOfCloudlets(); i++) {
+                    cloudletExecutor.executeOnKeyOwner(new CloudletListSubmitter(i), i);
+                }
             }
-
-
-//        while (HzObjectCollection.getVmList().size() < AppUtil.getNoOfVms()
-//                //|| HzObjectCollection.getCloudletList().size() < AppUtil.getNoOfCloudlets()
-//                ) {
-//            try {
-////                System.out.println(" My size: " + HzObjectCollection.getVmList().size() + " Expected Size: " + AppUtil.getNoOfVms());
-////                System.out.println(" Cloudlet size: " + HzObjectCollection.getCloudletList().size() + " Expected Size: " + AppUtil.getNoOfCloudlets());
-//                Thread.sleep(10);
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
         } while (HzObjectCollection.getVmList().size() < AppUtil.getNoOfVms()
-                || HzObjectCollection.getCloudletList().size() < AppUtil.getNoOfCloudlets()
-                );
+                || HzObjectCollection.getCloudletList().size() < AppUtil.getNoOfCloudlets());
     }
 
     /**

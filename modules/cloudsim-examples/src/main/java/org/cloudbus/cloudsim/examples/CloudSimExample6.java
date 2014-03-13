@@ -32,10 +32,10 @@ import java.util.Map;
  * scalable simulations.
  */
 public class CloudSimExample6 {
-    private static int noOfVms = 2000;
-    private static int noOfCloudlets = 200;
-    private static int noOfHosts = 200;  //2000 fills up the memory
-    private static int noOfDatacenters = 1500;
+    private static int noOfVms = 2000;   //2000
+    private static int noOfCloudlets = 200;  //200
+    private static int noOfHosts = 200;  //200. // 2000 fills up the memory
+    private static int noOfDatacenters = 1500; //1500
     private static int offset;
 
     public static boolean isRR = true;
@@ -51,21 +51,18 @@ public class CloudSimExample6 {
         String vmm = "Xen"; //VMM name
 
         //create VMs
-        Vm[] vm = new Vm[AppBuilder.getPartitionSize(noOfVms)];
+        Vm vm;
 
         int init = AppBuilder.getPartitionInit(noOfVms, offset);
         int end = AppBuilder.getPartitionFinal(noOfVms, offset);
 
-        AppUtil.setVmsInit(init);
-        AppUtil.setVmsFinal(end);
-
-        for (int i = init; i< end; i++) {
+        for (int i = init; i < end; i++) {
             if (isRR) {
-                vm[i] = new Vm(i, userId, mips, pesNumber, ram, bw, size, vmm, new CloudletSchedulerTimeShared());
+                vm = new Vm(i, userId, mips, pesNumber, ram, bw, size, vmm, new CloudletSchedulerTimeShared());
             } else {
-                vm[i] = new Vm(i, userId, mips, pesNumber, ram, bw, size, vmm, new CloudletSchedulerSpaceShared());
+                vm = new Vm(i, userId, mips, pesNumber, ram, bw, size, vmm, new CloudletSchedulerSpaceShared());
             }
-            HzObjectCollection.getUserVmList().put(i, vm[i]);
+            HzObjectCollection.getUserVmList().put(i, vm);
         }
     }
 
@@ -77,21 +74,18 @@ public class CloudSimExample6 {
         int pesNumber = 1;
         UtilizationModel utilizationModel = new UtilizationModelFull();
 
-        Cloudlet[] cloudlet = new Cloudlet[AppBuilder.getPartitionSize(noOfCloudlets)];
+        Cloudlet cloudlet;
 
         int init = AppBuilder.getPartitionInit(noOfCloudlets, offset);
         int end = AppBuilder.getPartitionFinal(noOfCloudlets, offset);
 
-        AppUtil.setCloudletsInit(init);
-        AppUtil.setCloudletsFinal(end);
-
-        for (int i = init; i< end; i++) {
+        for (int i = init; i < end; i++) {
             int f = (int) ((Math.random() * 40) + 1);
-            cloudlet[i] = new Cloudlet(i, length * f, pesNumber, fileSize, outputSize, utilizationModel,
+            cloudlet = new Cloudlet(i, length * f, pesNumber, fileSize, outputSize, utilizationModel,
                     utilizationModel, utilizationModel);
             // setting the owner of these Cloudlets
-            cloudlet[i].setUserId(userId);
-            HzObjectCollection.getUserCloudletList().put(i, cloudlet[i]);
+            cloudlet.setUserId(userId);
+            HzObjectCollection.getUserCloudletList().put(i, cloudlet);
         }
     }
 
@@ -113,8 +107,8 @@ public class CloudSimExample6 {
             CloudSim.init(num_user, calendar, trace_flag);
             offset = AppUtil.getOffset();
 
-            if (offset < HazelSimConstants.NO_OF_PARALLEL_EXECUTIONS - 1) {
-                AppUtil.setIsPrimaryWorker(false);
+            if (offset == HazelSimConstants.NO_OF_PARALLEL_EXECUTIONS - 1) {
+                AppUtil.setIsPrimaryWorker(true);
             }
 
             if (offset == 0) {
@@ -124,14 +118,12 @@ public class CloudSimExample6 {
             // Second step: Create Datacenters
             //Datacenters are the resource providers in CloudSim. We need at least one of them to run a CloudSim simulation
 
-
             @SuppressWarnings("unused")
-            Datacenter[] datacenters = new Datacenter[AppBuilder.getPartitionSize(noOfDatacenters)];
             int init = AppBuilder.getPartitionInit(noOfDatacenters, offset);
             int end = AppBuilder.getPartitionFinal(noOfDatacenters, offset);
 
             for (int i = init; i< end; i++) {
-                datacenters[i] = createDatacenter("Datacenter_" + i);
+                createDatacenter("Datacenter_" + i);
             }
 
             //Third step: Create Broker
@@ -148,22 +140,20 @@ public class CloudSimExample6 {
 
             broker.submitCloudletsAndVms();
 
-            // Fifth step: Starts the simulation
-            CloudSim.startSimulation();
-
-            // Final step: Print results when simulation is over
-            Map<Integer, Cloudlet> newList = HzObjectCollection.getCloudletReceivedList();
-
-            CloudSim.stopSimulation();
-
-            OutputLogger.printCloudletList(newList);
-
-            Log.printLine("# CloudSimExample6 finished!");
+            if (AppUtil.getIsMaster()) {
+                // Fifth step: Starts the simulation
+                CloudSim.startSimulation();
+                // Final step: Print results when simulation is over
+                Map<Integer, Cloudlet> newList = HzObjectCollection.getCloudletReceivedList();
+                CloudSim.stopSimulation();
+                OutputLogger.printCloudletList(newList);
+                Log.printLine("# CloudSimExample6 finished!");
+            }
         } catch (Exception e) {
             e.printStackTrace();
             Log.printLine("# The simulation has been terminated due to an unexpected error");
         }
-        AppUtil.shutdown();
+        AppUtil.shutdownLogs();
     }
 
     private static Datacenter createDatacenter(String name) {
@@ -188,8 +178,10 @@ public class CloudSimExample6 {
         long storage = 400000000; //host storage
         int bw = 4000000;
 
+        int init = AppBuilder.getPartitionInit(noOfHosts, offset);
+        int end = AppBuilder.getPartitionFinal(noOfHosts, offset);
 
-        for (int hostId = 0; hostId < noOfHosts; hostId++) {
+        for (int hostId = init; hostId < end; hostId++) {
             if (hostId % 2 == 0) {
                 hostList.add(
                         new Host(

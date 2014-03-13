@@ -18,8 +18,8 @@ import org.cloudbus.cloudsim.core.hazelcast.HzObjectCollection;
 
 public class AppUtil {
     private static long startTime;
-    private static boolean isMaster;
-    private static boolean isPrimaryWorker = true;
+    private static boolean isMaster = false;
+    private static boolean isPrimaryWorker = false;
     private static int vmsInit;
     private static int vmsFinal;
     private static int cloudletsInit;
