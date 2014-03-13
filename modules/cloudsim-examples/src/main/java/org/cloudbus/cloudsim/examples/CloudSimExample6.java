@@ -34,7 +34,7 @@ import java.util.Map;
 public class CloudSimExample6 {
     private static int noOfVms = 2000;   //2000
     private static int noOfCloudlets = 200;  //200
-    private static int noOfHosts = 200;  //200. // 2000 fills up the memory
+    private static int noOfHosts = 3200;  // 3200 fills up the memory
     private static int noOfDatacenters = 1500; //1500
     private static int offset;
 
