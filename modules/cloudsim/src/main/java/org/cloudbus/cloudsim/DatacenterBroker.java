@@ -127,19 +127,18 @@ public class DatacenterBroker extends SimEntity {
 
     public void submitCloudletsAndVms() throws InterruptedException {
         do {
-            if (AppUtil.getIsMaster()) {
-                for (int i = 0; i <= AppUtil.getNoOfVms(); i++) {
+                for (int i = AppUtil.getVmsInit(); i < AppUtil.getVmsFinal(); i++) {
                     vmExecutor.executeOnKeyOwner(new VmListSubmitter(i), i);
                 }
-            }
 
-            if (AppUtil.getIsPrimaryWorker()) {
-                for (int i = 0; i <= AppUtil.getNoOfCloudlets(); i++) {
+                for (int i = AppUtil.getCloudletsInit(); i < AppUtil.getCloudletsFinal(); i++) {
                     cloudletExecutor.executeOnKeyOwner(new CloudletListSubmitter(i), i);
                 }
-            }
-        } while (HzObjectCollection.getVmList().size() < AppUtil.getNoOfVms()
+
+        }
+    while (HzObjectCollection.getVmList().size() < AppUtil.getNoOfVms()
                 || HzObjectCollection.getCloudletList().size() < AppUtil.getNoOfCloudlets());
+//    {Thread.sleep(10);}
     }
 
     /**

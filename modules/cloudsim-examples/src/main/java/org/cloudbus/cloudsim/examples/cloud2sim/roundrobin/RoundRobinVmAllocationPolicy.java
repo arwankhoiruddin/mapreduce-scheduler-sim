@@ -1,4 +1,4 @@
-package org.cloudbus.cloudsim.examples.roundrobin;
+package org.cloudbus.cloudsim.examples.cloud2sim.roundrobin;
 
 import java.util.HashMap;
 import java.util.List;
@@ -8,7 +8,6 @@ import org.cloudbus.cloudsim.Host;
 import org.cloudbus.cloudsim.Log;
 import org.cloudbus.cloudsim.Vm;
 import org.cloudbus.cloudsim.core.CloudSim;
-import org.cloudbus.cloudsim.examples.roundrobin.CircularHostList;
 
 /**
  * Round-Robin {@link Vm} allocation policy.

@@ -42,4 +42,14 @@ public class AppBuilder {
     public static int getPartitionSize(int noOfParams) {
         return (int) Math.ceil((noOfParams / (double) HazelSimConstants.NO_OF_PARALLEL_EXECUTIONS));
     }
+
+    public static void initWorkers(int offset) {
+        if (offset == HazelSimConstants.NO_OF_PARALLEL_EXECUTIONS - 1) {
+            AppUtil.setIsPrimaryWorker(true);
+        }
+
+        if (offset == 0) {
+            AppUtil.setIsMaster(true);
+        }
+    }
 }
