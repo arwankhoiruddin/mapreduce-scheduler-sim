@@ -10,6 +10,7 @@
 
 package org.cloudbus.cloudsim.core.hazelcast.runnables;
 
+import com.hazelcast.core.IMap;
 import org.cloudbus.cloudsim.core.hazelcast.HzObjectCollection;
 
 @Deprecated
@@ -17,7 +18,13 @@ public class UserObjectsRemover implements Runnable {
 
     @Override
     public void run() {
-        HzObjectCollection.getUserVmList().clear();
-        HzObjectCollection.getUserCloudletList().clear();
+        IMap cloudletMap = HzObjectCollection.getUserCloudletList();
+        IMap vmMap = HzObjectCollection.getUserVmList();
+        for (Object key : cloudletMap.localKeySet()) {
+            HzObjectCollection.getUserCloudletList().remove(key);
+        }
+        for (Object key : vmMap.localKeySet()) {
+            HzObjectCollection.getUserVmList().remove(key);
+        }
     }
 }

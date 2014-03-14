@@ -19,7 +19,6 @@ import java.util.concurrent.Future;
 import com.hazelcast.core.IExecutorService;
 import com.hazelcast.core.IMap;
 import com.hazelcast.core.Member;
-import org.cloudbus.cloudsim.app.AppUtil;
 import org.cloudbus.cloudsim.core.CloudSim;
 import org.cloudbus.cloudsim.core.CloudSimTags;
 import org.cloudbus.cloudsim.core.SimEntity;
@@ -27,7 +26,6 @@ import org.cloudbus.cloudsim.core.SimEvent;
 import org.cloudbus.cloudsim.core.hazelcast.HzObjectCollection;
 import org.cloudbus.cloudsim.core.hazelcast.runnables.SubmittedCloudletsRemover;
 import org.cloudbus.cloudsim.core.hazelcast.callables.CloudletListSubmitter;
-import org.cloudbus.cloudsim.core.hazelcast.runnables.UserObjectsRemover;
 import org.cloudbus.cloudsim.core.hazelcast.callables.VmListSubmitter;
 
 /**
