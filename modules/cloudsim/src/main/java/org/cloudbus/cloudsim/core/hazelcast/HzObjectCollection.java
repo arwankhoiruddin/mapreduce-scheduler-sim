@@ -13,6 +13,7 @@ package org.cloudbus.cloudsim.core.hazelcast;
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.core.IMap;
 import org.cloudbus.cloudsim.Cloudlet;
+import org.cloudbus.cloudsim.Datacenter;
 import org.cloudbus.cloudsim.Log;
 import org.cloudbus.cloudsim.Vm;
 import org.cloudbus.cloudsim.core.constants.HazelSimConstants;
@@ -125,6 +126,10 @@ public class HzObjectCollection {
      */
     public static IMap<Long, Integer> getDeploymentInformation() {
         return instances[HazelSimConstants.FIRST].getMap("deploymentList");
+    }
+
+    public static IMap<Integer, Datacenter> getDatacenterList() {
+        return instances[HazelSimConstants.FIRST].getMap("datacenterList");
     }
 
 }

@@ -9,6 +9,8 @@
 
 package org.cloudbus.cloudsim.examples.cloud2sim;
 
+import com.hazelcast.core.IExecutorService;
+import com.hazelcast.core.IMap;
 import org.cloudbus.cloudsim.*;
 import org.cloudbus.cloudsim.app.AppBuilder;
 import org.cloudbus.cloudsim.app.AppUtil;
@@ -114,6 +116,9 @@ public class CloudSimExample6 {
 
             // Second step: Create Datacenters
             //Datacenters are the resource providers in CloudSim. We need at least one of them to run a CloudSim simulation
+
+            IMap<Integer, Datacenter> datacenter = HzObjectCollection.getDatacenterList();
+            IExecutorService dcExecutor = HzObjectCollection.getFirstInstance().getExecutorService("dcExecutor");
 
             List<Datacenter> datacenters = new ArrayList<Datacenter>();
             ExecutorService pool = Executors.newFixedThreadPool(SimulationConstants.noOfDatacenters);

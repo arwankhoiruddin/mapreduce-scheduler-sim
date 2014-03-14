@@ -17,11 +17,11 @@ public final class HazelSimConstants {
     }
 
     public static final int HAZELCAST_INSTANCES_STARTED_SIMULTANIOUSLY = 1;  //testing purposes only
-    public static final int NO_OF_PARALLEL_EXECUTIONS = 1;
+    public static final int NO_OF_PARALLEL_EXECUTIONS = 2;
     public static final int NO_OF_HAZELCAST_INSTANCES = NO_OF_PARALLEL_EXECUTIONS *
             HAZELCAST_INSTANCES_STARTED_SIMULTANIOUSLY;
 
-    public static final String HAZELCAST_CONFIG_FILE = "conf/hazelcast.xml";
+    public static final String HAZELCAST_CONFIG_FILE = "conf/local/hazelcast.xml";
     public static final String HAZELCAST_CONFIG_FILE_NOT_FOUND_ERROR =
         "Hazelcast Configuration File not found. Using the default.";
     public static final String DEFAULT_HAZELCAST_ADDRESS = "127.0.0.1:5701";

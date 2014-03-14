@@ -6,6 +6,9 @@ mvn clean install
 skipping the tests:
 $ mvn clean install -Dmaven.skip.test=true
 
+To skip executing the tests:
+$ mvn clean install -DskipTests
+
 Built distribution inside distribution/target.
 $ tar -xzvf distribution/target/cloudsim-3.1-SNAPSHOT.tar.gz
 $ mv cloudsim-3.1-SNAPSHOT/jars/cloudsim-3.1-SNAPSHOT.jar cloudsim-3.1-SNAPSHOT/jars/cloudsim-examples-3.1-SNAPSHOT.jar .

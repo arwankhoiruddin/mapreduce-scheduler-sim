@@ -10,12 +10,17 @@
 
 package org.cloudbus.cloudsim.examples.cloud2sim.callables;
 
+import com.hazelcast.core.HazelcastInstance;
+import com.hazelcast.core.HazelcastInstanceAware;
 import org.cloudbus.cloudsim.Datacenter;
 import org.cloudbus.cloudsim.examples.cloud2sim.util.DatacenterCreator;
+
+import java.io.Serializable;
 import java.util.concurrent.Callable;
 
-public class DatacenterCreatorCallable implements Callable {
+public class DatacenterCreatorCallable implements Callable<Datacenter>, Serializable, HazelcastInstanceAware {
     private String name;
+    private transient HazelcastInstance hazelcastInstance;
 
     public DatacenterCreatorCallable(String name) {
         this.name = name;
@@ -24,5 +29,10 @@ public class DatacenterCreatorCallable implements Callable {
     @Override
     public Datacenter call() throws Exception {
         return DatacenterCreator.createDatacenter(name);
+    }
+
+    @Override
+    public void setHazelcastInstance(HazelcastInstance hazelcastInstance) {
+        this.hazelcastInstance = hazelcastInstance;
     }
 }

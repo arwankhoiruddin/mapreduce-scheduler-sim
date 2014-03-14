@@ -12,6 +12,7 @@ package org.cloudbus.cloudsim.core.hazelcast.runnables;
 
 import org.cloudbus.cloudsim.core.hazelcast.HzObjectCollection;
 
+@Deprecated
 public class UserObjectsRemover implements Runnable {
 
     @Override

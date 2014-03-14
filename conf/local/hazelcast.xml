@@ -207,6 +207,7 @@
                 <serializer type-class="org.cloudbus.cloudsim.CloudletScheduler"> org.cloudbus.cloudsim.serializer.CloudletSchedulerXmlSerializer</serializer>
                 <serializer type-class="org.cloudbus.cloudsim.Cloudlet"> org.cloudbus.cloudsim.serializer.CloudletXmlSerializer</serializer>
                 <serializer type-class="org.cloudbus.cloudsim.UtilizationModel"> org.cloudbus.cloudsim.serializer.UtilizationModelXmlSerializer</serializer>
+                <serializer type-class="org.cloudbus.cloudsim.Datacenter">org.cloudbus.cloudsim.serializer.DatacenterXmlSerializer</serializer>
 
         </serializers>
     </serialization>

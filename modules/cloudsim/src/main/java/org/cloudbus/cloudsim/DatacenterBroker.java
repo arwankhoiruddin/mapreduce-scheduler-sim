@@ -13,9 +13,12 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 
 import com.hazelcast.core.IExecutorService;
 import com.hazelcast.core.IMap;
+import com.hazelcast.core.Member;
 import org.cloudbus.cloudsim.app.AppUtil;
 import org.cloudbus.cloudsim.core.CloudSim;
 import org.cloudbus.cloudsim.core.CloudSimTags;
@@ -23,8 +26,9 @@ import org.cloudbus.cloudsim.core.SimEntity;
 import org.cloudbus.cloudsim.core.SimEvent;
 import org.cloudbus.cloudsim.core.hazelcast.HzObjectCollection;
 import org.cloudbus.cloudsim.core.hazelcast.runnables.SubmittedCloudletsRemover;
-import org.cloudbus.cloudsim.core.hazelcast.runnables.CloudletListSubmitter;
-import org.cloudbus.cloudsim.core.hazelcast.runnables.VmListSubmitter;
+import org.cloudbus.cloudsim.core.hazelcast.callables.CloudletListSubmitter;
+import org.cloudbus.cloudsim.core.hazelcast.runnables.UserObjectsRemover;
+import org.cloudbus.cloudsim.core.hazelcast.callables.VmListSubmitter;
 
 /**
  * DatacenterBroker represents a broker acting on behalf of a user. It hides VM management, as vm
@@ -125,20 +129,19 @@ public class DatacenterBroker extends SimEntity {
         HzObjectCollection.getVmList().putAll(list);
     }
 
-    public void submitCloudletsAndVms() throws InterruptedException {
-        do {
-                for (int i = AppUtil.getVmsInit(); i < AppUtil.getVmsFinal(); i++) {
-                    vmExecutor.executeOnKeyOwner(new VmListSubmitter(i), i);
-                }
-
-                for (int i = AppUtil.getCloudletsInit(); i < AppUtil.getCloudletsFinal(); i++) {
-                    cloudletExecutor.executeOnKeyOwner(new CloudletListSubmitter(i), i);
-                }
-
+    public void submitCloudletsAndVms() throws InterruptedException, ExecutionException {
+        Map <Member, Future< Integer >> vmResult =
+                vmExecutor.submitToAllMembers(new VmListSubmitter());
+        int vmSize = 0;
+        for (Future < Integer > future : vmResult.values ()) {
+            vmSize += future.get();
         }
-    while (HzObjectCollection.getVmList().size() < AppUtil.getNoOfVms()
-                || HzObjectCollection.getCloudletList().size() < AppUtil.getNoOfCloudlets());
-//    {Thread.sleep(10);}
+        Map <Member, Future< Integer >> cloudletResult =
+                cloudletExecutor.submitToAllMembers(new CloudletListSubmitter());
+        int cloudletSize = 0;
+        for (Future < Integer > future : cloudletResult.values ()) {
+            cloudletSize += future.get();
+        }
     }
 
     /**

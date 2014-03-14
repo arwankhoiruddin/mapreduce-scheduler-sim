@@ -8,30 +8,31 @@
  * Copyright (c) 2014, Pradeeban Kathiravelu <pradeeban.kathiravelu@tecnico.ulisboa.pt>
  */
 
-package org.cloudbus.cloudsim.core.hazelcast.runnables;
+package org.cloudbus.cloudsim.core.hazelcast.callables;
 
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.core.HazelcastInstanceAware;
+import com.hazelcast.core.IMap;
 import org.cloudbus.cloudsim.core.hazelcast.HzObjectCollection;
 
 import java.io.Serializable;
+import java.util.concurrent.Callable;
 
-public class VmListSubmitter implements Runnable, Serializable, HazelcastInstanceAware {
+public class VmListSubmitter implements Callable, Serializable, HazelcastInstanceAware {
     private transient HazelcastInstance hazelcastInstance;
-    private final int id;
-
-    public VmListSubmitter(int id) {
-        this.id = id;
-    }
-
-    public void run() {
-        HzObjectCollection.getVmList().put(HzObjectCollection.getUserVmList().get(id).getId(),
-                HzObjectCollection.getUserVmList().get(id));
-        HzObjectCollection.getUserVmList().remove(id);
-    }
 
     @Override
     public void setHazelcastInstance(HazelcastInstance hazelcastInstance) {
         this.hazelcastInstance = hazelcastInstance;
+    }
+
+    @Override
+    public Integer call() throws Exception {
+        IMap map = HzObjectCollection.getUserVmList();
+        for (Object key : map.localKeySet()) {
+            HzObjectCollection.getVmList().put(HzObjectCollection.getUserVmList().get(key).getId(),
+                    HzObjectCollection.getUserVmList().get(key));
+        }
+        return map.localKeySet().size();
     }
 }

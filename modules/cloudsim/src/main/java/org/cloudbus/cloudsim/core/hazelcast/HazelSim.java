@@ -16,12 +16,14 @@ import com.hazelcast.core.Hazelcast;
 import com.hazelcast.core.HazelcastInstance;
 import org.cloudbus.cloudsim.Cloudlet;
 import org.cloudbus.cloudsim.CloudletScheduler;
+import org.cloudbus.cloudsim.Datacenter;
 import org.cloudbus.cloudsim.Host;
 import org.cloudbus.cloudsim.Log;
 import org.cloudbus.cloudsim.Vm;
 import org.cloudbus.cloudsim.core.constants.HazelSimConstants;
 import org.cloudbus.cloudsim.serializer.CloudletSchedulerXmlSerializer;
 import org.cloudbus.cloudsim.serializer.CloudletXmlSerializer;
+import org.cloudbus.cloudsim.serializer.DatacenterXmlSerializer;
 import org.cloudbus.cloudsim.serializer.HostXmlSerializer;
 import org.cloudbus.cloudsim.serializer.VmXmlSerializer;
 
@@ -48,6 +50,8 @@ public class HazelSim {
             new CloudletSchedulerXmlSerializer()).setTypeClass(CloudletScheduler.class);
         SerializerConfig sc2 = new SerializerConfig().setImplementation(
             new HostXmlSerializer()).setTypeClass(Host.class);
+        SerializerConfig sc3 = new SerializerConfig().setImplementation(
+            new DatacenterXmlSerializer()).setTypeClass(Datacenter.class);
 
         try {
             cfg = new FileSystemXmlConfig(HazelSimConstants.HAZELCAST_CONFIG_FILE);
@@ -59,6 +63,7 @@ public class HazelSim {
         cfg.getSerializationConfig().addSerializerConfig(sc0);
         cfg.getSerializationConfig().addSerializerConfig(sc1);
         cfg.getSerializationConfig().addSerializerConfig(sc2);
+        cfg.getSerializationConfig().addSerializerConfig(sc3);
         // wait for all executions to come alive
         cfg.setProperty("hazelcast.initial.min.cluster.size", String.valueOf(HazelSimConstants.NO_OF_PARALLEL_EXECUTIONS));
     }
