@@ -11,8 +11,8 @@
 package org.cloudbus.cloudsim.examples.cloud2sim.constants;
 
 public class SimulationConstants {
-    public static int noOfVms = 2000;   //2000
-    public static int noOfCloudlets = 2000;  //200
+    public static int noOfVms = 20;   //2000
+    public static int noOfCloudlets = 20;  //200
     public static int noOfHosts = 1600;  // 3200 fills up the memory
     public static int noOfDatacenters = 1500; //1500
     public static boolean isRR = true;

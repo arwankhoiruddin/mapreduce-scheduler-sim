@@ -117,9 +117,6 @@ public class CloudSimExample6 {
             // Second step: Create Datacenters
             //Datacenters are the resource providers in CloudSim. We need at least one of them to run a CloudSim simulation
 
-            IMap<Integer, Datacenter> datacenter = HzObjectCollection.getDatacenterList();
-            IExecutorService dcExecutor = HzObjectCollection.getFirstInstance().getExecutorService("dcExecutor");
-
             List<Datacenter> datacenters = new ArrayList<Datacenter>();
             ExecutorService pool = Executors.newFixedThreadPool(SimulationConstants.noOfDatacenters);
             for (int i = 0; i < SimulationConstants.noOfDatacenters; i++) {
