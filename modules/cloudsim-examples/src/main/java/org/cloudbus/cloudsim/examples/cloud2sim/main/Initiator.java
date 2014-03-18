@@ -8,7 +8,7 @@
  * Copyright (c) 2014, Pradeeban Kathiravelu <pradeeban.kathiravelu@tecnico.ulisboa.pt>
  */
 
-package org.cloudbus.cloudsim.examples.hazelcast;
+package org.cloudbus.cloudsim.examples.cloud2sim.main;
 
 import org.cloudbus.cloudsim.examples.hazelcast.instances.ObjectCollection;
 

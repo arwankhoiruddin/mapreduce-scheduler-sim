@@ -13,7 +13,7 @@ package org.cloudbus.cloudsim.examples.cloud2sim.callables;
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.core.HazelcastInstanceAware;
 import org.cloudbus.cloudsim.Datacenter;
-import org.cloudbus.cloudsim.examples.cloud2sim.util.DatacenterCreator;
+import org.cloudbus.cloudsim.examples.cloud2sim.core.DatacenterCreator;
 
 import java.io.Serializable;
 import java.util.concurrent.Callable;

@@ -16,4 +16,5 @@ public class SimulationConstants {
     public static int noOfHosts = 1600;  // 3200 fills up the memory
     public static int noOfDatacenters = 1500; //1500
     public static boolean isRR = true;
+    public static int numUser = 200;   // number of grid users
 }

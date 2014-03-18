@@ -14,12 +14,12 @@ $ tar -xzvf distribution/target/cloudsim-3.1-SNAPSHOT.tar.gz
 $ mv cloudsim-3.1-SNAPSHOT/jars/cloudsim-3.1-SNAPSHOT.jar cloudsim-3.1-SNAPSHOT/jars/cloudsim-examples-3.1-SNAPSHOT.jar .
 
 To run an existing example:
-$ java -classpath cloudsim-3.1-SNAPSHOT.jar:cloudsim-examples-3.1-SNAPSHOT.jar:lib/hazelcast-3.1.6.jar org.cloudbus.cloudsim.examples.cloud2sim.CloudSimExample6
+$ java -classpath cloudsim-3.1-SNAPSHOT.jar:cloudsim-examples-3.1-SNAPSHOT.jar:lib/hazelcast-3.1.6.jar org.cloudbus.cloudsim.examples.cloud2sim.main.Simulator
 
 $ java -classpath cloudsim-3.1-SNAPSHOT.jar:cloudsim-examples-3.1-SNAPSHOT.jar:lib/hazelcast-3.1.6.jar org.cloudbus.cloudsim.examples.hazelcast.instances.ObjectCollectionTest
 
 To initiate an instance without running any specific code:
-$ java -classpath cloudsim-3.1-SNAPSHOT.jar:cloudsim-examples-3.1-SNAPSHOT.jar:lib/hazelcast-3.1.6.jar org.cloudbus.cloudsim.examples.hazelcast.Initiator
+$ java -classpath cloudsim-3.1-SNAPSHOT.jar:cloudsim-examples-3.1-SNAPSHOT.jar:lib/hazelcast-3.1.6.jar org.cloudbus.cloudsim.examples.cloud2sim.main.Initiator
 
 Copy the files to the other instances.
 $ scp -r . pradeeban@146.193.41.145:/home/pradeeban
