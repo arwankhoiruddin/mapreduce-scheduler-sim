@@ -37,9 +37,6 @@ import org.cloudbus.cloudsim.hazelcast.callables.VmListSubmitter;
  * DatacenterBroker represents a broker acting on behalf of a user. It hides VM management, as vm
  * creation, submission of cloudlets to this VMs and destruction of VMs.
  *
- * @author Rodrigo N. Calheiros
- * @author Anton Beloglazov
- * @since CloudSim Toolkit 1.0
  */
 public class HzDatacenterBroker extends DatacenterBroker {
 
@@ -52,42 +49,7 @@ public class HzDatacenterBroker extends DatacenterBroker {
     private IExecutorService cloudletExecutor;
     private IExecutorService cloudletRemoverExecutor;
 
-    /**
-     * The vms requested.
-     */
-    protected int vmsRequested;
-
-    /**
-     * The vms acks.
-     */
-    protected int vmsAcks;
-
-    /**
-     * The vms destroyed.
-     */
-    protected int vmsDestroyed;
-
-    /**
-     * The datacenter ids list.
-     */
-    protected List<Integer> datacenterIdsList;
-
-    /**
-     * The datacenter requested ids list.
-     */
-    protected List<Integer> datacenterRequestedIdsList;
-
-    /**
-     * The vms to datacenters map.
-     */
-    protected Map<Integer, Integer> vmsToDatacentersMap;
-
-    /**
-     * The datacenter characteristics list.
-     */
-    protected Map<Integer, DatacenterCharacteristics> datacenterCharacteristicsList;
-
-    protected static List<Integer> submittedCloudletIds = new ArrayList<Integer>();
+    protected static List<Integer> submittedCloudletIds = new ArrayList<>();
 
     /**
      * Created a new DatacenterBroker object.
@@ -172,42 +134,6 @@ public class HzDatacenterBroker extends DatacenterBroker {
     }
 
     /**
-     * Process the return of a request for the characteristics of a PowerDatacenter.
-     *
-     * @param ev a SimEvent object
-     * @pre ev != $null
-     * @post $none
-     */
-    protected void processResourceCharacteristics(SimEvent ev) {
-        DatacenterCharacteristics characteristics = (DatacenterCharacteristics) ev.getData();
-        getDatacenterCharacteristicsList().put(characteristics.getId(), characteristics);
-
-        if (getDatacenterCharacteristicsList().size() == getDatacenterIdsList().size()) {
-            setDatacenterRequestedIdsList(new ArrayList<Integer>());
-            createVmsInDatacenter(getDatacenterIdsList().get(0));
-        }
-    }
-
-    /**
-     * Process a request for the characteristics of a PowerDatacenter.
-     *
-     * @param ev a SimEvent object
-     * @pre ev != $null
-     * @post $none
-     */
-    protected void processResourceCharacteristicsRequest(SimEvent ev) {
-        setDatacenterIdsList(CloudSim.getCloudResourceList());
-        setDatacenterCharacteristicsList(new HashMap<Integer, DatacenterCharacteristics>());
-
-        Log.printConcatLine(CloudSim.clock(), ": ", getName(), ": Cloud Resource List received with ",
-                getDatacenterIdsList().size(), " resource(s)");
-
-        for (Integer datacenterId : getDatacenterIdsList()) {
-            sendNow(datacenterId, CloudSimTags.RESOURCE_CHARACTERISTICS, getId());
-        }
-    }
-
-    /**
      * Process the ack received due to a request for VM creation.
      *
      * @param ev a SimEvent object
@@ -286,22 +212,6 @@ public class HzDatacenterBroker extends DatacenterBroker {
             }
 
         }
-    }
-
-    /**
-     * Overrides this method when making a new and different type of Broker. This method is called
-     *
-     * @param ev a SimEvent object
-     * @pre ev != null
-     * @post $none
-     */
-    protected void processOtherEvent(SimEvent ev) {
-        if (ev == null) {
-            Log.printConcatLine(getName(), ".processOtherEvent(): ", "Error - an event is null.");
-            return;
-        }
-
-        Log.printConcatLine(getName(), ".processOtherEvent(): Error - event unknown by this DatacenterBroker.");
     }
 
     /**
@@ -387,168 +297,4 @@ public class HzDatacenterBroker extends DatacenterBroker {
         }
         HzObjectCollection.getVmsCreatedList().clear();
     }
-
-    /**
-     * Send an internal event communicating the end of the simulation.
-     *
-     * @pre $none
-     * @post $none
-     */
-    protected void finishExecution() {
-        sendNow(getId(), CloudSimTags.END_OF_SIMULATION);
-    }
-
-    /*
-     * (non-Javadoc)
-     * @see cloudsim.core.SimEntity#shutdownEntity()
-     */
-    @Override
-    public void shutdownEntity() {
-        Log.printConcatLine(getName(), " is shutting down...");
-    }
-
-    /*
-     * (non-Javadoc)
-     * @see cloudsim.core.SimEntity#startEntity()
-     */
-    @Override
-    public void startEntity() {
-        Log.printConcatLine(getName(), " is starting...");
-        schedule(getId(), 0, CloudSimTags.RESOURCE_CHARACTERISTICS_REQUEST);
-    }
-
-    /**
-     * Gets the vms requested.
-     *
-     * @return the vms requested
-     */
-    protected int getVmsRequested() {
-        return vmsRequested;
-    }
-
-    /**
-     * Sets the vms requested.
-     *
-     * @param vmsRequested the new vms requested
-     */
-    protected void setVmsRequested(int vmsRequested) {
-        this.vmsRequested = vmsRequested;
-    }
-
-    /**
-     * Gets the vms acks.
-     *
-     * @return the vms acks
-     */
-    protected int getVmsAcks() {
-        return vmsAcks;
-    }
-
-    /**
-     * Sets the vms acks.
-     *
-     * @param vmsAcks the new vms acks
-     */
-    protected void setVmsAcks(int vmsAcks) {
-        this.vmsAcks = vmsAcks;
-    }
-
-    /**
-     * Increment vms acks.
-     */
-    protected void incrementVmsAcks() {
-        vmsAcks++;
-    }
-
-    /**
-     * Gets the vms destroyed.
-     *
-     * @return the vms destroyed
-     */
-    protected int getVmsDestroyed() {
-        return vmsDestroyed;
-    }
-
-    /**
-     * Sets the vms destroyed.
-     *
-     * @param vmsDestroyed the new vms destroyed
-     */
-    protected void setVmsDestroyed(int vmsDestroyed) {
-        this.vmsDestroyed = vmsDestroyed;
-    }
-
-    /**
-     * Gets the datacenter ids list.
-     *
-     * @return the datacenter ids list
-     */
-    protected List<Integer> getDatacenterIdsList() {
-        return datacenterIdsList;
-    }
-
-    /**
-     * Sets the datacenter ids list.
-     *
-     * @param datacenterIdsList the new datacenter ids list
-     */
-    protected void setDatacenterIdsList(List<Integer> datacenterIdsList) {
-        this.datacenterIdsList = datacenterIdsList;
-    }
-
-    /**
-     * Gets the vms to datacenters map.
-     *
-     * @return the vms to datacenters map
-     */
-    protected Map<Integer, Integer> getVmsToDatacentersMap() {
-        return vmsToDatacentersMap;
-    }
-
-    /**
-     * Sets the vms to datacenters map.
-     *
-     * @param vmsToDatacentersMap the vms to datacenters map
-     */
-    protected void setVmsToDatacentersMap(Map<Integer, Integer> vmsToDatacentersMap) {
-        this.vmsToDatacentersMap = vmsToDatacentersMap;
-    }
-
-    /**
-     * Gets the datacenter characteristics list.
-     *
-     * @return the datacenter characteristics list
-     */
-    protected Map<Integer, DatacenterCharacteristics> getDatacenterCharacteristicsList() {
-        return datacenterCharacteristicsList;
-    }
-
-    /**
-     * Sets the datacenter characteristics list.
-     *
-     * @param datacenterCharacteristicsList the datacenter characteristics list
-     */
-    protected void setDatacenterCharacteristicsList(
-            Map<Integer, DatacenterCharacteristics> datacenterCharacteristicsList) {
-        this.datacenterCharacteristicsList = datacenterCharacteristicsList;
-    }
-
-    /**
-     * Gets the datacenter requested ids list.
-     *
-     * @return the datacenter requested ids list
-     */
-    protected List<Integer> getDatacenterRequestedIdsList() {
-        return datacenterRequestedIdsList;
-    }
-
-    /**
-     * Sets the datacenter requested ids list.
-     *
-     * @param datacenterRequestedIdsList the new datacenter requested ids list
-     */
-    protected void setDatacenterRequestedIdsList(List<Integer> datacenterRequestedIdsList) {
-        this.datacenterRequestedIdsList = datacenterRequestedIdsList;
-    }
-
 }
