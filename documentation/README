@@ -26,7 +26,7 @@ $ scp -r . pradeeban@146.193.41.145:/home/pradeeban
 or just,
 $ scp cloudsim-3.1-SNAPSHOT.jar cloudsim-examples-3.1-SNAPSHOT.jar pradeeban@146.193.41.145:/home/pradeeban
 and
-$ scp conf/hazelcast.xml pradeeban@146.193.41.145:/home/pradeeban/conf
+$ scp -r conf pradeeban@146.193.41.145:/home/pradeeban/conf
 
 Test environment
 146.193.41.141  ginja-a1

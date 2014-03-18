@@ -26,7 +26,7 @@ public class ObjectCollection {
     public static void init() {
         Log.printConcatLine("Initiating the Hazelcast instances for Cloud2Sim.");
 
-        HazelSim hazelSim = HazelSim.getHazelSim(HazelSimConstants.HAZELCAST_INSTANCES_STARTED_SIMULTANIOUSLY);
+        HazelSim hazelSim = HazelSim.getHazelSim(HazelSimConstants.HAZELCAST_INSTANCES_STARTED_SIMULTANEOUSLY);
         instances = hazelSim.getHazelcastInstances();
     }
 

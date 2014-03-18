@@ -18,13 +18,14 @@ import org.cloudbus.cloudsim.UtilizationModelFull;
 import org.cloudbus.cloudsim.Vm;
 import org.cloudbus.cloudsim.app.AppBuilder;
 import org.cloudbus.cloudsim.app.AppUtil;
+import org.cloudbus.cloudsim.app.ConfigReader;
 import org.cloudbus.cloudsim.hazelcast.HzDatacenterBroker;
 import org.cloudbus.cloudsim.hazelcast.HzObjectCollection;
-import org.cloudbus.cloudsim.examples.cloud2sim.constants.SimulationConstants;
 import org.cloudbus.cloudsim.examples.cloud2sim.roundrobin.RoundRobinDatacenterBroker;
 
 public class SimulationEngine {
     public static int offset;
+    private static boolean isRR = ConfigReader.getIsRR();
 
     public static void createVM(int userId) {
 
@@ -39,14 +40,15 @@ public class SimulationEngine {
         //create VMs
         Vm vm;
 
-        int init = AppBuilder.getPartitionInit(SimulationConstants.noOfVms, offset);
-        int end = AppBuilder.getPartitionFinal(SimulationConstants.noOfVms, offset);
+        int noOfVms = ConfigReader.getNoOfVms();
+        int init = AppBuilder.getPartitionInit(noOfVms, offset);
+        int end = AppBuilder.getPartitionFinal(noOfVms, offset);
 
         AppUtil.setVmsInit(init);
         AppUtil.setVmsFinal(end);
 
         for (int i = init; i < end; i++) {
-            if (SimulationConstants.isRR) {
+            if (isRR) {
                 vm = new Vm(i, userId, mips, pesNumber, ram, bw, size, vmm, new CloudletSchedulerTimeShared());
             } else {
                 vm = new Vm(i, userId, mips, pesNumber, ram, bw, size, vmm, new CloudletSchedulerSpaceShared());
@@ -65,8 +67,9 @@ public class SimulationEngine {
 
         Cloudlet cloudlet;
 
-        int init = AppBuilder.getPartitionInit(SimulationConstants.noOfCloudlets, offset);
-        int end = AppBuilder.getPartitionFinal(SimulationConstants.noOfCloudlets, offset);
+        int noOfCloudlets = ConfigReader.getNoOfCloudlets();
+        int init = AppBuilder.getPartitionInit(noOfCloudlets, offset);
+        int end = AppBuilder.getPartitionFinal(noOfCloudlets, offset);
 
         AppUtil.setCloudletsInit(init);
         AppUtil.setCloudletsFinal(end);
@@ -82,7 +85,7 @@ public class SimulationEngine {
     }
 
     public static HzDatacenterBroker createBroker(String name) throws Exception {
-        if (SimulationConstants.isRR) {
+        if (isRR) {
             return new RoundRobinDatacenterBroker(name);
         } else {
             return new HzDatacenterBroker(name);

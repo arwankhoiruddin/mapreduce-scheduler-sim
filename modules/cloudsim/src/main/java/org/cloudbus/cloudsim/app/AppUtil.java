@@ -30,12 +30,13 @@ public class AppUtil {
 
     public static void start() {
         startTime = System.currentTimeMillis();
+        ConfigReader.readConfig();
     }
 
     public static int getOffset() {
         int size = HzObjectCollection.getDeploymentInformation().size();
         HzObjectCollection.getDeploymentInformation().
-                put(startTime, HazelSimConstants.HAZELCAST_INSTANCES_STARTED_SIMULTANIOUSLY);
+                put(startTime, HazelSimConstants.HAZELCAST_INSTANCES_STARTED_SIMULTANEOUSLY);
         return size;
     }
 

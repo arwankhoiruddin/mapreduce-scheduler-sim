@@ -18,7 +18,7 @@ import org.cloudbus.cloudsim.Storage;
 import org.cloudbus.cloudsim.VmAllocationPolicySimple;
 import org.cloudbus.cloudsim.VmSchedulerTimeShared;
 import org.cloudbus.cloudsim.app.AppBuilder;
-import org.cloudbus.cloudsim.examples.cloud2sim.constants.SimulationConstants;
+import org.cloudbus.cloudsim.app.ConfigReader;
 import org.cloudbus.cloudsim.examples.cloud2sim.roundrobin.RoundRobinVmAllocationPolicy;
 import org.cloudbus.cloudsim.provisioners.BwProvisionerSimple;
 import org.cloudbus.cloudsim.provisioners.RamProvisionerSimple;
@@ -51,7 +51,7 @@ public class DatacenterCreator {
         long storage = 400000000; //host storage
         int bw = 4000000;
 
-        for (int hostId = 0; hostId < SimulationConstants.noOfHosts; hostId++) {
+        for (int hostId = 0; hostId < ConfigReader.getNoOfHosts(); hostId++) {
             if (hostId % 2 == 0) {
                 hostList.add(
                         new Host(
@@ -99,7 +99,7 @@ public class DatacenterCreator {
         // 6. Finally, we need to create a PowerDatacenter object.
         Datacenter datacenter = null;
         try {
-            if (SimulationConstants.isRR) {
+            if (ConfigReader.getIsRR()) {
                 datacenter = new Datacenter(name, characteristics, new RoundRobinVmAllocationPolicy(hostList), storageList, 0);
             } else {
                 datacenter = new Datacenter(name, characteristics, new VmAllocationPolicySimple(hostList), storageList, 0);

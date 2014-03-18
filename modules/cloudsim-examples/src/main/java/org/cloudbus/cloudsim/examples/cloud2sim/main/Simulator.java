@@ -12,12 +12,12 @@ package org.cloudbus.cloudsim.examples.cloud2sim.main;
 import org.cloudbus.cloudsim.*;
 import org.cloudbus.cloudsim.app.AppBuilder;
 import org.cloudbus.cloudsim.app.AppUtil;
+import org.cloudbus.cloudsim.app.ConfigReader;
 import org.cloudbus.cloudsim.app.OutputLogger;
 import org.cloudbus.cloudsim.core.CloudSim;
 import org.cloudbus.cloudsim.hazelcast.HzDatacenterBroker;
 import org.cloudbus.cloudsim.hazelcast.HzObjectCollection;
 import org.cloudbus.cloudsim.examples.cloud2sim.callables.DatacenterCreatorCallable;
-import org.cloudbus.cloudsim.examples.cloud2sim.constants.SimulationConstants;
 import org.cloudbus.cloudsim.examples.cloud2sim.core.SimulationEngine;
 
 import java.util.ArrayList;
@@ -50,7 +50,7 @@ public class Simulator {
             boolean trace_flag = false;  // mean trace events
 
             // Initialize the CloudSim library
-            CloudSim.init(SimulationConstants.numUser, calendar, trace_flag);
+            CloudSim.init(ConfigReader.getNoOfUsers(), calendar, trace_flag);
             SimulationEngine.offset = AppUtil.getOffset();
 
             AppBuilder.initWorkers(SimulationEngine.offset);
@@ -59,8 +59,9 @@ public class Simulator {
             //Datacenters are the resource providers in CloudSim. We need at least one of them to run a CloudSim simulation
 
             List<Datacenter> datacenters = new ArrayList<Datacenter>();
-            ExecutorService pool = Executors.newFixedThreadPool(SimulationConstants.noOfDatacenters);
-            for (int i = 0; i < SimulationConstants.noOfDatacenters; i++) {
+            int noOfDatacenters = ConfigReader.getNoOfDatacenters();
+            ExecutorService pool = Executors.newFixedThreadPool(noOfDatacenters);
+            for (int i = 0; i < noOfDatacenters; i++) {
                 Callable<Datacenter> callable = new DatacenterCreatorCallable("Datacenter_" + i);
                 Future<Datacenter> future = pool.submit(callable);
                 try {
@@ -81,8 +82,8 @@ public class Simulator {
             /* The cloudlet list. */
             SimulationEngine.createCloudlet(brokerId); //2000
 
-            AppUtil.setNoOfCloudlets(SimulationConstants.noOfCloudlets);
-            AppUtil.setNoOfVms(SimulationConstants.noOfVms);
+            AppUtil.setNoOfCloudlets(ConfigReader.getNoOfCloudlets());
+            AppUtil.setNoOfVms(ConfigReader.getNoOfVms());
 
             broker.submitCloudletsAndVms();
 
