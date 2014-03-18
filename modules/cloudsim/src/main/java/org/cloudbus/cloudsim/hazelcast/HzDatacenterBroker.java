@@ -1,92 +1,109 @@
 /*
- * Title:        CloudSim Toolkit
- * Description:  CloudSim (Cloud Simulation) Toolkit for Modeling and Simulation of Clouds
+ * Title:        Cloud2Sim
+ * Description:  Distributed and Concurrent Cloud Simulation
+ *               Toolkit for Modeling and Simulation
+ *               of Clouds - Enhanced version of CloudSim.
  * Licence:      GPL - http://www.gnu.org/copyleft/gpl.html
  *
- * Copyright (c) 2009-2012, The University of Melbourne, Australia
+ * Copyright (c) 2014, Pradeeban Kathiravelu <pradeeban.kathiravelu@tecnico.ulisboa.pt>
  */
 
-package org.cloudbus.cloudsim;
+package org.cloudbus.cloudsim.hazelcast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 
+import com.hazelcast.core.IExecutorService;
+import com.hazelcast.core.IMap;
+import com.hazelcast.core.Member;
+import org.cloudbus.cloudsim.Cloudlet;
+import org.cloudbus.cloudsim.DatacenterBroker;
+import org.cloudbus.cloudsim.DatacenterCharacteristics;
+import org.cloudbus.cloudsim.Log;
+import org.cloudbus.cloudsim.Vm;
 import org.cloudbus.cloudsim.core.CloudSim;
 import org.cloudbus.cloudsim.core.CloudSimTags;
-import org.cloudbus.cloudsim.core.SimEntity;
 import org.cloudbus.cloudsim.core.SimEvent;
-import org.cloudbus.cloudsim.lists.CloudletList;
-import org.cloudbus.cloudsim.lists.VmList;
+import org.cloudbus.cloudsim.hazelcast.runnables.SubmittedCloudletsRemover;
+import org.cloudbus.cloudsim.hazelcast.callables.CloudletListSubmitter;
+import org.cloudbus.cloudsim.hazelcast.callables.VmListSubmitter;
 
 /**
- * DatacentreBroker represents a broker acting on behalf of a user. It hides VM management, as vm
- * creation, sumbission of cloudlets to this VMs and destruction of VMs.
+ * DatacenterBroker represents a broker acting on behalf of a user. It hides VM management, as vm
+ * creation, submission of cloudlets to this VMs and destruction of VMs.
  *
  * @author Rodrigo N. Calheiros
  * @author Anton Beloglazov
  * @since CloudSim Toolkit 1.0
  */
-public class DatacenterBroker extends SimEntity {
+public class HzDatacenterBroker extends DatacenterBroker {
 
-    /** The vm list. */
-    protected List<? extends Vm> vmList;
-
-    /** The vms created list. */
-    protected List<? extends Vm> vmsCreatedList;
-
-    /** The cloudlet list. */
-    protected List<? extends Cloudlet> cloudletList;
-
-    /** The cloudlet submitted list. */
-    protected List<? extends Cloudlet> cloudletSubmittedList;
-
-    /** The cloudlet received list. */
-    protected List<? extends Cloudlet> cloudletReceivedList;
-
-    /** The cloudlets submitted. */
+    /**
+     * The cloudlets submitted.
+     */
     protected int cloudletsSubmitted;
 
-    /** The vms requested. */
+    private IExecutorService vmExecutor;
+    private IExecutorService cloudletExecutor;
+    private IExecutorService cloudletRemoverExecutor;
+
+    /**
+     * The vms requested.
+     */
     protected int vmsRequested;
 
-    /** The vms acks. */
+    /**
+     * The vms acks.
+     */
     protected int vmsAcks;
 
-    /** The vms destroyed. */
+    /**
+     * The vms destroyed.
+     */
     protected int vmsDestroyed;
 
-    /** The datacenter ids list. */
+    /**
+     * The datacenter ids list.
+     */
     protected List<Integer> datacenterIdsList;
 
-    /** The datacenter requested ids list. */
+    /**
+     * The datacenter requested ids list.
+     */
     protected List<Integer> datacenterRequestedIdsList;
 
-    /** The vms to datacenters map. */
+    /**
+     * The vms to datacenters map.
+     */
     protected Map<Integer, Integer> vmsToDatacentersMap;
 
-    /** The datacenter characteristics list. */
+    /**
+     * The datacenter characteristics list.
+     */
     protected Map<Integer, DatacenterCharacteristics> datacenterCharacteristicsList;
+
+    protected static List<Integer> submittedCloudletIds = new ArrayList<Integer>();
 
     /**
      * Created a new DatacenterBroker object.
      *
      * @param name name to be associated with this entity (as required by Sim_entity class from
-     *            simjava package)
+     *             simjava package)
      * @throws Exception the exception
      * @pre name != null
      * @post $none
      */
-    public DatacenterBroker(String name) throws Exception {
+    public HzDatacenterBroker(String name) throws Exception {
         super(name);
 
-        setVmList(new ArrayList<Vm>());
-        setVmsCreatedList(new ArrayList<Vm>());
-        setCloudletList(new ArrayList<Cloudlet>());
-        setCloudletSubmittedList(new ArrayList<Cloudlet>());
-        setCloudletReceivedList(new ArrayList<Cloudlet>());
+        vmExecutor = HzObjectCollection.getFirstInstance().getExecutorService("vmExecutor");
+        cloudletExecutor = HzObjectCollection.getFirstInstance().getExecutorService("cloudletExecutor");
+        cloudletRemoverExecutor = HzObjectCollection.getFirstInstance().getExecutorService("cloudletRemoverExecutor");
 
         cloudletsSubmitted = 0;
         setVmsRequested(0);
@@ -99,6 +116,10 @@ public class DatacenterBroker extends SimEntity {
         setDatacenterCharacteristicsList(new HashMap<Integer, DatacenterCharacteristics>());
     }
 
+    public static List<Integer> getSubmittedCloudletIds() {
+        return submittedCloudletIds;
+    }
+
     /**
      * This method is used to send to the broker the list with virtual machines that must be
      * created.
@@ -107,8 +128,23 @@ public class DatacenterBroker extends SimEntity {
      * @pre list !=null
      * @post $none
      */
-    public void submitVmList(List<? extends Vm> list) {
-        getVmList().addAll(list);
+    public void submitVmList(Map<Integer, Vm> list) {
+        HzObjectCollection.getVmList().putAll(list);
+    }
+
+    public void submitCloudletsAndVms() throws InterruptedException, ExecutionException {
+        Map <Member, Future< Integer >> vmResult =
+                vmExecutor.submitToAllMembers(new VmListSubmitter());
+        int vmSize = 0;
+        for (Future < Integer > future : vmResult.values ()) {
+            vmSize += future.get();
+        }
+        Map <Member, Future< Integer >> cloudletResult =
+                cloudletExecutor.submitToAllMembers(new CloudletListSubmitter());
+        int cloudletSize = 0;
+        for (Future < Integer > future : cloudletResult.values ()) {
+            cloudletSize += future.get();
+        }
     }
 
     /**
@@ -118,58 +154,21 @@ public class DatacenterBroker extends SimEntity {
      * @pre list !=null
      * @post $none
      */
-    public void submitCloudletList(List<? extends Cloudlet> list) {
-        getCloudletList().addAll(list);
+    public void submitCloudletList(Map<Integer, Cloudlet> list) {
+        HzObjectCollection.getCloudletList().putAll(list);
     }
 
     /**
      * Specifies that a given cloudlet must run in a specific virtual machine.
      *
      * @param cloudletId ID of the cloudlet being bount to a vm
-     * @param vmId the vm id
+     * @param vmId       the vm id
      * @pre cloudletId > 0
      * @pre id > 0
      * @post $none
      */
     public void bindCloudletToVm(int cloudletId, int vmId) {
-        CloudletList.getById(getCloudletList(), cloudletId).setVmId(vmId);
-    }
-
-    /**
-     * Processes events available for this Broker.
-     *
-     * @param ev a SimEvent object
-     * @pre ev != null
-     * @post $none
-     */
-    @Override
-    public void processEvent(SimEvent ev) {
-        switch (ev.getTag()) {
-            // Resource characteristics request
-            case CloudSimTags.RESOURCE_CHARACTERISTICS_REQUEST:
-                processResourceCharacteristicsRequest(ev);
-                break;
-            // Resource characteristics answer
-            case CloudSimTags.RESOURCE_CHARACTERISTICS:
-                processResourceCharacteristics(ev);
-                break;
-            // VM Creation answer
-            case CloudSimTags.VM_CREATE_ACK:
-                processVmCreate(ev);
-                break;
-            // A finished cloudlet returned
-            case CloudSimTags.CLOUDLET_RETURN:
-                processCloudletReturn(ev);
-                break;
-            // if the simulation finishes
-            case CloudSimTags.END_OF_SIMULATION:
-                shutdownEntity();
-                break;
-            // other unknown tags are processed by this method
-            default:
-                processOtherEvent(ev);
-                break;
-        }
+        HzObjectCollection.getCloudletList().get(cloudletId).setVmId(vmId);
     }
 
     /**
@@ -223,10 +222,11 @@ public class DatacenterBroker extends SimEntity {
 
         if (result == CloudSimTags.TRUE) {
             getVmsToDatacentersMap().put(vmId, datacenterId);
-            getVmsCreatedList().add(VmList.getById(getVmList(), vmId));
+            HzObjectCollection.getVmsCreatedList().put(vmId, HzObjectCollection.getVmList().get(vmId));
+
             Log.printConcatLine(CloudSim.clock(), ": ", getName(), ": VM #", vmId,
                     " has been created in Datacenter #", datacenterId, ", Host #",
-                    VmList.getById(getVmsCreatedList(), vmId).getHost().getId());
+                    HzObjectCollection.getVmsCreatedList().get(vmId).getHostId());
         } else {
             Log.printConcatLine(CloudSim.clock(), ": ", getName(), ": Creation of VM #", vmId,
                     " failed in Datacenter #", datacenterId);
@@ -235,7 +235,7 @@ public class DatacenterBroker extends SimEntity {
         incrementVmsAcks();
 
         // all the requested VMs have been created
-        if (getVmsCreatedList().size() == getVmList().size() - getVmsDestroyed()) {
+        if (HzObjectCollection.getVmsCreatedList().size() == HzObjectCollection.getVmList().size() - getVmsDestroyed()) {
             submitCloudlets();
         } else {
             // all the acks received, but some VMs were not created
@@ -249,7 +249,7 @@ public class DatacenterBroker extends SimEntity {
                 }
 
                 // all datacenters already queried
-                if (getVmsCreatedList().size() > 0) { // if some vm were created
+                if (HzObjectCollection.getVmsCreatedList().size() > 0) { // if some vm were created
                     submitCloudlets();
                 } else { // no vms created. abort
                     Log.printLine(CloudSim.clock() + ": " + getName()
@@ -269,16 +269,16 @@ public class DatacenterBroker extends SimEntity {
      */
     protected void processCloudletReturn(SimEvent ev) {
         Cloudlet cloudlet = (Cloudlet) ev.getData();
-        getCloudletReceivedList().add(cloudlet);
+        HzObjectCollection.getCloudletReceivedList().put(cloudlet.getCloudletId(), cloudlet);
         Log.printConcatLine(CloudSim.clock(), ": ", getName(), ": Cloudlet ", cloudlet.getCloudletId(),
                 " received");
         cloudletsSubmitted--;
-        if (getCloudletList().size() == 0 && cloudletsSubmitted == 0) { // all cloudlets executed
+        if (HzObjectCollection.getCloudletList().size() == 0 && cloudletsSubmitted == 0) { // all cloudlets executed
             Log.printConcatLine(CloudSim.clock(), ": ", getName(), ": All Cloudlets executed. Finishing...");
             clearDatacenters();
             finishExecution();
         } else { // some cloudlets haven't finished yet
-            if (getCloudletList().size() > 0 && cloudletsSubmitted == 0) {
+            if (HzObjectCollection.getCloudletList().size() > 0 && cloudletsSubmitted == 0) {
                 // all the cloudlets sent finished. It means that some bount
                 // cloudlet is waiting its VM be created
                 clearDatacenters();
@@ -290,7 +290,6 @@ public class DatacenterBroker extends SimEntity {
 
     /**
      * Overrides this method when making a new and different type of Broker. This method is called
-     * by for incoming unknown tags.
      *
      * @param ev a SimEvent object
      * @pre ev != null
@@ -316,11 +315,11 @@ public class DatacenterBroker extends SimEntity {
         // send as much vms as possible for this datacenter before trying the next one
         int requestedVms = 0;
         String datacenterName = CloudSim.getEntityName(datacenterId);
-        for (Vm vm : getVmList()) {
-            if (!getVmsToDatacentersMap().containsKey(vm.getId())) {
-                Log.printLine(CloudSim.clock() + ": " + getName() + ": Trying to Create VM #" + vm.getId()
-                        + " in " + datacenterName);
-                sendNow(datacenterId, CloudSimTags.VM_CREATE_ACK, vm);
+        for (IMap.Entry<Integer, Vm> entry : HzObjectCollection.getVmList().entrySet()) {
+            if (!getVmsToDatacentersMap().containsKey(entry.getKey())) {
+                Log.printLine(CloudSim.clock() + ": " + getName() + ": Trying to Create VM #" + entry.getKey() +
+                        " in " + datacenterName);
+                sendNow(datacenterId, CloudSimTags.VM_CREATE_ACK, entry.getValue());
                 requestedVms++;
             }
         }
@@ -339,16 +338,16 @@ public class DatacenterBroker extends SimEntity {
      */
     protected void submitCloudlets() {
         int vmIndex = 0;
-        List<Cloudlet> successfullySubmitted = new ArrayList<Cloudlet>();
-        for (Cloudlet cloudlet : getCloudletList()) {
+        for (Cloudlet cloudlet : HzObjectCollection.getCloudletList().values()) {
             Vm vm;
             // if user didn't bind this cloudlet and it has not been executed yet
             if (cloudlet.getVmId() == -1) {
-                vm = getVmsCreatedList().get(vmIndex);
+                vm = HzObjectCollection.getVmsCreatedList().get(vmIndex);
             } else { // submit to the specific vm
-                vm = VmList.getById(getVmsCreatedList(), cloudlet.getVmId());
+                Log.printConcatLine(cloudlet.getVmId());
+                vm = HzObjectCollection.getVmsCreatedList().get(cloudlet.getVmId());
                 if (vm == null) { // vm was not created
-                    if(!Log.isDisabled()) {
+                    if (!Log.isDisabled()) {
                         Log.printConcatLine(CloudSim.clock(), ": ", getName(), ": Postponing execution of cloudlet ",
                                 cloudlet.getCloudletId(), ": bount VM not available");
                     }
@@ -364,13 +363,15 @@ public class DatacenterBroker extends SimEntity {
             cloudlet.setVmId(vm.getId());
             sendNow(getVmsToDatacentersMap().get(vm.getId()), CloudSimTags.CLOUDLET_SUBMIT, cloudlet);
             cloudletsSubmitted++;
-            vmIndex = (vmIndex + 1) % getVmsCreatedList().size();
-            getCloudletSubmittedList().add(cloudlet);
-            successfullySubmitted.add(cloudlet);
+            vmIndex = (vmIndex + 1) % HzObjectCollection.getVmsCreatedList().size();
+            HzObjectCollection.getCloudletSubmittedList().put(cloudlet.getCloudletId(), cloudlet);
+
+            submittedCloudletIds.add(cloudlet.getCloudletId());
         }
 
-        // remove submitted cloudlets from waiting list
-        getCloudletList().removeAll(successfullySubmitted);
+        for (int cloudletId : getSubmittedCloudletIds()) {
+            cloudletRemoverExecutor.executeOnKeyOwner(new SubmittedCloudletsRemover(cloudletId), cloudletId);
+        }
     }
 
     /**
@@ -380,12 +381,11 @@ public class DatacenterBroker extends SimEntity {
      * @post $none
      */
     protected void clearDatacenters() {
-        for (Vm vm : getVmsCreatedList()) {
-            Log.printConcatLine(CloudSim.clock(), ": " + getName(), ": Destroying VM #", vm.getId());
-            sendNow(getVmsToDatacentersMap().get(vm.getId()), CloudSimTags.VM_DESTROY, vm);
+        for (IMap.Entry<Integer, Vm> entry : HzObjectCollection.getVmsCreatedList().entrySet()) {
+            Log.printConcatLine(CloudSim.clock(), ": " + getName(), ": Destroying VM #", entry.getKey());
+            sendNow(getVmsToDatacentersMap().get(entry.getKey()), CloudSimTags.VM_DESTROY, entry.getValue());
         }
-
-        getVmsCreatedList().clear();
+        HzObjectCollection.getVmsCreatedList().clear();
     }
 
     /**
@@ -415,111 +415,6 @@ public class DatacenterBroker extends SimEntity {
     public void startEntity() {
         Log.printConcatLine(getName(), " is starting...");
         schedule(getId(), 0, CloudSimTags.RESOURCE_CHARACTERISTICS_REQUEST);
-    }
-
-    /**
-     * Gets the vm list.
-     *
-     * @param <T> the generic type
-     * @return the vm list
-     */
-    @SuppressWarnings("unchecked")
-    public <T extends Vm> List<T> getVmList() {
-        return (List<T>) vmList;
-    }
-
-    /**
-     * Sets the vm list.
-     *
-     * @param <T> the generic type
-     * @param vmList the new vm list
-     */
-    protected <T extends Vm> void setVmList(List<T> vmList) {
-        this.vmList = vmList;
-    }
-
-    /**
-     * Gets the cloudlet list.
-     *
-     * @param <T> the generic type
-     * @return the cloudlet list
-     */
-    @SuppressWarnings("unchecked")
-    public <T extends Cloudlet> List<T> getCloudletList() {
-        return (List<T>) cloudletList;
-    }
-
-    /**
-     * Sets the cloudlet list.
-     *
-     * @param <T> the generic type
-     * @param cloudletList the new cloudlet list
-     */
-    protected <T extends Cloudlet> void setCloudletList(List<T> cloudletList) {
-        this.cloudletList = cloudletList;
-    }
-
-    /**
-     * Gets the cloudlet submitted list.
-     *
-     * @param <T> the generic type
-     * @return the cloudlet submitted list
-     */
-    @SuppressWarnings("unchecked")
-    public <T extends Cloudlet> List<T> getCloudletSubmittedList() {
-        return (List<T>) cloudletSubmittedList;
-    }
-
-    /**
-     * Sets the cloudlet submitted list.
-     *
-     * @param <T> the generic type
-     * @param cloudletSubmittedList the new cloudlet submitted list
-     */
-    protected <T extends Cloudlet> void setCloudletSubmittedList(List<T> cloudletSubmittedList) {
-        this.cloudletSubmittedList = cloudletSubmittedList;
-    }
-
-    /**
-     * Gets the cloudlet received list.
-     *
-     * @param <T> the generic type
-     * @return the cloudlet received list
-     */
-    @SuppressWarnings("unchecked")
-    public <T extends Cloudlet> List<T> getCloudletReceivedList() {
-        return (List<T>) cloudletReceivedList;
-    }
-
-    /**
-     * Sets the cloudlet received list.
-     *
-     * @param <T> the generic type
-     * @param cloudletReceivedList the new cloudlet received list
-     */
-    protected <T extends Cloudlet> void setCloudletReceivedList(List<T> cloudletReceivedList) {
-        this.cloudletReceivedList = cloudletReceivedList;
-    }
-
-    /**
-     * Gets the vm list.
-     *
-     * @param <T> the generic type
-     * @return the vm list
-     */
-    @SuppressWarnings("unchecked")
-    public <T extends Vm> List<T> getVmsCreatedList() {
-        return (List<T>) vmsCreatedList;
-    }
-
-    /**
-     * Sets the vm list.
-     *
-     * @param <T> the generic type
-     * @param vmsCreatedList the vms created list
-     */
-    protected <T extends Vm> void setVmsCreatedList(List<T> vmsCreatedList) {
-        this.vmsCreatedList = vmsCreatedList;
     }
 
     /**

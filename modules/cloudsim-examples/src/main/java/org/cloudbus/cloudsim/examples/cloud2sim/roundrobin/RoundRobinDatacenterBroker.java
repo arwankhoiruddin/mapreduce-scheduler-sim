@@ -17,13 +17,13 @@ package org.cloudbus.cloudsim.examples.cloud2sim.roundrobin;
 
 import java.util.List;
 
-import org.cloudbus.cloudsim.DatacenterBroker;
 import org.cloudbus.cloudsim.DatacenterCharacteristics;
 import org.cloudbus.cloudsim.Log;
 import org.cloudbus.cloudsim.Vm;
 import org.cloudbus.cloudsim.core.CloudSim;
 import org.cloudbus.cloudsim.core.CloudSimTags;
 import org.cloudbus.cloudsim.core.SimEvent;
+import org.cloudbus.cloudsim.hazelcast.HzDatacenterBroker;
 import org.cloudbus.cloudsim.hazelcast.HzObjectCollection;
 
 /**
@@ -32,7 +32,7 @@ import org.cloudbus.cloudsim.hazelcast.HzObjectCollection;
  *
  * @author alessandro
  */
-public class RoundRobinDatacenterBroker extends DatacenterBroker {
+public class RoundRobinDatacenterBroker extends HzDatacenterBroker {
 
     /**
      * Creates an instance of this class associating to it a given name.

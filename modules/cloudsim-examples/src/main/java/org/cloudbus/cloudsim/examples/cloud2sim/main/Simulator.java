@@ -14,6 +14,7 @@ import org.cloudbus.cloudsim.app.AppBuilder;
 import org.cloudbus.cloudsim.app.AppUtil;
 import org.cloudbus.cloudsim.app.OutputLogger;
 import org.cloudbus.cloudsim.core.CloudSim;
+import org.cloudbus.cloudsim.hazelcast.HzDatacenterBroker;
 import org.cloudbus.cloudsim.hazelcast.HzObjectCollection;
 import org.cloudbus.cloudsim.examples.cloud2sim.callables.DatacenterCreatorCallable;
 import org.cloudbus.cloudsim.examples.cloud2sim.constants.SimulationConstants;
@@ -72,7 +73,7 @@ public class Simulator {
             }
 
             //Third step: Create Broker
-            DatacenterBroker broker = SimulationEngine.createBroker("Broker_" + SimulationEngine.offset);
+            HzDatacenterBroker broker = SimulationEngine.createBroker("Broker_" + SimulationEngine.offset);
             int brokerId = broker.getId();
 
             //Fourth step: Create VMs and Cloudlets and send them to broker

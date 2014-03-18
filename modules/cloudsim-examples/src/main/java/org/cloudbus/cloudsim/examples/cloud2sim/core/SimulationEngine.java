@@ -13,12 +13,12 @@ package org.cloudbus.cloudsim.examples.cloud2sim.core;
 import org.cloudbus.cloudsim.Cloudlet;
 import org.cloudbus.cloudsim.CloudletSchedulerSpaceShared;
 import org.cloudbus.cloudsim.CloudletSchedulerTimeShared;
-import org.cloudbus.cloudsim.DatacenterBroker;
 import org.cloudbus.cloudsim.UtilizationModel;
 import org.cloudbus.cloudsim.UtilizationModelFull;
 import org.cloudbus.cloudsim.Vm;
 import org.cloudbus.cloudsim.app.AppBuilder;
 import org.cloudbus.cloudsim.app.AppUtil;
+import org.cloudbus.cloudsim.hazelcast.HzDatacenterBroker;
 import org.cloudbus.cloudsim.hazelcast.HzObjectCollection;
 import org.cloudbus.cloudsim.examples.cloud2sim.constants.SimulationConstants;
 import org.cloudbus.cloudsim.examples.cloud2sim.roundrobin.RoundRobinDatacenterBroker;
@@ -81,11 +81,11 @@ public class SimulationEngine {
         }
     }
 
-    public static DatacenterBroker createBroker(String name) throws Exception {
+    public static HzDatacenterBroker createBroker(String name) throws Exception {
         if (SimulationConstants.isRR) {
             return new RoundRobinDatacenterBroker(name);
         } else {
-            return new DatacenterBroker(name);
+            return new HzDatacenterBroker(name);
         }
     }
 }
