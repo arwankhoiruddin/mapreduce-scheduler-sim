@@ -49,7 +49,7 @@ public class HzDatacenterBroker extends DatacenterBroker {
     private IExecutorService cloudletExecutor;
     private IExecutorService cloudletRemoverExecutor;
 
-    protected static List<Integer> submittedCloudletIds = new ArrayList<>();
+    protected static List<Integer> submittedCloudletIds = new ArrayList<Integer>();
 
     /**
      * Created a new DatacenterBroker object.
