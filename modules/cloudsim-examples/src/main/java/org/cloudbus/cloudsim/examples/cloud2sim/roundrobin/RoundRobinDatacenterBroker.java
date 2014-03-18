@@ -24,7 +24,7 @@ import org.cloudbus.cloudsim.Vm;
 import org.cloudbus.cloudsim.core.CloudSim;
 import org.cloudbus.cloudsim.core.CloudSimTags;
 import org.cloudbus.cloudsim.core.SimEvent;
-import org.cloudbus.cloudsim.core.hazelcast.HzObjectCollection;
+import org.cloudbus.cloudsim.hazelcast.HzObjectCollection;
 
 /**
  * This broker allocates VMs to data centers following the <a href="http://en.wikipedia.org/wiki/Round-robin_scheduling">Round-robin</a>

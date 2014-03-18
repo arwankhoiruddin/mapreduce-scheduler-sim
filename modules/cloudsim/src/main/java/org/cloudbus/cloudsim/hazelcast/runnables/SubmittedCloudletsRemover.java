@@ -8,27 +8,25 @@
  * Copyright (c) 2014, Pradeeban Kathiravelu <pradeeban.kathiravelu@tecnico.ulisboa.pt>
  */
 
-package org.cloudbus.cloudsim.core.hazelcast.callables;
+package org.cloudbus.cloudsim.hazelcast.runnables;
 
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.core.HazelcastInstanceAware;
-import com.hazelcast.core.IMap;
-import org.cloudbus.cloudsim.core.hazelcast.HzObjectCollection;
+import org.cloudbus.cloudsim.hazelcast.HzObjectCollection;
 
 import java.io.Serializable;
-import java.util.concurrent.Callable;
 
-public class CloudletListSubmitter implements Callable, Serializable, HazelcastInstanceAware {
+public class SubmittedCloudletsRemover implements Runnable, Serializable, HazelcastInstanceAware {
     private transient HazelcastInstance hazelcastInstance;
+    private final int cloudletId;
+
+    public SubmittedCloudletsRemover(int cloudletId) {
+        this.cloudletId = cloudletId;
+    }
 
     @Override
-    public Integer call() {
-        IMap map = HzObjectCollection.getUserCloudletList();
-        for (Object key : map.localKeySet()) {
-            HzObjectCollection.getCloudletList().put(HzObjectCollection.getUserCloudletList().get(key).getCloudletId(),
-                    HzObjectCollection.getUserCloudletList().get(key));
-        }
-        return map.localKeySet().size();
+    public void run() {
+        HzObjectCollection.getCloudletList().remove(cloudletId);
     }
 
     @Override

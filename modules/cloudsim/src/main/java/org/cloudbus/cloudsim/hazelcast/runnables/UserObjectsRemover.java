@@ -8,10 +8,10 @@
  * Copyright (c) 2014, Pradeeban Kathiravelu <pradeeban.kathiravelu@tecnico.ulisboa.pt>
  */
 
-package org.cloudbus.cloudsim.core.hazelcast.runnables;
+package org.cloudbus.cloudsim.hazelcast.runnables;
 
 import com.hazelcast.core.IMap;
-import org.cloudbus.cloudsim.core.hazelcast.HzObjectCollection;
+import org.cloudbus.cloudsim.hazelcast.HzObjectCollection;
 
 @Deprecated
 public class UserObjectsRemover implements Runnable {

@@ -8,12 +8,12 @@
  * Copyright (c) 2014, Pradeeban Kathiravelu <pradeeban.kathiravelu@tecnico.ulisboa.pt>
  */
 
-package org.cloudbus.cloudsim.core.hazelcast.callables;
+package org.cloudbus.cloudsim.hazelcast.callables;
 
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.core.HazelcastInstanceAware;
 import com.hazelcast.core.IMap;
-import org.cloudbus.cloudsim.core.hazelcast.HzObjectCollection;
+import org.cloudbus.cloudsim.hazelcast.HzObjectCollection;
 
 import java.io.Serializable;
 import java.util.concurrent.Callable;

@@ -14,7 +14,7 @@ import org.cloudbus.cloudsim.app.AppBuilder;
 import org.cloudbus.cloudsim.app.AppUtil;
 import org.cloudbus.cloudsim.app.OutputLogger;
 import org.cloudbus.cloudsim.core.CloudSim;
-import org.cloudbus.cloudsim.core.hazelcast.HzObjectCollection;
+import org.cloudbus.cloudsim.hazelcast.HzObjectCollection;
 import org.cloudbus.cloudsim.examples.cloud2sim.callables.DatacenterCreatorCallable;
 import org.cloudbus.cloudsim.examples.cloud2sim.constants.SimulationConstants;
 import org.cloudbus.cloudsim.examples.cloud2sim.core.SimulationEngine;

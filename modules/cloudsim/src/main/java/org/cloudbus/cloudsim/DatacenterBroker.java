@@ -23,10 +23,10 @@ import org.cloudbus.cloudsim.core.CloudSim;
 import org.cloudbus.cloudsim.core.CloudSimTags;
 import org.cloudbus.cloudsim.core.SimEntity;
 import org.cloudbus.cloudsim.core.SimEvent;
-import org.cloudbus.cloudsim.core.hazelcast.HzObjectCollection;
-import org.cloudbus.cloudsim.core.hazelcast.runnables.SubmittedCloudletsRemover;
-import org.cloudbus.cloudsim.core.hazelcast.callables.CloudletListSubmitter;
-import org.cloudbus.cloudsim.core.hazelcast.callables.VmListSubmitter;
+import org.cloudbus.cloudsim.hazelcast.HzObjectCollection;
+import org.cloudbus.cloudsim.hazelcast.runnables.SubmittedCloudletsRemover;
+import org.cloudbus.cloudsim.hazelcast.callables.CloudletListSubmitter;
+import org.cloudbus.cloudsim.hazelcast.callables.VmListSubmitter;
 
 /**
  * DatacenterBroker represents a broker acting on behalf of a user. It hides VM management, as vm

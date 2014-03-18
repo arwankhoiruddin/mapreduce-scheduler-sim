@@ -7,7 +7,7 @@
 
 package org.cloudbus.cloudsim;
 
-import org.cloudbus.cloudsim.core.hazelcast.HzObjectCollection;
+import org.cloudbus.cloudsim.hazelcast.HzObjectCollection;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
