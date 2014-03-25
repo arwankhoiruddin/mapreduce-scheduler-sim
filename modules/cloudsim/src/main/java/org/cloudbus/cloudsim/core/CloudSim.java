@@ -18,7 +18,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.cloudbus.cloudsim.Log;
-import org.cloudbus.cloudsim.hazelcast.HzObjectCollection;
 import org.cloudbus.cloudsim.core.predicates.Predicate;
 import org.cloudbus.cloudsim.core.predicates.PredicateAny;
 import org.cloudbus.cloudsim.core.predicates.PredicateNone;
@@ -120,7 +119,6 @@ public class CloudSim {
 	 * @post $none
 	 */
 	public static void init(int numUser, Calendar cal, boolean traceFlag) {
-        HzObjectCollection.init();
         simulationStartedTime = System.currentTimeMillis();
         try {
 			initCommonVariable(cal, traceFlag, numUser);

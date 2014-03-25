@@ -16,16 +16,22 @@ import org.cloudbus.cloudsim.Cloudlet;
 import org.cloudbus.cloudsim.Datacenter;
 import org.cloudbus.cloudsim.Log;
 import org.cloudbus.cloudsim.Vm;
+import org.cloudbus.cloudsim.app.AppUtil;
 import org.cloudbus.cloudsim.core.constants.HazelSimConstants;
+import org.cloudbus.cloudsim.examples.cloud2sim.core.SimulationEngine;
 
 public class HzObjectCollection {
     protected static HazelcastInstance[] instances;
 
-    public static void init() {
+    private HzObjectCollection() {}
+
+    public static boolean init() {
         Log.printConcatLine("Initiating the Hazelcast instances for Cloud2Sim.");
 
         HazelSim hazelSim = HazelSim.getHazelSim(HazelSimConstants.HAZELCAST_INSTANCES_STARTED_SIMULTANEOUSLY);
         instances = hazelSim.getHazelcastInstances();
+        SimulationEngine.offset = AppUtil.getOffset();
+        return true;
     }
 
     public static HazelcastInstance[] getInstances() {
@@ -120,7 +126,7 @@ public class HzObjectCollection {
     }
 
     /**
-     * Gets the cloudlet map.
+     * Gets the cloudlet map. Always get from the FIRST instance.
      * Map: Cloudlet Id -> Cloudlet
      * @return the cloudlet list
      */

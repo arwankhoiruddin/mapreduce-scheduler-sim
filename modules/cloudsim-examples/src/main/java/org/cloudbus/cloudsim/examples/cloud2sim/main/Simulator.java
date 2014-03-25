@@ -11,11 +11,10 @@
 package org.cloudbus.cloudsim.examples.cloud2sim.main;
 
 import org.cloudbus.cloudsim.*;
-import org.cloudbus.cloudsim.app.AppBuilder;
 import org.cloudbus.cloudsim.app.AppUtil;
 import org.cloudbus.cloudsim.app.ConfigReader;
 import org.cloudbus.cloudsim.app.OutputLogger;
-import org.cloudbus.cloudsim.core.CloudSim;
+import org.cloudbus.cloudsim.hazelcast.HzCloudSim;
 import org.cloudbus.cloudsim.hazelcast.HzDatacenterBroker;
 import org.cloudbus.cloudsim.hazelcast.HzObjectCollection;
 import org.cloudbus.cloudsim.examples.cloud2sim.callables.DatacenterCreatorCallable;
@@ -51,10 +50,8 @@ public class Simulator {
             boolean trace_flag = false;  // mean trace events
 
             // Initialize the CloudSim library
-            CloudSim.init(ConfigReader.getNoOfUsers(), calendar, trace_flag);
-            SimulationEngine.offset = AppUtil.getOffset();
-
-            AppBuilder.initWorkers(SimulationEngine.offset);
+            HzCloudSim.init(ConfigReader.getNoOfUsers(), calendar, trace_flag);
+            System.out.println("I am hereeeeeeeeeeeeee");
 
             // Second step: Create Datacenters
             //Datacenters are the resource providers in CloudSim. We need at least one of them to run a CloudSim simulation
@@ -94,10 +91,10 @@ public class Simulator {
                     Thread.sleep(1000);
                 }
                 // Fifth step: Starts the simulation
-                CloudSim.startSimulation();
+                HzCloudSim.startSimulation();
                 // Final step: Print results when simulation is over
                 Map<Integer, Cloudlet> newList = HzObjectCollection.getCloudletReceivedList();
-                CloudSim.stopSimulation();
+                HzCloudSim.stopSimulation();
                 OutputLogger.printCloudletList(newList);
                 Log.printLine("# Simulator execution finished!");
             }
