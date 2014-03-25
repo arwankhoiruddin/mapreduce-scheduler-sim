@@ -89,6 +89,10 @@ public class Simulator {
             broker.submitCloudletsAndVms();
 
             if (AppUtil.getIsMaster()) {
+                while (HzObjectCollection.getCloudletList().size() < AppUtil.getNoOfCloudlets() ||
+                        HzObjectCollection.getVmList().size() < AppUtil.getNoOfVms()) {
+                    Thread.sleep(1000);
+                }
                 // Fifth step: Starts the simulation
                 CloudSim.startSimulation();
                 // Final step: Print results when simulation is over

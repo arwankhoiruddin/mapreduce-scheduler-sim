@@ -66,6 +66,7 @@ public class HazelSim {
         cfg.getSerializationConfig().addSerializerConfig(sc3);
         // wait for all executions to come alive
         cfg.setProperty("hazelcast.initial.min.cluster.size", String.valueOf(HazelSimConstants.NO_OF_PARALLEL_EXECUTIONS));
+        cfg.setProperty("hazelcast.operation.call.timeout.millis", "50000000");
     }
 
     /**

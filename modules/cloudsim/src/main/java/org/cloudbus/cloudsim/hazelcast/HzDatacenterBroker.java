@@ -97,12 +97,12 @@ public class HzDatacenterBroker extends DatacenterBroker {
     public void submitCloudletsAndVms() throws InterruptedException, ExecutionException {
         Map <Member, Future< Integer >> vmResult =
                 vmExecutor.submitToAllMembers(new VmListSubmitter());
+        Map <Member, Future< Integer >> cloudletResult =
+                cloudletExecutor.submitToAllMembers(new CloudletListSubmitter());
         int vmSize = 0;
         for (Future < Integer > future : vmResult.values ()) {
             vmSize += future.get();
         }
-        Map <Member, Future< Integer >> cloudletResult =
-                cloudletExecutor.submitToAllMembers(new CloudletListSubmitter());
         int cloudletSize = 0;
         for (Future < Integer > future : cloudletResult.values ()) {
             cloudletSize += future.get();
