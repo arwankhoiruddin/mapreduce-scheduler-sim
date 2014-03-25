@@ -33,6 +33,10 @@ public class VmListSubmitter implements Callable, Serializable, HazelcastInstanc
             hazelSim = HazelSim.getHazelSim();
         }
 
+        while(hazelSim == null) {
+            Thread.sleep(100);
+        }
+
         IMap map = hazelSim.getUserVmList();
         for (Object key : map.localKeySet()) {
             hazelSim.getVmList().put(hazelSim.getUserVmList().get(key).getId(),

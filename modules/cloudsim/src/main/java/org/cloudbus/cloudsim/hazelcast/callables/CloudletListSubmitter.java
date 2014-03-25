@@ -31,6 +31,11 @@ public class CloudletListSubmitter implements Callable, Serializable, HazelcastI
         if (hazelSim == null) {
             hazelSim = HazelSim.getHazelSim();
         }
+
+        while (hazelSim == null) {
+            Thread.sleep(100);
+        }
+
         IMap map = hazelSim.getUserCloudletList();
         for (Object key : map.localKeySet()) {
             Cloudlet cloudlet = (hazelSim.getUserCloudletList().get(key));
