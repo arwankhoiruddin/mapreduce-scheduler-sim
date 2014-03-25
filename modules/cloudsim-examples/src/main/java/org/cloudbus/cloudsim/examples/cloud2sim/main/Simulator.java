@@ -16,7 +16,7 @@ import org.cloudbus.cloudsim.app.ConfigReader;
 import org.cloudbus.cloudsim.app.OutputLogger;
 import org.cloudbus.cloudsim.hazelcast.HzCloudSim;
 import org.cloudbus.cloudsim.hazelcast.HzDatacenterBroker;
-import org.cloudbus.cloudsim.hazelcast.HzObjectCollection;
+import org.cloudbus.cloudsim.hazelcast.HazelSim;
 import org.cloudbus.cloudsim.examples.cloud2sim.callables.DatacenterCreatorCallable;
 import org.cloudbus.cloudsim.examples.cloud2sim.core.SimulationEngine;
 
@@ -51,7 +51,6 @@ public class Simulator {
 
             // Initialize the CloudSim library
             HzCloudSim.init(ConfigReader.getNoOfUsers(), calendar, trace_flag);
-            System.out.println("I am hereeeeeeeeeeeeee");
 
             // Second step: Create Datacenters
             //Datacenters are the resource providers in CloudSim. We need at least one of them to run a CloudSim simulation
@@ -72,7 +71,7 @@ public class Simulator {
             }
 
             //Third step: Create Broker
-            HzDatacenterBroker broker = SimulationEngine.createBroker("Broker_" + SimulationEngine.offset);
+            HzDatacenterBroker broker = SimulationEngine.createBroker("Broker_" + HzCloudSim.getOffset());
             int brokerId = broker.getId();
 
             //Fourth step: Create VMs and Cloudlets and send them to broker
@@ -86,14 +85,15 @@ public class Simulator {
             broker.submitCloudletsAndVms();
 
             if (AppUtil.getIsMaster()) {
-                while (HzObjectCollection.getCloudletList().size() < AppUtil.getNoOfCloudlets() ||
-                        HzObjectCollection.getVmList().size() < AppUtil.getNoOfVms()) {
+                HazelSim objectCollection = HazelSim.getHazelSim();
+                while (objectCollection.getCloudletList().size() < AppUtil.getNoOfCloudlets() ||
+                        objectCollection.getVmList().size() < AppUtil.getNoOfVms()) {
                     Thread.sleep(1000);
                 }
                 // Fifth step: Starts the simulation
                 HzCloudSim.startSimulation();
                 // Final step: Print results when simulation is over
-                Map<Integer, Cloudlet> newList = HzObjectCollection.getCloudletReceivedList();
+                Map<Integer, Cloudlet> newList = objectCollection.getCloudletReceivedList();
                 HzCloudSim.stopSimulation();
                 OutputLogger.printCloudletList(newList);
                 Log.printLine("# Simulator execution finished!");

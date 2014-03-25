@@ -19,13 +19,14 @@ import org.cloudbus.cloudsim.Vm;
 import org.cloudbus.cloudsim.app.AppBuilder;
 import org.cloudbus.cloudsim.app.AppUtil;
 import org.cloudbus.cloudsim.app.ConfigReader;
+import org.cloudbus.cloudsim.hazelcast.HazelSim;
+import org.cloudbus.cloudsim.hazelcast.HzCloudSim;
 import org.cloudbus.cloudsim.hazelcast.HzDatacenterBroker;
-import org.cloudbus.cloudsim.hazelcast.HzObjectCollection;
 import org.cloudbus.cloudsim.examples.cloud2sim.roundrobin.RoundRobinDatacenterBroker;
 
 public class SimulationEngine {
-    public static int offset;
     private static boolean isRR = ConfigReader.getIsRR();
+    private static HazelSim objectCollection = HazelSim.getHazelSim();
 
     public static void createVM(int userId) {
 
@@ -41,8 +42,8 @@ public class SimulationEngine {
         Vm vm;
 
         int noOfVms = ConfigReader.getNoOfVms();
-        int init = AppBuilder.getPartitionInit(noOfVms, offset);
-        int end = AppBuilder.getPartitionFinal(noOfVms, offset);
+        int init = AppBuilder.getPartitionInit(noOfVms, HzCloudSim.getOffset());
+        int end = AppBuilder.getPartitionFinal(noOfVms, HzCloudSim.getOffset());
 
         AppUtil.setVmsInit(init);
         AppUtil.setVmsFinal(end);
@@ -53,7 +54,7 @@ public class SimulationEngine {
             } else {
                 vm = new Vm(i, userId, mips, pesNumber, ram, bw, size, vmm, new CloudletSchedulerSpaceShared());
             }
-            HzObjectCollection.getUserVmList().put(i, vm);
+            objectCollection.getUserVmList().put(i, vm);
         }
     }
 
@@ -68,8 +69,8 @@ public class SimulationEngine {
         Cloudlet cloudlet;
 
         int noOfCloudlets = ConfigReader.getNoOfCloudlets();
-        int init = AppBuilder.getPartitionInit(noOfCloudlets, offset);
-        int end = AppBuilder.getPartitionFinal(noOfCloudlets, offset);
+        int init = AppBuilder.getPartitionInit(noOfCloudlets, HzCloudSim.getOffset());
+        int end = AppBuilder.getPartitionFinal(noOfCloudlets, HzCloudSim.getOffset());
 
         AppUtil.setCloudletsInit(init);
         AppUtil.setCloudletsFinal(end);
@@ -80,7 +81,7 @@ public class SimulationEngine {
                     utilizationModel, utilizationModel);
             // setting the owner of these Cloudlets
             cloudlet.setUserId(userId);
-            HzObjectCollection.getUserCloudletList().put(i, cloudlet);
+            objectCollection.getUserCloudletList().put(i, cloudlet);
         }
     }
 

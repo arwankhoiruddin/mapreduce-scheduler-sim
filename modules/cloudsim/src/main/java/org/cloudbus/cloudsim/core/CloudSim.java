@@ -111,7 +111,7 @@ public class CloudSim {
 	 *            {@link gridsim.CloudSimShutdown} first waits for all user entities's
 	 *            END_OF_SIMULATION signal before issuing terminate signal to other entities
 	 * @param cal starting time for this simulation. If it is <tt>null</tt>, then the time will be
-	 *            taken from <tt>Calendar.getInstance()</tt>
+	 *            taken from <tt>Calendar.getHazelSim()</tt>
 	 * @param traceFlag <tt>true</tt> if CloudSim trace need to be written
 	 * @see gridsim.CloudSimShutdown
 	 * @see CloudInformationService.CloudInformationService
@@ -151,7 +151,7 @@ public class CloudSim {
 	 *            {@link gridsim.CloudSimShutdown} first waits for all user entities's
 	 *            END_OF_SIMULATION signal before issuing terminate signal to other entities
 	 * @param cal starting time for this simulation. If it is <tt>null</tt>, then the time will be
-	 *            taken from <tt>Calendar.getInstance()</tt>
+	 *            taken from <tt>Calendar.getHazelSim()</tt>
 	 * @param traceFlag <tt>true</tt> if CloudSim trace need to be written
 	 * @param periodBetweenEvents - the minimal period between events. Events within shorter periods
 	 * after the last event are discarded.

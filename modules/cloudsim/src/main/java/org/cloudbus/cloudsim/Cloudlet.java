@@ -15,7 +15,7 @@ import java.util.List;
 
 import org.cloudbus.cloudsim.core.constants.Cloud2SimConstants;
 import org.cloudbus.cloudsim.core.CloudSim;
-import org.cloudbus.cloudsim.hazelcast.HzObjectCollection;
+import org.cloudbus.cloudsim.hazelcast.HazelSim;
 
 /**
  * Cloudlet is an extension to the cloudlet. It stores, despite all the information encapsulated in
@@ -27,6 +27,7 @@ import org.cloudbus.cloudsim.hazelcast.HzObjectCollection;
  */
 public class Cloudlet {
 
+    private HazelSim objectCollection = HazelSim.getHazelSim();
 	/**
 	 * The User or Broker ID. It is advisable that broker set this ID with its own ID, so that
 	 * CloudResource returns to it after the execution.
@@ -888,7 +889,7 @@ public class Cloudlet {
 
         if (newStatus == Cloud2SimConstants.SUCCESS) {
             if (CloudSim.clock() > getFinishTime()) {
-                HzObjectCollection.getCloudletFinishedTime().put(cloudletId, CloudSim.clock());
+                objectCollection.getCloudletFinishedTime().put(cloudletId, CloudSim.clock());
             }
         }
 
@@ -1198,8 +1199,8 @@ public class Cloudlet {
 	 */
 	public double getFinishTime() {
         double finishTime = 0.0;
-        if (HzObjectCollection.getCloudletFinishedTime().get(cloudletId) != null) {
-            finishTime = HzObjectCollection.getCloudletFinishedTime().get(cloudletId);
+        if (objectCollection.getCloudletFinishedTime().get(cloudletId) != null) {
+            finishTime = objectCollection.getCloudletFinishedTime().get(cloudletId);
         }
         return finishTime;
 	}

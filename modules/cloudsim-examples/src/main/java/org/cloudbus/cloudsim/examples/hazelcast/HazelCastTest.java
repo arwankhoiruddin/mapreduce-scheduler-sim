@@ -10,15 +10,15 @@ package org.cloudbus.cloudsim.examples.hazelcast;
 
 import com.hazelcast.core.HazelcastInstance;
 import org.cloudbus.cloudsim.core.constants.HazelSimConstants;
-import org.cloudbus.cloudsim.hazelcast.HazelSim;
+import org.cloudbus.cloudsim.hazelcast.HazelSimCore;
 
 import java.util.Map;
 
 public class HazelCastTest {
     public static void main(String[] args) {
 
-        HazelSim hazelSim = HazelSim.getHazelSim(HazelSimConstants.HAZELCAST_INSTANCES_STARTED_SIMULTANEOUSLY);
-        HazelcastInstance[] instances = hazelSim.getHazelcastInstances();
+        HazelSimCore hazelSimCore = HazelSimCore.getHazelSim(HazelSimConstants.HAZELCAST_INSTANCES_STARTED_SIMULTANEOUSLY);
+        HazelcastInstance[] instances = hazelSimCore.getHazelcastInstances();
 
         Map<Integer, String> mapCustomers = instances[0].getMap("customers");
         mapCustomers.put(1, "Joe");

@@ -7,7 +7,7 @@
 
 package org.cloudbus.cloudsim;
 
-import org.cloudbus.cloudsim.hazelcast.HzObjectCollection;
+import org.cloudbus.cloudsim.hazelcast.HazelSim;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -24,6 +24,7 @@ import java.util.List;
  */
 public class Vm {
 
+    private HazelSim objectCollection = HazelSim.getHazelSim();
 	/** The id. */
 	private int id;
 
@@ -434,7 +435,7 @@ public class Vm {
 	public void setHost(Host host) {
         if (host != null) {
             this.host = host;
-            HzObjectCollection.getHostForVm().put(this.id, host.getId());
+            objectCollection.getHostForVm().put(this.id, host.getId());
         }
 	}
 
@@ -449,8 +450,8 @@ public class Vm {
 
     public int getHostId() {
         int id = -1;
-        if (HzObjectCollection.getHostForVm().get(this.id)!= null) {
-            id = HzObjectCollection.getHostForVm().get(this.id);
+        if (objectCollection.getHostForVm().get(this.id)!= null) {
+            id = objectCollection.getHostForVm().get(this.id);
         }
         return id;
     }

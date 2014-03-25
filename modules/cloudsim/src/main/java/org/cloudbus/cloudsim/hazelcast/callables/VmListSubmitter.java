@@ -13,13 +13,14 @@ package org.cloudbus.cloudsim.hazelcast.callables;
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.core.HazelcastInstanceAware;
 import com.hazelcast.core.IMap;
-import org.cloudbus.cloudsim.hazelcast.HzObjectCollection;
+import org.cloudbus.cloudsim.hazelcast.HazelSim;
 
 import java.io.Serializable;
 import java.util.concurrent.Callable;
 
 public class VmListSubmitter implements Callable, Serializable, HazelcastInstanceAware {
     private transient HazelcastInstance hazelcastInstance;
+    private transient HazelSim hazelSim;
 
     @Override
     public void setHazelcastInstance(HazelcastInstance hazelcastInstance) {
@@ -28,11 +29,16 @@ public class VmListSubmitter implements Callable, Serializable, HazelcastInstanc
 
     @Override
     public Integer call() throws Exception {
-        IMap map = HzObjectCollection.getUserVmList();
-        for (Object key : map.localKeySet()) {
-            HzObjectCollection.getVmList().put(HzObjectCollection.getUserVmList().get(key).getId(),
-                    HzObjectCollection.getUserVmList().get(key));
+        if (hazelSim == null) {
+            hazelSim = HazelSim.getHazelSim();
         }
+
+        IMap map = hazelSim.getUserVmList();
+        for (Object key : map.localKeySet()) {
+            hazelSim.getVmList().put(hazelSim.getUserVmList().get(key).getId(),
+                    hazelSim.getUserVmList().get(key));
+        }
+
         return map.localKeySet().size();
     }
 }

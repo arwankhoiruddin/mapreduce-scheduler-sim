@@ -11,20 +11,21 @@
 package org.cloudbus.cloudsim.hazelcast.runnables;
 
 import com.hazelcast.core.IMap;
-import org.cloudbus.cloudsim.hazelcast.HzObjectCollection;
+import org.cloudbus.cloudsim.hazelcast.HazelSim;
 
 @Deprecated
 public class UserObjectsRemover implements Runnable {
+    private transient HazelSim hazelSim = HazelSim.getHazelSim();
 
     @Override
     public void run() {
-        IMap cloudletMap = HzObjectCollection.getUserCloudletList();
-        IMap vmMap = HzObjectCollection.getUserVmList();
+        IMap cloudletMap = hazelSim.getUserCloudletList();
+        IMap vmMap = hazelSim.getUserVmList();
         for (Object key : cloudletMap.localKeySet()) {
-            HzObjectCollection.getUserCloudletList().remove(key);
+            hazelSim.getUserCloudletList().remove(key);
         }
         for (Object key : vmMap.localKeySet()) {
-            HzObjectCollection.getUserVmList().remove(key);
+            hazelSim.getUserVmList().remove(key);
         }
     }
 }

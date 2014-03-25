@@ -40,6 +40,8 @@ import org.cloudbus.cloudsim.hazelcast.callables.VmListSubmitter;
  */
 public class HzDatacenterBroker extends DatacenterBroker {
 
+    protected HazelSim hazelSim = HazelSim.getHazelSim();
+
     /**
      * The cloudlets submitted.
      */
@@ -63,9 +65,9 @@ public class HzDatacenterBroker extends DatacenterBroker {
     public HzDatacenterBroker(String name) throws Exception {
         super(name);
 
-        vmExecutor = HzObjectCollection.getFirstInstance().getExecutorService("vmExecutor");
-        cloudletExecutor = HzObjectCollection.getFirstInstance().getExecutorService("cloudletExecutor");
-        cloudletRemoverExecutor = HzObjectCollection.getFirstInstance().getExecutorService("cloudletRemoverExecutor");
+        vmExecutor = hazelSim.getFirstInstance().getExecutorService("vmExecutor");
+        cloudletExecutor = hazelSim.getFirstInstance().getExecutorService("cloudletExecutor");
+        cloudletRemoverExecutor = hazelSim.getFirstInstance().getExecutorService("cloudletRemoverExecutor");
 
         cloudletsSubmitted = 0;
         setVmsRequested(0);
@@ -91,7 +93,7 @@ public class HzDatacenterBroker extends DatacenterBroker {
      * @post $none
      */
     public void submitVmList(Map<Integer, Vm> list) {
-        HzObjectCollection.getVmList().putAll(list);
+        hazelSim.getVmList().putAll(list);
     }
 
     public void submitCloudletsAndVms() throws InterruptedException, ExecutionException {
@@ -117,7 +119,7 @@ public class HzDatacenterBroker extends DatacenterBroker {
      * @post $none
      */
     public void submitCloudletList(Map<Integer, Cloudlet> list) {
-        HzObjectCollection.getCloudletList().putAll(list);
+        hazelSim.getCloudletList().putAll(list);
     }
 
     /**
@@ -130,7 +132,7 @@ public class HzDatacenterBroker extends DatacenterBroker {
      * @post $none
      */
     public void bindCloudletToVm(int cloudletId, int vmId) {
-        HzObjectCollection.getCloudletList().get(cloudletId).setVmId(vmId);
+        hazelSim.getCloudletList().get(cloudletId).setVmId(vmId);
     }
 
     /**
@@ -148,11 +150,11 @@ public class HzDatacenterBroker extends DatacenterBroker {
 
         if (result == CloudSimTags.TRUE) {
             getVmsToDatacentersMap().put(vmId, datacenterId);
-            HzObjectCollection.getVmsCreatedList().put(vmId, HzObjectCollection.getVmList().get(vmId));
+            hazelSim.getVmsCreatedList().put(vmId, hazelSim.getVmList().get(vmId));
 
             Log.printConcatLine(CloudSim.clock(), ": ", getName(), ": VM #", vmId,
                     " has been created in Datacenter #", datacenterId, ", Host #",
-                    HzObjectCollection.getVmsCreatedList().get(vmId).getHostId());
+                    hazelSim.getVmsCreatedList().get(vmId).getHostId());
         } else {
             Log.printConcatLine(CloudSim.clock(), ": ", getName(), ": Creation of VM #", vmId,
                     " failed in Datacenter #", datacenterId);
@@ -161,7 +163,7 @@ public class HzDatacenterBroker extends DatacenterBroker {
         incrementVmsAcks();
 
         // all the requested VMs have been created
-        if (HzObjectCollection.getVmsCreatedList().size() == HzObjectCollection.getVmList().size() - getVmsDestroyed()) {
+        if (hazelSim.getVmsCreatedList().size() == hazelSim.getVmList().size() - getVmsDestroyed()) {
             submitCloudlets();
         } else {
             // all the acks received, but some VMs were not created
@@ -175,7 +177,7 @@ public class HzDatacenterBroker extends DatacenterBroker {
                 }
 
                 // all datacenters already queried
-                if (HzObjectCollection.getVmsCreatedList().size() > 0) { // if some vm were created
+                if (hazelSim.getVmsCreatedList().size() > 0) { // if some vm were created
                     submitCloudlets();
                 } else { // no vms created. abort
                     Log.printLine(CloudSim.clock() + ": " + getName()
@@ -195,16 +197,16 @@ public class HzDatacenterBroker extends DatacenterBroker {
      */
     protected void processCloudletReturn(SimEvent ev) {
         Cloudlet cloudlet = (Cloudlet) ev.getData();
-        HzObjectCollection.getCloudletReceivedList().put(cloudlet.getCloudletId(), cloudlet);
+        hazelSim.getCloudletReceivedList().put(cloudlet.getCloudletId(), cloudlet);
         Log.printConcatLine(CloudSim.clock(), ": ", getName(), ": Cloudlet ", cloudlet.getCloudletId(),
                 " received");
         cloudletsSubmitted--;
-        if (HzObjectCollection.getCloudletList().size() == 0 && cloudletsSubmitted == 0) { // all cloudlets executed
+        if (hazelSim.getCloudletList().size() == 0 && cloudletsSubmitted == 0) { // all cloudlets executed
             Log.printConcatLine(CloudSim.clock(), ": ", getName(), ": All Cloudlets executed. Finishing...");
             clearDatacenters();
             finishExecution();
         } else { // some cloudlets haven't finished yet
-            if (HzObjectCollection.getCloudletList().size() > 0 && cloudletsSubmitted == 0) {
+            if (hazelSim.getCloudletList().size() > 0 && cloudletsSubmitted == 0) {
                 // all the cloudlets sent finished. It means that some bount
                 // cloudlet is waiting its VM be created
                 clearDatacenters();
@@ -225,7 +227,7 @@ public class HzDatacenterBroker extends DatacenterBroker {
         // send as much vms as possible for this datacenter before trying the next one
         int requestedVms = 0;
         String datacenterName = CloudSim.getEntityName(datacenterId);
-        for (IMap.Entry<Integer, Vm> entry : HzObjectCollection.getVmList().entrySet()) {
+        for (IMap.Entry<Integer, Vm> entry : hazelSim.getVmList().entrySet()) {
             if (!getVmsToDatacentersMap().containsKey(entry.getKey())) {
                 Log.printLine(CloudSim.clock() + ": " + getName() + ": Trying to Create VM #" + entry.getKey() +
                         " in " + datacenterName);
@@ -248,14 +250,14 @@ public class HzDatacenterBroker extends DatacenterBroker {
      */
     protected void submitCloudlets() {
         int vmIndex = 0;
-        for (Cloudlet cloudlet : HzObjectCollection.getCloudletList().values()) {
+        for (Cloudlet cloudlet : hazelSim.getCloudletList().values()) {
             Vm vm;
             // if user didn't bind this cloudlet and it has not been executed yet
             if (cloudlet.getVmId() == -1) {
-                vm = HzObjectCollection.getVmsCreatedList().get(vmIndex);
+                vm = hazelSim.getVmsCreatedList().get(vmIndex);
             } else { // submit to the specific vm
                 Log.printConcatLine(cloudlet.getVmId());
-                vm = HzObjectCollection.getVmsCreatedList().get(cloudlet.getVmId());
+                vm = hazelSim.getVmsCreatedList().get(cloudlet.getVmId());
                 if (vm == null) { // vm was not created
                     if (!Log.isDisabled()) {
                         Log.printConcatLine(CloudSim.clock(), ": ", getName(), ": Postponing execution of cloudlet ",
@@ -273,8 +275,8 @@ public class HzDatacenterBroker extends DatacenterBroker {
             cloudlet.setVmId(vm.getId());
             sendNow(getVmsToDatacentersMap().get(vm.getId()), CloudSimTags.CLOUDLET_SUBMIT, cloudlet);
             cloudletsSubmitted++;
-            vmIndex = (vmIndex + 1) % HzObjectCollection.getVmsCreatedList().size();
-            HzObjectCollection.getCloudletSubmittedList().put(cloudlet.getCloudletId(), cloudlet);
+            vmIndex = (vmIndex + 1) % hazelSim.getVmsCreatedList().size();
+            hazelSim.getCloudletSubmittedList().put(cloudlet.getCloudletId(), cloudlet);
 
             submittedCloudletIds.add(cloudlet.getCloudletId());
         }
@@ -291,10 +293,10 @@ public class HzDatacenterBroker extends DatacenterBroker {
      * @post $none
      */
     protected void clearDatacenters() {
-        for (IMap.Entry<Integer, Vm> entry : HzObjectCollection.getVmsCreatedList().entrySet()) {
+        for (IMap.Entry<Integer, Vm> entry : hazelSim.getVmsCreatedList().entrySet()) {
             Log.printConcatLine(CloudSim.clock(), ": " + getName(), ": Destroying VM #", entry.getKey());
             sendNow(getVmsToDatacentersMap().get(entry.getKey()), CloudSimTags.VM_DESTROY, entry.getValue());
         }
-        HzObjectCollection.getVmsCreatedList().clear();
+        hazelSim.getVmsCreatedList().clear();
     }
 }

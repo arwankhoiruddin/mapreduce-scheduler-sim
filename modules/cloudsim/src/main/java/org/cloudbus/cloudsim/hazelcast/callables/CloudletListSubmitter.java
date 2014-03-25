@@ -16,25 +16,30 @@ import com.hazelcast.core.IMap;
 import org.cloudbus.cloudsim.Cloudlet;
 import org.cloudbus.cloudsim.app.ConfigReader;
 import org.cloudbus.cloudsim.app.LoadGenerator;
-import org.cloudbus.cloudsim.hazelcast.HzObjectCollection;
+import org.cloudbus.cloudsim.hazelcast.HazelSim;
+import sun.tools.jar.resources.jar;
 
 import java.io.Serializable;
 import java.util.concurrent.Callable;
 
 public class CloudletListSubmitter implements Callable, Serializable, HazelcastInstanceAware {
     private transient HazelcastInstance hazelcastInstance;
+    private transient HazelSim hazelSim;
 
     @Override
     public Integer call() throws Exception {
-        IMap map = HzObjectCollection.getUserCloudletList();
+        if (hazelSim == null) {
+            hazelSim = HazelSim.getHazelSim();
+        }
+        IMap map = hazelSim.getUserCloudletList();
         for (Object key : map.localKeySet()) {
-            Cloudlet cloudlet = (HzObjectCollection.getUserCloudletList().get(key));
+            Cloudlet cloudlet = (hazelSim.getUserCloudletList().get(key));
             int cloudletId = cloudlet.getCloudletId();
             if (ConfigReader.isWithWorkload()) {
                 int value = LoadGenerator.ifPrime(Double.valueOf(cloudletId));
                 cloudlet.setCloudletLength(value);
             }
-            HzObjectCollection.getCloudletList().put(cloudletId, cloudlet);
+            hazelSim.getCloudletList().put(cloudletId, cloudlet);
         }
 
         return map.localKeySet().size();
