@@ -28,6 +28,17 @@ public class HazelSim extends HazelSimCore {
         return true;
     }
 
+    private static void waitForInitiation() {
+        if (instances[HazelSimConstants.FIRST] == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+
     private HazelSim() {
     }
 
@@ -72,7 +83,7 @@ public class HazelSim extends HazelSimCore {
      * @return the vm list
      */
     public IMap<Integer, Vm> getUserVmList() {
-//        waitForInitiation();
+        waitForInitiation();
         return instances[HazelSimConstants.LAST].getMap("userVmList");
     }
 
@@ -82,7 +93,7 @@ public class HazelSim extends HazelSimCore {
      * @return the cloudlet map
      */
     public IMap<Integer, Cloudlet> getUserCloudletList() {
-//        waitForInitiation();
+        waitForInitiation();
         return instances[HazelSimConstants.FIRST].getMap("userCloudletList");
     }
 
