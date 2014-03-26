@@ -16,7 +16,7 @@ import org.cloudbus.cloudsim.Vm;
 import org.cloudbus.cloudsim.hazelcast.core.HazelSim;
 
 public class HzVm extends Vm {
-    private HazelSim objectCollection = HazelSim.getHazelSim();
+    private HazelSim hazelSim = HazelSim.getHazelSim();
 
     public HzVm(int id, int userId, double mips, int numberOfPes, int ram, long bw, long size, String vmm,
                 CloudletScheduler cloudletScheduler) {
@@ -33,14 +33,14 @@ public class HzVm extends Vm {
     public void setHost(Host host) {
         if (host != null) {
             super.setHost(host);
-            objectCollection.getHostForVm().put(this.getId(), host.getId());
+            hazelSim.getHostForVm().put(this.getId(), host.getId());
         }
     }
 
     public int getHostId() {
         int id = -1;
-        if (objectCollection.getHostForVm().get(super.getId())!= null) {
-            id = objectCollection.getHostForVm().get(super.getId());
+        if (hazelSim.getHostForVm().get(getId())!= null) {
+            id = hazelSim.getHostForVm().get(getId());
         }
         return id;
     }
