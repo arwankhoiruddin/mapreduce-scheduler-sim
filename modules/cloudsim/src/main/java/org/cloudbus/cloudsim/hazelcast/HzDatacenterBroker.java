@@ -21,7 +21,6 @@ import java.util.concurrent.Future;
 import com.hazelcast.core.IExecutorService;
 import com.hazelcast.core.IMap;
 import com.hazelcast.core.Member;
-import org.cloudbus.cloudsim.Cloudlet;
 import org.cloudbus.cloudsim.DatacenterBroker;
 import org.cloudbus.cloudsim.DatacenterCharacteristics;
 import org.cloudbus.cloudsim.Log;
@@ -29,6 +28,7 @@ import org.cloudbus.cloudsim.Vm;
 import org.cloudbus.cloudsim.core.CloudSim;
 import org.cloudbus.cloudsim.core.CloudSimTags;
 import org.cloudbus.cloudsim.core.SimEvent;
+import org.cloudbus.cloudsim.hazelcast.core.HazelSim;
 import org.cloudbus.cloudsim.hazelcast.runnables.SubmittedCloudletsRemover;
 import org.cloudbus.cloudsim.hazelcast.callables.CloudletListSubmitter;
 import org.cloudbus.cloudsim.hazelcast.callables.VmListSubmitter;
@@ -92,7 +92,7 @@ public class HzDatacenterBroker extends DatacenterBroker {
      * @pre list !=null
      * @post $none
      */
-    public void submitVmList(Map<Integer, Vm> list) {
+    public void submitVmList(Map<Integer, HzVm> list) {
         hazelSim.getVmList().putAll(list);
     }
 
@@ -118,7 +118,7 @@ public class HzDatacenterBroker extends DatacenterBroker {
      * @pre list !=null
      * @post $none
      */
-    public void submitCloudletList(Map<Integer, Cloudlet> list) {
+    public void submitCloudletList(Map<Integer, HzCloudlet> list) {
         hazelSim.getCloudletList().putAll(list);
     }
 
@@ -196,7 +196,7 @@ public class HzDatacenterBroker extends DatacenterBroker {
      * @post $none
      */
     protected void processCloudletReturn(SimEvent ev) {
-        Cloudlet cloudlet = (Cloudlet) ev.getData();
+        HzCloudlet cloudlet = (HzCloudlet) ev.getData();
         hazelSim.getCloudletReceivedList().put(cloudlet.getCloudletId(), cloudlet);
         Log.printConcatLine(CloudSim.clock(), ": ", getName(), ": Cloudlet ", cloudlet.getCloudletId(),
                 " received");
@@ -227,7 +227,7 @@ public class HzDatacenterBroker extends DatacenterBroker {
         // send as much vms as possible for this datacenter before trying the next one
         int requestedVms = 0;
         String datacenterName = CloudSim.getEntityName(datacenterId);
-        for (IMap.Entry<Integer, Vm> entry : hazelSim.getVmList().entrySet()) {
+        for (IMap.Entry<Integer, HzVm> entry : hazelSim.getVmList().entrySet()) {
             if (!getVmsToDatacentersMap().containsKey(entry.getKey())) {
                 Log.printLine(CloudSim.clock() + ": " + getName() + ": Trying to Create VM #" + entry.getKey() +
                         " in " + datacenterName);
@@ -250,7 +250,7 @@ public class HzDatacenterBroker extends DatacenterBroker {
      */
     protected void submitCloudlets() {
         int vmIndex = 0;
-        for (Cloudlet cloudlet : hazelSim.getCloudletList().values()) {
+        for (HzCloudlet cloudlet : hazelSim.getCloudletList().values()) {
             Vm vm;
             // if user didn't bind this cloudlet and it has not been executed yet
             if (cloudlet.getVmId() == -1) {
@@ -293,7 +293,7 @@ public class HzDatacenterBroker extends DatacenterBroker {
      * @post $none
      */
     protected void clearDatacenters() {
-        for (IMap.Entry<Integer, Vm> entry : hazelSim.getVmsCreatedList().entrySet()) {
+        for (IMap.Entry<Integer, HzVm> entry : hazelSim.getVmsCreatedList().entrySet()) {
             Log.printConcatLine(CloudSim.clock(), ": " + getName(), ": Destroying VM #", entry.getKey());
             sendNow(getVmsToDatacentersMap().get(entry.getKey()), CloudSimTags.VM_DESTROY, entry.getValue());
         }

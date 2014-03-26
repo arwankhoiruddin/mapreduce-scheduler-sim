@@ -12,7 +12,7 @@ package org.cloudbus.cloudsim.serializer;
 import com.hazelcast.nio.ObjectDataInput;
 import com.hazelcast.nio.ObjectDataOutput;
 import com.hazelcast.nio.serialization.StreamSerializer;
-import org.cloudbus.cloudsim.Vm;
+import org.cloudbus.cloudsim.hazelcast.HzVm;
 
 import java.beans.DefaultPersistenceDelegate;
 import java.beans.XMLDecoder;
@@ -21,7 +21,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class VmXmlSerializer implements StreamSerializer<Vm> {
+public class VmXmlSerializer implements StreamSerializer<HzVm> {
 
     @Override
     public int getTypeId() {
@@ -29,12 +29,12 @@ public class VmXmlSerializer implements StreamSerializer<Vm> {
     }
 
     @Override
-    public void write(ObjectDataOutput out, Vm object) throws IOException {
+    public void write(ObjectDataOutput out, HzVm object) throws IOException {
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         XMLEncoder encoder = new XMLEncoder(bos);
         String[] propertyNames = new String[] { "id", "userId", "mips", "numberOfPes", "ram", "bw", "size", "vmm",
                 "cloudletScheduler" };
-        encoder.setPersistenceDelegate(Vm.class, new DefaultPersistenceDelegate(propertyNames));
+        encoder.setPersistenceDelegate(HzVm.class, new DefaultPersistenceDelegate(propertyNames));
 
         encoder.writeObject(object);
         encoder.close();
@@ -42,10 +42,10 @@ public class VmXmlSerializer implements StreamSerializer<Vm> {
     }
 
     @Override
-    public Vm read(ObjectDataInput in) throws IOException {
+    public HzVm read(ObjectDataInput in) throws IOException {
         final InputStream inputStream = (InputStream) in;
         XMLDecoder decoder = new XMLDecoder(inputStream);
-        return (Vm) decoder.readObject();
+        return (HzVm) decoder.readObject();
     }
 
     @Override

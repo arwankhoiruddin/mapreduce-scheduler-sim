@@ -23,7 +23,6 @@ import org.cloudbus.cloudsim.Vm;
 import org.cloudbus.cloudsim.core.CloudSim;
 import org.cloudbus.cloudsim.core.CloudSimTags;
 import org.cloudbus.cloudsim.core.SimEvent;
-import org.cloudbus.cloudsim.hazelcast.HazelSim;
 import org.cloudbus.cloudsim.hazelcast.HzDatacenterBroker;
 
 /**

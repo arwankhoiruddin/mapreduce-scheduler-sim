@@ -7,7 +7,7 @@
 
 package org.cloudbus.cloudsim;
 
-import org.cloudbus.cloudsim.hazelcast.HazelSim;
+import org.cloudbus.cloudsim.hazelcast.core.HazelSim;
 
 import java.util.ArrayList;
 import java.util.LinkedList;

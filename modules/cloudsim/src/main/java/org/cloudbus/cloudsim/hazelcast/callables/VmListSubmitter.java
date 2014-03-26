@@ -13,7 +13,7 @@ package org.cloudbus.cloudsim.hazelcast.callables;
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.core.HazelcastInstanceAware;
 import com.hazelcast.core.IMap;
-import org.cloudbus.cloudsim.hazelcast.HazelSim;
+import org.cloudbus.cloudsim.hazelcast.core.HazelSim;
 
 import java.io.Serializable;
 import java.util.concurrent.Callable;

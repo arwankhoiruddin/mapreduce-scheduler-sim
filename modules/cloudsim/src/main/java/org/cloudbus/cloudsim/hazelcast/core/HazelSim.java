@@ -8,15 +8,15 @@
  * Copyright (c) 2014, Pradeeban Kathiravelu <pradeeban.kathiravelu@tecnico.ulisboa.pt>
  */
 
-package org.cloudbus.cloudsim.hazelcast;
+package org.cloudbus.cloudsim.hazelcast.core;
 
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.core.IMap;
-import org.cloudbus.cloudsim.Cloudlet;
 import org.cloudbus.cloudsim.Datacenter;
 import org.cloudbus.cloudsim.Log;
-import org.cloudbus.cloudsim.Vm;
 import org.cloudbus.cloudsim.core.constants.HazelSimConstants;
+import org.cloudbus.cloudsim.hazelcast.HzCloudlet;
+import org.cloudbus.cloudsim.hazelcast.HzVm;
 
 public class HazelSim extends HazelSimCore {
     private static HazelSim hazelSim = null;
@@ -83,7 +83,7 @@ public class HazelSim extends HazelSimCore {
      * Map: Vm Id -> Vm
      * @return the vm list
      */
-    public IMap<Integer, Vm> getUserVmList() {
+    public IMap<Integer, HzVm> getUserVmList() {
         while (instances[HazelSimConstants.FIRST] == null) {
             try {
                 Thread.sleep(100);
@@ -99,7 +99,7 @@ public class HazelSim extends HazelSimCore {
      * Map: Cloudlet Id -> Cloudlet
      * @return the cloudlet map
      */
-    public IMap<Integer, Cloudlet> getUserCloudletList() {
+    public IMap<Integer, HzCloudlet> getUserCloudletList() {
         while (instances[HazelSimConstants.FIRST] == null) {
             try {
                 Thread.sleep(100);
@@ -115,7 +115,7 @@ public class HazelSim extends HazelSimCore {
      * Map: Vm Id -> Vm
      * @return the vm list
      */
-    public IMap<Integer, Vm> getVmList() {
+    public IMap<Integer, HzVm> getVmList() {
         return instances[HazelSimConstants.LAST].getMap("vmList");
     }
 
@@ -124,7 +124,7 @@ public class HazelSim extends HazelSimCore {
      * Map: Vm Id -> Vm
      * @return the vm list
      */
-    public IMap<Integer, Vm> getVmsCreatedList() {
+    public IMap<Integer, HzVm> getVmsCreatedList() {
         return instances[HazelSimConstants.LAST].getMap("vmCreatedList");
     }
 
@@ -133,7 +133,7 @@ public class HazelSim extends HazelSimCore {
      * Map: Cloudlet Id -> Cloudlet
      * @return the cloudlet list
      */
-    public IMap<Integer, Cloudlet> getCloudletList() {
+    public IMap<Integer, HzCloudlet> getCloudletList() {
         return instances[HazelSimConstants.FIRST].getMap("cloudletList");
     }
 
@@ -142,7 +142,7 @@ public class HazelSim extends HazelSimCore {
      * Map: Cloudlet Id -> Cloudlet
      * @return the cloudlet submitted list
      */
-    public IMap<Integer, Cloudlet> getCloudletSubmittedList() {
+    public IMap<Integer, HzCloudlet> getCloudletSubmittedList() {
         return instances[HazelSimConstants.LAST].getMap("cloudletSubmittedList");
     }
 
@@ -151,7 +151,7 @@ public class HazelSim extends HazelSimCore {
      * Map: Cloudlet Id -> Cloudlet
      * @return the cloudlet received list
      */
-    public IMap<Integer, Cloudlet> getCloudletReceivedList() {
+    public IMap<Integer, HzCloudlet> getCloudletReceivedList() {
         return instances[HazelSimConstants.LAST].getMap("cloudletReceivedList");
     }
 

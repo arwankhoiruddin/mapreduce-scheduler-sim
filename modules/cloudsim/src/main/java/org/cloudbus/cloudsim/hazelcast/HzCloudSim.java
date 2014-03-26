@@ -14,6 +14,7 @@ import org.cloudbus.cloudsim.app.AppBuilder;
 import org.cloudbus.cloudsim.app.AppUtil;
 import org.cloudbus.cloudsim.core.CloudSim;
 import org.cloudbus.cloudsim.core.constants.HazelSimConstants;
+import org.cloudbus.cloudsim.hazelcast.core.HazelSim;
 
 import java.util.Calendar;
 

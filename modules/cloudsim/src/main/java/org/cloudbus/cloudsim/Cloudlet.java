@@ -15,7 +15,7 @@ import java.util.List;
 
 import org.cloudbus.cloudsim.core.constants.Cloud2SimConstants;
 import org.cloudbus.cloudsim.core.CloudSim;
-import org.cloudbus.cloudsim.hazelcast.HazelSim;
+import org.cloudbus.cloudsim.hazelcast.core.HazelSim;
 
 /**
  * Cloudlet is an extension to the cloudlet. It stores, despite all the information encapsulated in

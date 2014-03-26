@@ -24,7 +24,7 @@ public class OutputLogger {
 	 * Prints the Cloudlet objects
 	 * @param list  list of Cloudlets
 	 */
-	public static void printCloudletList(Map<Integer, Cloudlet> list) {
+	public static void printCloudletList(Map<Integer, ? extends Cloudlet> list) {
 		Cloudlet cloudlet;
 
 		String indent = "    ";
@@ -36,7 +36,7 @@ public class OutputLogger {
                 + indent + "Submission Time" + indent + "Processing Cost");
 
 		DecimalFormat dft = new DecimalFormat("###.##");
-		for (IMap.Entry<Integer, Cloudlet> entry: list.entrySet()) {
+		for (IMap.Entry<Integer, ? extends Cloudlet> entry: list.entrySet()) {
 			cloudlet = entry.getValue();
             int cloudletId = entry.getKey();
 

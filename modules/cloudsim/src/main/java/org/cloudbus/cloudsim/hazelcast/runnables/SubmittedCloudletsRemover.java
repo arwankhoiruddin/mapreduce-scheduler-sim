@@ -12,7 +12,7 @@ package org.cloudbus.cloudsim.hazelcast.runnables;
 
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.core.HazelcastInstanceAware;
-import org.cloudbus.cloudsim.hazelcast.HazelSim;
+import org.cloudbus.cloudsim.hazelcast.core.HazelSim;
 
 import java.io.Serializable;
 

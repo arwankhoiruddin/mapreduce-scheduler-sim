@@ -15,8 +15,9 @@ import org.cloudbus.cloudsim.app.AppUtil;
 import org.cloudbus.cloudsim.app.ConfigReader;
 import org.cloudbus.cloudsim.app.OutputLogger;
 import org.cloudbus.cloudsim.hazelcast.HzCloudSim;
+import org.cloudbus.cloudsim.hazelcast.HzCloudlet;
 import org.cloudbus.cloudsim.hazelcast.HzDatacenterBroker;
-import org.cloudbus.cloudsim.hazelcast.HazelSim;
+import org.cloudbus.cloudsim.hazelcast.core.HazelSim;
 import org.cloudbus.cloudsim.examples.cloud2sim.callables.DatacenterCreatorCallable;
 import org.cloudbus.cloudsim.examples.cloud2sim.core.SimulationEngine;
 
@@ -93,7 +94,7 @@ public class Simulator {
                 // Fifth step: Starts the simulation
                 HzCloudSim.startSimulation();
                 // Final step: Print results when simulation is over
-                Map<Integer, Cloudlet> newList = objectCollection.getCloudletReceivedList();
+                Map<Integer, HzCloudlet> newList = objectCollection.getCloudletReceivedList();
                 HzCloudSim.stopSimulation();
                 OutputLogger.printCloudletList(newList);
                 Log.printLine("# Simulator execution finished!");

@@ -10,19 +10,19 @@
 
 package org.cloudbus.cloudsim.examples.cloud2sim.core;
 
-import org.cloudbus.cloudsim.Cloudlet;
 import org.cloudbus.cloudsim.CloudletSchedulerSpaceShared;
 import org.cloudbus.cloudsim.CloudletSchedulerTimeShared;
 import org.cloudbus.cloudsim.UtilizationModel;
 import org.cloudbus.cloudsim.UtilizationModelFull;
-import org.cloudbus.cloudsim.Vm;
 import org.cloudbus.cloudsim.app.AppBuilder;
 import org.cloudbus.cloudsim.app.AppUtil;
 import org.cloudbus.cloudsim.app.ConfigReader;
-import org.cloudbus.cloudsim.hazelcast.HazelSim;
+import org.cloudbus.cloudsim.hazelcast.core.HazelSim;
 import org.cloudbus.cloudsim.hazelcast.HzCloudSim;
+import org.cloudbus.cloudsim.hazelcast.HzCloudlet;
 import org.cloudbus.cloudsim.hazelcast.HzDatacenterBroker;
 import org.cloudbus.cloudsim.examples.cloud2sim.roundrobin.RoundRobinDatacenterBroker;
+import org.cloudbus.cloudsim.hazelcast.HzVm;
 
 public class SimulationEngine {
     private static boolean isRR = ConfigReader.getIsRR();
@@ -39,7 +39,7 @@ public class SimulationEngine {
         String vmm = "Xen"; //VMM name
 
         //create VMs
-        Vm vm;
+        HzVm vm;
 
         int noOfVms = ConfigReader.getNoOfVms();
         int init = AppBuilder.getPartitionInit(noOfVms, HzCloudSim.getOffset());
@@ -50,9 +50,9 @@ public class SimulationEngine {
 
         for (int i = init; i < end; i++) {
             if (isRR) {
-                vm = new Vm(i, userId, mips, pesNumber, ram, bw, size, vmm, new CloudletSchedulerTimeShared());
+                vm = new HzVm(i, userId, mips, pesNumber, ram, bw, size, vmm, new CloudletSchedulerTimeShared());
             } else {
-                vm = new Vm(i, userId, mips, pesNumber, ram, bw, size, vmm, new CloudletSchedulerSpaceShared());
+                vm = new HzVm(i, userId, mips, pesNumber, ram, bw, size, vmm, new CloudletSchedulerSpaceShared());
             }
             objectCollection.getUserVmList().put(i, vm);
         }
@@ -66,7 +66,7 @@ public class SimulationEngine {
         int pesNumber = 1;
         UtilizationModel utilizationModel = new UtilizationModelFull();
 
-        Cloudlet cloudlet;
+        HzCloudlet cloudlet;
 
         int noOfCloudlets = ConfigReader.getNoOfCloudlets();
         int init = AppBuilder.getPartitionInit(noOfCloudlets, HzCloudSim.getOffset());
@@ -77,7 +77,7 @@ public class SimulationEngine {
 
         for (int i = init; i < end; i++) {
             int f = (int) ((Math.random() * 40) + 1);
-            cloudlet = new Cloudlet(i, length * f, pesNumber, fileSize, outputSize, utilizationModel,
+            cloudlet = new HzCloudlet(i, length * f, pesNumber, fileSize, outputSize, utilizationModel,
                     utilizationModel, utilizationModel);
             // setting the owner of these Cloudlets
             cloudlet.setUserId(userId);

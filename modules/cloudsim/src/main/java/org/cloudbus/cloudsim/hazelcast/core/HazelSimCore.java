@@ -7,20 +7,20 @@
  *
  * Copyright (c) 2014, Pradeeban Kathiravelu <pradeeban.kathiravelu@tecnico.ulisboa.pt>
  */
-package org.cloudbus.cloudsim.hazelcast;
+package org.cloudbus.cloudsim.hazelcast.core;
 
 import com.hazelcast.config.Config;
 import com.hazelcast.config.FileSystemXmlConfig;
 import com.hazelcast.config.SerializerConfig;
 import com.hazelcast.core.Hazelcast;
 import com.hazelcast.core.HazelcastInstance;
-import org.cloudbus.cloudsim.Cloudlet;
 import org.cloudbus.cloudsim.CloudletScheduler;
 import org.cloudbus.cloudsim.Datacenter;
 import org.cloudbus.cloudsim.Host;
 import org.cloudbus.cloudsim.Log;
-import org.cloudbus.cloudsim.Vm;
 import org.cloudbus.cloudsim.core.constants.HazelSimConstants;
+import org.cloudbus.cloudsim.hazelcast.HzCloudlet;
+import org.cloudbus.cloudsim.hazelcast.HzVm;
 import org.cloudbus.cloudsim.serializer.CloudletSchedulerXmlSerializer;
 import org.cloudbus.cloudsim.serializer.CloudletXmlSerializer;
 import org.cloudbus.cloudsim.serializer.DatacenterXmlSerializer;
@@ -42,9 +42,9 @@ public class HazelSimCore {
      */
     protected HazelSimCore() {
         SerializerConfig sc = new SerializerConfig().setImplementation(new VmXmlSerializer()).
-            setTypeClass(Vm.class);
+            setTypeClass(HzVm.class);
         SerializerConfig sc0 = new SerializerConfig().setImplementation(new CloudletXmlSerializer()).
-            setTypeClass(Cloudlet.class);
+            setTypeClass(HzCloudlet.class);
         SerializerConfig sc1 = new SerializerConfig().setImplementation(
             new CloudletSchedulerXmlSerializer()).setTypeClass(CloudletScheduler.class);
         SerializerConfig sc2 = new SerializerConfig().setImplementation(

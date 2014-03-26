@@ -12,7 +12,7 @@ package org.cloudbus.cloudsim.serializer;
 import com.hazelcast.nio.ObjectDataInput;
 import com.hazelcast.nio.ObjectDataOutput;
 import com.hazelcast.nio.serialization.StreamSerializer;
-import org.cloudbus.cloudsim.Cloudlet;
+import org.cloudbus.cloudsim.hazelcast.HzCloudlet;
 
 import java.beans.DefaultPersistenceDelegate;
 import java.beans.XMLDecoder;
@@ -21,7 +21,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class CloudletXmlSerializer implements StreamSerializer<Cloudlet> {
+public class CloudletXmlSerializer implements StreamSerializer<HzCloudlet> {
 
     @Override
     public int getTypeId() {
@@ -29,12 +29,12 @@ public class CloudletXmlSerializer implements StreamSerializer<Cloudlet> {
     }
 
     @Override
-    public void write(ObjectDataOutput out, Cloudlet object) throws IOException {
+    public void write(ObjectDataOutput out, HzCloudlet object) throws IOException {
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         XMLEncoder encoder = new XMLEncoder(bos);
         String[] propertyNames = new String[] { "cloudletId", "cloudletLength", "numberOfPes", "cloudletFileSize",
                 "cloudletOutputSize", "utilizationModelCpu", "utilizationModelRam", "utilizationModelBw", "record"};
-        encoder.setPersistenceDelegate(Cloudlet.class, new DefaultPersistenceDelegate(propertyNames));
+        encoder.setPersistenceDelegate(HzCloudlet.class, new DefaultPersistenceDelegate(propertyNames));
 
         encoder.writeObject(object);
         encoder.close();
@@ -42,11 +42,11 @@ public class CloudletXmlSerializer implements StreamSerializer<Cloudlet> {
     }
 
     @Override
-    public Cloudlet read(ObjectDataInput in) throws IOException {
+    public HzCloudlet read(ObjectDataInput in) throws IOException {
 
         final InputStream inputStream = (InputStream) in;
         XMLDecoder decoder = new XMLDecoder(inputStream);
-        Cloudlet cloudlet = (Cloudlet) decoder.readObject();
+        HzCloudlet cloudlet = (HzCloudlet) decoder.readObject();
         decoder.close();
         return cloudlet;
     }

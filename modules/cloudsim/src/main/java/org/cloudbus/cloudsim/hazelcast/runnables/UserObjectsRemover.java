@@ -11,7 +11,7 @@
 package org.cloudbus.cloudsim.hazelcast.runnables;
 
 import com.hazelcast.core.IMap;
-import org.cloudbus.cloudsim.hazelcast.HazelSim;
+import org.cloudbus.cloudsim.hazelcast.core.HazelSim;
 
 @Deprecated
 public class UserObjectsRemover implements Runnable {
