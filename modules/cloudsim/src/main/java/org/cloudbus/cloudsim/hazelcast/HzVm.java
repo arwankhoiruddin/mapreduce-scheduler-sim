@@ -11,32 +11,37 @@
 package org.cloudbus.cloudsim.hazelcast;
 
 import org.cloudbus.cloudsim.CloudletScheduler;
+import org.cloudbus.cloudsim.Host;
 import org.cloudbus.cloudsim.Vm;
+import org.cloudbus.cloudsim.hazelcast.core.HazelSim;
 
 public class HzVm extends Vm {
+    private HazelSim objectCollection = HazelSim.getHazelSim();
+
+    public HzVm(int id, int userId, double mips, int numberOfPes, int ram, long bw, long size, String vmm,
+                CloudletScheduler cloudletScheduler) {
+        super(id, userId, mips, numberOfPes, ram, bw, size, vmm, cloudletScheduler);
+    }
+
     /**
-     * Creates a new VMCharacteristics object.
+     * Sets the host that runs this VM.
      *
-     * @param id                unique ID of the VM
-     * @param userId            ID of the VM's owner
-     * @param mips              the mips
-     * @param numberOfPes       amount of CPUs
-     * @param ram               amount of ram
-     * @param bw                amount of bandwidth
-     * @param size              amount of storage
-     * @param vmm               virtual machine monitor
-     * @param cloudletScheduler cloudletScheduler policy for cloudlets
-     * @pre id >= 0
-     * @pre userId >= 0
-     * @pre size > 0
-     * @pre ram > 0
-     * @pre bw > 0
-     * @pre cpus > 0
-     * @pre priority >= 0
-     * @pre cloudletScheduler != null
+     * @param host Host running the VM
+     * @pre host != $null
      * @post $none
      */
-    public HzVm(int id, int userId, double mips, int numberOfPes, int ram, long bw, long size, String vmm, CloudletScheduler cloudletScheduler) {
-        super(id, userId, mips, numberOfPes, ram, bw, size, vmm, cloudletScheduler);
+    public void setHost(Host host) {
+        if (host != null) {
+            super.setHost(host);
+            objectCollection.getHostForVm().put(this.getId(), host.getId());
+        }
+    }
+
+    public int getHostId() {
+        int id = -1;
+        if (objectCollection.getHostForVm().get(super.getId())!= null) {
+            id = objectCollection.getHostForVm().get(super.getId());
+        }
+        return id;
     }
 }
