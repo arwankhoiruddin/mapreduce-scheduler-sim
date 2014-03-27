@@ -11,7 +11,7 @@
 package org.cloudbus.cloudsim.app;
 
 import org.cloudbus.cloudsim.Pe;
-import org.cloudbus.cloudsim.core.constants.HazelSimConstants;
+import org.cloudbus.cloudsim.hazelcast.HazelSimConstants;
 import org.cloudbus.cloudsim.provisioners.PeProvisionerSimple;
 
 import java.util.ArrayList;

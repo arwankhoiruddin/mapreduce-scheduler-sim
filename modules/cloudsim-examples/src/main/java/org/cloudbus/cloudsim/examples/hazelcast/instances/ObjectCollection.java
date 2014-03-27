@@ -12,7 +12,7 @@ package org.cloudbus.cloudsim.examples.hazelcast.instances;
 
 import com.hazelcast.core.HazelcastInstance;
 import org.cloudbus.cloudsim.Log;
-import org.cloudbus.cloudsim.core.constants.HazelSimConstants;
+import org.cloudbus.cloudsim.hazelcast.HazelSimConstants;
 import org.cloudbus.cloudsim.hazelcast.core.HazelSimCore;
 
 import java.util.Map;

@@ -8,9 +8,7 @@
 
 package org.cloudbus.cloudsim;
 
-import org.cloudbus.cloudsim.core.constants.Cloud2SimConstants;
 import org.cloudbus.cloudsim.core.CloudSim;
-import org.cloudbus.cloudsim.core.constants.Consts;
 
 /**
  * CloudSim ResCloudlet represents a Cloudlet submitted to CloudResource for processing. This class
@@ -114,7 +112,6 @@ public class ResCloudlet {
 	 * @param duration a reservation duration time. Can also be interpreted as how long to execute
 	 *            this Cloudlet.
 	 * @param reservID a reservation ID that owns this Cloudlet
-	 * @see gridsim.CloudSim#clock()
 	 * @pre cloudlet != null
 	 * @pre startTime > 0
 	 * @pre duration > 0
@@ -301,9 +298,9 @@ public class ResCloudlet {
 			cloudlet.setCloudletStatus(status);
 
 			// if a previous Cloudlet status is INEXEC
-			if (prevStatus == Cloud2SimConstants.INEXEC) {
+			if (prevStatus == Cloudlet.INEXEC) {
 				// and current status is either CANCELED, PAUSED or SUCCESS
-				if (status == Cloud2SimConstants.CANCELED || status == Cloud2SimConstants.PAUSED || status == Cloud2SimConstants.SUCCESS) {
+				if (status == Cloudlet.CANCELED || status == Cloudlet.PAUSED || status == Cloudlet.SUCCESS) {
 					// then update the Cloudlet completion time
 					totalCompletionTime += (clock - startExecTime);
 					index = 0;
@@ -311,14 +308,14 @@ public class ResCloudlet {
 				}
 			}
 
-			if (prevStatus == Cloud2SimConstants.RESUMED && status == Cloud2SimConstants.SUCCESS) {
+			if (prevStatus == Cloudlet.RESUMED && status == Cloudlet.SUCCESS) {
 				// then update the Cloudlet completion time
 				totalCompletionTime += (clock - startExecTime);
 				return true;
 			}
 
 			// if a Cloudlet is now in execution
-			if (status == Cloud2SimConstants.INEXEC || (prevStatus == Cloud2SimConstants.PAUSED && status == Cloud2SimConstants.RESUMED)) {
+			if (status == Cloudlet.INEXEC || (prevStatus == Cloudlet.PAUSED && status == Cloudlet.RESUMED)) {
 				startExecTime = clock;
 				cloudlet.setExecStartTime(startExecTime);
 			}
@@ -462,7 +459,7 @@ public class ResCloudlet {
 
 		long finished = 0;
 		//if (cloudlet.getCloudletTotalLength() * Consts.MILLION < cloudletFinishedSoFar) {
-		if (cloudlet.getCloudletStatus()== Cloud2SimConstants.SUCCESS) {
+		if (cloudlet.getCloudletStatus()== Cloudlet.SUCCESS) {
 			finished = cloudlet.getCloudletLength();
 		} else {
 			finished = cloudletFinishedSoFar / Consts.MILLION;

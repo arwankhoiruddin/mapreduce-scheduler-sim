@@ -10,7 +10,7 @@
 
 package org.cloudbus.cloudsim.app;
 
-import org.cloudbus.cloudsim.core.constants.HazelSimConstants;
+import org.cloudbus.cloudsim.hazelcast.HazelSimConstants;
 
 import java.io.FileInputStream;
 import java.io.IOException;

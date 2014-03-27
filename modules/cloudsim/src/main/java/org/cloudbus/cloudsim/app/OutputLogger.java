@@ -13,7 +13,6 @@ package org.cloudbus.cloudsim.app;
 import com.hazelcast.core.IMap;
 import org.cloudbus.cloudsim.Cloudlet;
 import org.cloudbus.cloudsim.Log;
-import org.cloudbus.cloudsim.core.constants.Cloud2SimConstants;
 
 import java.text.DecimalFormat;
 import java.util.Map;
@@ -42,7 +41,7 @@ public class OutputLogger {
 
 			Log.print(indent + cloudletId + indent + indent);
 
-			if (cloudlet.getCloudletStatus() == Cloud2SimConstants.SUCCESS){
+			if (cloudlet.getCloudletStatus() == Cloudlet.SUCCESS){
 				Log.print("SUCCESS");
 
 				Log.printLine( indent + indent + cloudlet.getResourceId() + indent + indent + indent + cloudlet.getVmId() +

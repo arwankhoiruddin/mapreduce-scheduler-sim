@@ -1,4 +1,4 @@
-package org.cloudbus.cloudsim.core.constants;
+package org.cloudbus.cloudsim;
 
 /**
  * 

@@ -10,9 +10,7 @@ package org.cloudbus.cloudsim;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.cloudbus.cloudsim.core.constants.Cloud2SimConstants;
 import org.cloudbus.cloudsim.core.CloudSim;
-import org.cloudbus.cloudsim.core.constants.Consts;
 
 /**
  * CloudletSchedulerTimeShared implements a policy of scheduling performed by a virtual machine.
@@ -165,7 +163,7 @@ public class CloudletSchedulerTimeShared extends CloudletScheduler {
 			if (rcl.getRemainingCloudletLength() == 0) {
 				cloudletFinish(rcl);
 			} else {
-				rcl.setCloudletStatus(Cloud2SimConstants.CANCELED);
+				rcl.setCloudletStatus(Cloudlet.CANCELED);
 			}
 			return rcl.getCloudlet();
 		}
@@ -176,7 +174,7 @@ public class CloudletSchedulerTimeShared extends CloudletScheduler {
 		for (ResCloudlet rcl : getCloudletPausedList()) {
 			if (rcl.getCloudletId() == cloudletId) {
 				found = true;
-				rcl.setCloudletStatus(Cloud2SimConstants.CANCELED);
+				rcl.setCloudletStatus(Cloudlet.CANCELED);
 				break;
 			}
 			position++;
@@ -216,7 +214,7 @@ public class CloudletSchedulerTimeShared extends CloudletScheduler {
 			if (rcl.getRemainingCloudletLength() == 0) {
 				cloudletFinish(rcl);
 			} else {
-				rcl.setCloudletStatus(Cloud2SimConstants.PAUSED);
+				rcl.setCloudletStatus(Cloudlet.PAUSED);
 				getCloudletPausedList().add(rcl);
 			}
 			return true;
@@ -233,7 +231,7 @@ public class CloudletSchedulerTimeShared extends CloudletScheduler {
 	 */
 	@Override
 	public void cloudletFinish(ResCloudlet rcl) {
-		rcl.setCloudletStatus(Cloud2SimConstants.SUCCESS);
+		rcl.setCloudletStatus(Cloudlet.SUCCESS);
 		rcl.finalizeCloudlet();
 		getCloudletFinishedList().add(rcl);
 	}
@@ -262,7 +260,7 @@ public class CloudletSchedulerTimeShared extends CloudletScheduler {
 
 		if (found) {
 			ResCloudlet rgl = getCloudletPausedList().remove(position);
-			rgl.setCloudletStatus(Cloud2SimConstants.INEXEC);
+			rgl.setCloudletStatus(Cloudlet.INEXEC);
 			getCloudletExecList().add(rgl);
 
 			// calculate the expected time for cloudlet completion
@@ -290,7 +288,7 @@ public class CloudletSchedulerTimeShared extends CloudletScheduler {
 	@Override
 	public double cloudletSubmit(Cloudlet cloudlet, double fileTransferTime) {
 		ResCloudlet rcl = new ResCloudlet(cloudlet);
-		rcl.setCloudletStatus(Cloud2SimConstants.INEXEC);
+		rcl.setCloudletStatus(Cloudlet.INEXEC);
 		for (int i = 0; i < cloudlet.getNumberOfPes(); i++) {
 			rcl.setMachineAndPeId(0, i);
 		}

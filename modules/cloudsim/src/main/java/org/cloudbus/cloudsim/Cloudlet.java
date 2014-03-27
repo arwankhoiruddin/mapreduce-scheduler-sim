@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.cloudbus.cloudsim.core.constants.Cloud2SimConstants;
 import org.cloudbus.cloudsim.core.CloudSim;
 import org.cloudbus.cloudsim.hazelcast.core.HazelSim;
 
@@ -90,6 +89,40 @@ public class Cloudlet {
 
 	/** The ToS for sending Cloudlet over the network. */
 	private int netToS;
+
+    // //////////////////////////////////////////
+    // Below are CONSTANTS attributes
+    /** The Cloudlet has been created and added to the CloudletList object. */
+    public static final int CREATED = 0;
+
+    /** The Cloudlet has been assigned to a CloudResource object as planned. */
+    public static final int READY = 1;
+
+    /** The Cloudlet has moved to a Cloud node. */
+    public static final int QUEUED = 2;
+
+    /** The Cloudlet is in execution in a Cloud node. */
+    public static final int INEXEC = 3;
+
+    /** The Cloudlet has been executed successfully. */
+    public static final int SUCCESS = 4;
+
+    /** The Cloudlet is failed. */
+    public static final int FAILED = 5;
+
+    /** The Cloudlet has been canceled. */
+    public static final int CANCELED = 6;
+
+    /**
+     * The Cloudlet has been paused. It can be resumed by changing the status into <tt>RESUMED</tt>.
+     */
+    public static final int PAUSED = 7;
+
+    /** The Cloudlet has been resumed from <tt>PAUSED</tt> state. */
+    public static final int RESUMED = 8;
+
+    /** The cloudlet has failed due to a resource failure. */
+    public static final int FAILED_RESOURCE_UNAVAILABLE = 9;
 
     /** The vm id. */
 	protected int vmId;
@@ -363,7 +396,7 @@ public class Cloudlet {
 			final UtilizationModel utilizationModelBw,
 			final boolean record) {
 		userId = -1;          // to be set by a Broker or user
-		status = Cloud2SimConstants.CREATED;
+		status = CREATED;
 		this.cloudletId = cloudletId;
 		numberOfPes = pesNumber;
 		execStartTime = 0.0;
@@ -402,6 +435,7 @@ public class Cloudlet {
 
     /**
      * Internal class that keeps track Cloudlet's movement in different CloudResources.
+     * Must be defined public for serialization.
      */
     public static class Resource {
 
@@ -882,12 +916,12 @@ public class Cloudlet {
 		}
 
 		// throws an exception if the new status is outside the range
-		if (newStatus < Cloud2SimConstants.CREATED || newStatus > Cloud2SimConstants.FAILED_RESOURCE_UNAVAILABLE) {
+		if (newStatus < CREATED || newStatus > FAILED_RESOURCE_UNAVAILABLE) {
 			throw new Exception(
 					"Cloudlet.setCloudletStatus() : Error - Invalid integer range for Cloudlet status.");
 		}
 
-        if (newStatus == Cloud2SimConstants.SUCCESS) {
+        if (newStatus == SUCCESS) {
             if (CloudSim.clock() > getFinishTime()) {
                 objectCollection.getCloudletFinishedTime().put(cloudletId, CloudSim.clock());
             }
@@ -934,43 +968,43 @@ public class Cloudlet {
 	public static String getStatusString(final int status) {
 		String statusString = null;
 		switch (status) {
-			case Cloud2SimConstants.CREATED:
+			case CREATED:
 				statusString = "Created";
 				break;
 
-			case Cloud2SimConstants.READY:
+			case READY:
 				statusString = "Ready";
 				break;
 
-			case Cloud2SimConstants.INEXEC:
+			case INEXEC:
 				statusString = "InExec";
 				break;
 
-			case Cloud2SimConstants.SUCCESS:
+			case SUCCESS:
 				statusString = "Success";
 				break;
 
-			case Cloud2SimConstants.QUEUED:
+			case QUEUED:
 				statusString = "Queued";
 				break;
 
-			case Cloud2SimConstants.FAILED:
+			case FAILED:
 				statusString = "Failed";
 				break;
 
-			case Cloud2SimConstants.CANCELED:
+			case CANCELED:
 				statusString = "Canceled";
 				break;
 
-			case Cloud2SimConstants.PAUSED:
+			case PAUSED:
 				statusString = "Paused";
 				break;
 
-			case Cloud2SimConstants.RESUMED:
+			case RESUMED:
 				statusString = "Resumed";
 				break;
 
-			case Cloud2SimConstants.FAILED_RESOURCE_UNAVAILABLE:
+			case FAILED_RESOURCE_UNAVAILABLE:
 				statusString = "Failed_resource_unavailable";
 				break;
 

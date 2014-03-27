@@ -8,7 +8,7 @@
  * Copyright (c) 2014, Pradeeban Kathiravelu <pradeeban.kathiravelu@tecnico.ulisboa.pt>
  */
 
-package org.cloudbus.cloudsim.core.constants;
+package org.cloudbus.cloudsim.hazelcast;
 
 import org.cloudbus.cloudsim.app.ConfigReader;
 

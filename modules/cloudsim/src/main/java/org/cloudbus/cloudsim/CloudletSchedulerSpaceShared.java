@@ -11,9 +11,7 @@ package org.cloudbus.cloudsim;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.cloudbus.cloudsim.core.constants.Cloud2SimConstants;
 import org.cloudbus.cloudsim.core.CloudSim;
-import org.cloudbus.cloudsim.core.constants.Consts;
 
 /**
  * CloudletSchedulerSpaceShared implements a policy of scheduling performed by a virtual machine. It
@@ -103,7 +101,7 @@ public class CloudletSchedulerSpaceShared extends CloudletScheduler {
 				toRemove.clear();
 				for (ResCloudlet rcl : getCloudletWaitingList()) {
 					if ((currentCpus - usedPes) >= rcl.getNumberOfPes()) {
-						rcl.setCloudletStatus(Cloud2SimConstants.INEXEC);
+						rcl.setCloudletStatus(Cloudlet.INEXEC);
 						for (int k = 0; k < rcl.getNumberOfPes(); k++) {
 							rcl.setMachineAndPeId(0, i);
 						}
@@ -158,7 +156,7 @@ public class CloudletSchedulerSpaceShared extends CloudletScheduler {
 				if (rcl.getRemainingCloudletLength() == 0) {
 					cloudletFinish(rcl);
 				} else {
-					rcl.setCloudletStatus(Cloud2SimConstants.CANCELED);
+					rcl.setCloudletStatus(Cloudlet.CANCELED);
 				}
 				return rcl.getCloudlet();
 			}
@@ -175,7 +173,7 @@ public class CloudletSchedulerSpaceShared extends CloudletScheduler {
 		// Finally, looks in the waiting list
 		for (ResCloudlet rcl : getCloudletWaitingList()) {
 			if (rcl.getCloudletId() == cloudletId) {
-				rcl.setCloudletStatus(Cloud2SimConstants.CANCELED);
+				rcl.setCloudletStatus(Cloudlet.CANCELED);
 				getCloudletWaitingList().remove(rcl);
 				return rcl.getCloudlet();
 			}
@@ -213,7 +211,7 @@ public class CloudletSchedulerSpaceShared extends CloudletScheduler {
 			if (rgl.getRemainingCloudletLength() == 0) {
 				cloudletFinish(rgl);
 			} else {
-				rgl.setCloudletStatus(Cloud2SimConstants.PAUSED);
+				rgl.setCloudletStatus(Cloudlet.PAUSED);
 				getCloudletPausedList().add(rgl);
 			}
 			return true;
@@ -237,7 +235,7 @@ public class CloudletSchedulerSpaceShared extends CloudletScheduler {
 			if (rgl.getRemainingCloudletLength() == 0) {
 				cloudletFinish(rgl);
 			} else {
-				rgl.setCloudletStatus(Cloud2SimConstants.PAUSED);
+				rgl.setCloudletStatus(Cloudlet.PAUSED);
 				getCloudletPausedList().add(rgl);
 			}
 			return true;
@@ -256,7 +254,7 @@ public class CloudletSchedulerSpaceShared extends CloudletScheduler {
 	 */
 	@Override
 	public void cloudletFinish(ResCloudlet rcl) {
-		rcl.setCloudletStatus(Cloud2SimConstants.SUCCESS);
+		rcl.setCloudletStatus(Cloudlet.SUCCESS);
 		rcl.finalizeCloudlet();
 		getCloudletFinishedList().add(rcl);
 		usedPes -= rcl.getNumberOfPes();
@@ -289,7 +287,7 @@ public class CloudletSchedulerSpaceShared extends CloudletScheduler {
 
 			// it can go to the exec list
 			if ((currentCpus - usedPes) >= rcl.getNumberOfPes()) {
-				rcl.setCloudletStatus(Cloud2SimConstants.INEXEC);
+				rcl.setCloudletStatus(Cloudlet.INEXEC);
 				for (int i = 0; i < rcl.getNumberOfPes(); i++) {
 					rcl.setMachineAndPeId(0, i);
 				}
@@ -319,7 +317,7 @@ public class CloudletSchedulerSpaceShared extends CloudletScheduler {
 
 				return estimatedFinishTime;
 			} else {// no enough free PEs: go to the waiting queue
-				rcl.setCloudletStatus(Cloud2SimConstants.QUEUED);
+				rcl.setCloudletStatus(Cloudlet.QUEUED);
 
 				long size = rcl.getRemainingCloudletLength();
 				size *= rcl.getNumberOfPes();
@@ -350,7 +348,7 @@ public class CloudletSchedulerSpaceShared extends CloudletScheduler {
 		// it can go to the exec list
 		if ((currentCpus - usedPes) >= cloudlet.getNumberOfPes()) {
 			ResCloudlet rcl = new ResCloudlet(cloudlet);
-			rcl.setCloudletStatus(Cloud2SimConstants.INEXEC);
+			rcl.setCloudletStatus(Cloudlet.INEXEC);
 			for (int i = 0; i < cloudlet.getNumberOfPes(); i++) {
 				rcl.setMachineAndPeId(0, i);
 			}
@@ -358,7 +356,7 @@ public class CloudletSchedulerSpaceShared extends CloudletScheduler {
 			usedPes += cloudlet.getNumberOfPes();
 		} else {// no enough free PEs: go to the waiting queue
 			ResCloudlet rcl = new ResCloudlet(cloudlet);
-			rcl.setCloudletStatus(Cloud2SimConstants.QUEUED);
+			rcl.setCloudletStatus(Cloudlet.QUEUED);
 			getCloudletWaitingList().add(rcl);
 			return 0.0;
 		}

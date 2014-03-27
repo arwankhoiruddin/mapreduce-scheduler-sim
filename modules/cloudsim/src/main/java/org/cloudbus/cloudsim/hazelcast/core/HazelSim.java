@@ -14,7 +14,7 @@ import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.core.IMap;
 import org.cloudbus.cloudsim.Datacenter;
 import org.cloudbus.cloudsim.Log;
-import org.cloudbus.cloudsim.core.constants.HazelSimConstants;
+import org.cloudbus.cloudsim.hazelcast.HazelSimConstants;
 import org.cloudbus.cloudsim.hazelcast.HzCloudlet;
 import org.cloudbus.cloudsim.hazelcast.HzVm;
 
