@@ -14,13 +14,12 @@ import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.core.IMap;
 import org.cloudbus.cloudsim.Datacenter;
 import org.cloudbus.cloudsim.compatibility.Cloud2SimConstants;
-import org.cloudbus.cloudsim.compatibility.hazelcast.HazelSimCore;
+import org.cloudbus.cloudsim.compatibility.hazelcast.HazelSim;
 
-public class HzObjectCollection extends HazelSimCore {
+public class HzObjectCollection extends HazelSim {
     private static HzObjectCollection hzObjectCollection = null;
 
     private HzObjectCollection() {
-        System.out.println("HzObjectCollection");
     }
 
     public static HzObjectCollection getHzObjectCollection() {

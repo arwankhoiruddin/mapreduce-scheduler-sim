@@ -13,7 +13,7 @@ package org.cloudbus.cloudsim.examples.hazelcast.instances;
 import com.hazelcast.core.HazelcastInstance;
 import org.cloudbus.cloudsim.Log;
 import org.cloudbus.cloudsim.compatibility.Cloud2SimConstants;
-import org.cloudbus.cloudsim.compatibility.hazelcast.HazelSimCore;
+import org.cloudbus.cloudsim.compatibility.hazelcast.HazelSim;
 
 import java.util.Map;
 
@@ -26,8 +26,8 @@ public class ObjectCollection {
     public static void init() {
         Log.printConcatLine("Initiating the Hazelcast instances for Cloud2Sim.");
 
-        HazelSimCore hazelSimCore = HazelSimCore.getHazelSim(Cloud2SimConstants.HAZELCAST_INSTANCES_STARTED_SIMULTANEOUSLY);
-        instances = hazelSimCore.getHazelcastInstances();
+        HazelSim hazelSim = HazelSim.getHazelSim(Cloud2SimConstants.HAZELCAST_INSTANCES_STARTED_SIMULTANEOUSLY);
+        instances = hazelSim.getHazelcastInstances();
     }
 
     /**
