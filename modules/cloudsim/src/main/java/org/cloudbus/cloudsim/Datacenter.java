@@ -1011,7 +1011,7 @@ public class Datacenter extends SimEntity {
 
 	/*
 	 * (non-Javadoc)
-	 * @see cloudsim.core.SimEntity#shutdownEntity()
+	 * @see cloudsim.hazelcast.SimEntity#shutdownEntity()
 	 */
 	@Override
 	public void shutdownEntity() {
@@ -1020,7 +1020,7 @@ public class Datacenter extends SimEntity {
 
 	/*
 	 * (non-Javadoc)
-	 * @see cloudsim.core.SimEntity#startEntity()
+	 * @see cloudsim.hazelcast.SimEntity#startEntity()
 	 */
 	@Override
 	public void startEntity() {

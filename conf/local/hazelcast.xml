@@ -202,12 +202,16 @@
     <serialization>
         <portable-version>0</portable-version>
         <serializers>
-            <serializer type-class="org.cloudbus.cloudsim.hazelcast.HzVm"> org.cloudbus.cloudsim.serializer.VmXmlSerializer</serializer>
-            <serializer type-class="org.cloudbus.cloudsim.Host"> org.cloudbus.cloudsim.serializer.HostXmlSerializer</serializer>
-            <serializer type-class="org.cloudbus.cloudsim.CloudletScheduler"> org.cloudbus.cloudsim.serializer.CloudletSchedulerXmlSerializer</serializer>
-            <serializer type-class="org.cloudbus.cloudsim.hazelcast.HzCloudlet"> org.cloudbus.cloudsim.serializer.CloudletXmlSerializer</serializer>
-            <serializer type-class="org.cloudbus.cloudsim.UtilizationModel"> org.cloudbus.cloudsim.serializer.UtilizationModelXmlSerializer</serializer>
-            <serializer type-class="org.cloudbus.cloudsim.Datacenter">org.cloudbus.cloudsim.serializer.DatacenterXmlSerializer</serializer>
+            <serializer type-class="pt.inesc_id.gsd.cloud2sim.hazelcast.HzVm">
+                pt.inesc_id.gsd.cloud2sim.serializer.VmXmlSerializer</serializer>
+            <serializer type-class="org.cloudbus.cloudsim.Host">pt.inesc_id.gsd.cloud2sim.serializer.HostXmlSerializer</serializer>
+            <serializer type-class="org.cloudbus.cloudsim.CloudletScheduler">
+                pt.inesc_id.gsd.cloud2sim.serializer.CloudletSchedulerXmlSerializer</serializer>
+            <serializer type-class="pt.inesc_id.gsd.cloud2sim.hazelcast.HzCloudlet">
+                pt.inesc_id.gsd.cloud2sim.serializer.CloudletXmlSerializer</serializer>
+            <serializer type-class="org.cloudbus.cloudsim.UtilizationModel">
+                pt.inesc_id.gsd.cloud2sim.serializer.UtilizationModelXmlSerializer</serializer>
+            <serializer type-class="org.cloudbus.cloudsim.Datacenter">pt.inesc_id.gsd.cloud2sim.serializer.DatacenterXmlSerializer</serializer>
         </serializers>
     </serialization>
 

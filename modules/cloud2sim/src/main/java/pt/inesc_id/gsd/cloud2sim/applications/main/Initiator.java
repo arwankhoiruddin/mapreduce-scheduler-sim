@@ -8,46 +8,24 @@
  * Copyright (c) 2014, Pradeeban Kathiravelu <pradeeban.kathiravelu@tecnico.ulisboa.pt>
  */
 
-package org.cloudbus.cloudsim.examples.hazelcast.instances;
+package pt.inesc_id.gsd.cloud2sim.applications.main;
 
 import com.hazelcast.core.HazelcastInstance;
 import org.cloudbus.cloudsim.Log;
 import org.cloudbus.cloudsim.compatibility.Cloud2SimConstants;
 import org.cloudbus.cloudsim.compatibility.hazelcast.HazelSimCore;
 
-import java.util.Map;
-
-public class ObjectCollection {
+public class Initiator {
     protected static HazelcastInstance[] instances;
 
-    // To prevent instantiation
-    private ObjectCollection(){}
+    public static void main(String[] args) {
+        Log.printConcatLine("Initiating the Hazelcast instances for Cloud2Sim.");
+        init();
+    }
 
     public static void init() {
-        Log.printConcatLine("Initiating the Hazelcast instances for Cloud2Sim.");
-
         HazelSimCore hazelSimCore = HazelSimCore.getHazelSim(Cloud2SimConstants.HAZELCAST_INSTANCES_STARTED_SIMULTANEOUSLY);
         instances = hazelSimCore.getHazelcastInstances();
-    }
-
-    /**
-     * Gets the list of cloudlets created by the user.
-     *
-     * @return the list of cloudlets submitted by the users
-     */
-    @SuppressWarnings("unchecked")
-    public static Map<Integer, String> getList() {
-        return instances[0].getMap("userTestMap");
-    }
-
-    /**
-     * Gets the list of cloudlets created by the user.
-     *
-     * @return the list of cloudlets submitted by the users
-     */
-    @SuppressWarnings("unchecked")
-    public static Map<Integer, String> getTempList() {
-        return instances[1].getMap("userTempMap");
     }
 
 }

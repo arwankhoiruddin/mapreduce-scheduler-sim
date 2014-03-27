@@ -12,6 +12,7 @@
   
   <modules>
     <module>cloudsim</module>
+    <module>cloud2sim</module>
     <module>cloudsim-examples</module>
   </modules>
 

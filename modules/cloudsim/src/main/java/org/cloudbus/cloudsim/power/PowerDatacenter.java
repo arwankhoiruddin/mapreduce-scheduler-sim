@@ -247,7 +247,7 @@ public class PowerDatacenter extends Datacenter {
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.cloudbus.cloudsim.Datacenter#processVmMigrate(org.cloudbus.cloudsim.core.SimEvent,
+	 * @see org.cloudbus.cloudsim.Datacenter#processVmMigrate(org.cloudbus.cloudsim.hazelcast.SimEvent,
 	 * boolean)
 	 */
 	@Override
@@ -262,7 +262,7 @@ public class PowerDatacenter extends Datacenter {
 
 	/*
 	 * (non-Javadoc)
-	 * @see cloudsim.Datacenter#processCloudletSubmit(cloudsim.core.SimEvent, boolean)
+	 * @see cloudsim.Datacenter#processCloudletSubmit(cloudsim.hazelcast.SimEvent, boolean)
 	 */
 	@Override
 	protected void processCloudletSubmit(SimEvent ev, boolean ack) {

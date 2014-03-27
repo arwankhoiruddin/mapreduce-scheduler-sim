@@ -13,8 +13,9 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.cloudbus.cloudsim.compatibility.Cloud2SimConstants;
 import org.cloudbus.cloudsim.core.CloudSim;
-import org.cloudbus.cloudsim.hazelcast.core.HazelSim;
+import org.cloudbus.cloudsim.compatibility.hazelcast.HazelSimCore;
 
 /**
  * Cloudlet is an extension to the cloudlet. It stores, despite all the information encapsulated in
@@ -26,7 +27,8 @@ import org.cloudbus.cloudsim.hazelcast.core.HazelSim;
  */
 public class Cloudlet {
 
-    private HazelSim objectCollection = HazelSim.getHazelSim();
+    private HazelSimCore objectCollection = HazelSimCore.getHazelSim(
+            Cloud2SimConstants.HAZELCAST_INSTANCES_STARTED_SIMULTANEOUSLY);
 	/**
 	 * The User or Broker ID. It is advisable that broker set this ID with its own ID, so that
 	 * CloudResource returns to it after the execution.

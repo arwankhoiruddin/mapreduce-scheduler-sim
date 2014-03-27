@@ -42,7 +42,7 @@ public class PowerDatacenterBroker extends DatacenterBroker {
 	/*
 	 * (non-Javadoc)
 	 * @see
-	 * org.cloudbus.cloudsim.DatacenterBroker#processVmCreate(org.cloudbus.cloudsim.core.SimEvent)
+	 * org.cloudbus.cloudsim.DatacenterBroker#processVmCreate(org.cloudbus.cloudsim.hazelcast.SimEvent)
 	 */
 	@Override
 	protected void processVmCreate(SimEvent ev) {

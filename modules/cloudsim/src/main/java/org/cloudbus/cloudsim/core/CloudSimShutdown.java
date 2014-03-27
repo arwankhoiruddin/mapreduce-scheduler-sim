@@ -72,7 +72,7 @@ public class CloudSimShutdown extends SimEntity {
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.cloudbus.cloudsim.core.SimEntity#startEntity()
+	 * @see org.cloudbus.cloudsim.hazelcast.SimEntity#startEntity()
 	 */
 	@Override
 	public void startEntity() {
@@ -81,7 +81,7 @@ public class CloudSimShutdown extends SimEntity {
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.cloudbus.cloudsim.core.SimEntity#shutdownEntity()
+	 * @see org.cloudbus.cloudsim.hazelcast.SimEntity#shutdownEntity()
 	 */
 	@Override
 	public void shutdownEntity() {
