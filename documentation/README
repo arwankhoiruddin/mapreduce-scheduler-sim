@@ -11,15 +11,13 @@ $ mvn clean install -DskipTests
 
 Built distribution inside distribution/target.
 $ tar -xzvf distribution/target/cloudsim-3.1-SNAPSHOT.tar.gz
-$ mv cloudsim-3.1-SNAPSHOT/jars/cloudsim-3.1-SNAPSHOT.jar cloudsim-3.1-SNAPSHOT/jars/cloudsim-examples-3.1-SNAPSHOT.jar .
+$ mv cloudsim-3.1-SNAPSHOT/jars/cloudsim-3.1-SNAPSHOT.jar cloudsim-3.1-SNAPSHOT/jars/cloudsim-examples-3.1-SNAPSHOT.jar cloudsim-3.1-SNAPSHOT/jars/cloud2sim-1.0-SNAPSHOT.jar .
 
 To run an existing example:
-$ java -classpath cloudsim-3.1-SNAPSHOT.jar:cloudsim-examples-3.1-SNAPSHOT.jar:lib/hazelcast-3.1.6.jar pt.inesc_id.gsd.cloud2sim.applications.main.statics.Simulator
-
-$ java -classpath cloudsim-3.1-SNAPSHOT.jar:cloudsim-examples-3.1-SNAPSHOT.jar:lib/hazelcast-3.1.6.jar org.cloudbus.cloudsim.examples.hazelcast.instances.ObjectCollectionTest
+$ java -classpath cloudsim-3.1-SNAPSHOT.jar:cloudsim-examples-3.1-SNAPSHOT.jar:lib/hazelcast-3.1.6.jar:cloud2sim-1.0-SNAPSHOT.jar pt.inesc_id.gsd.cloud2sim.applications.main.statics.Simulator
 
 To initiate an instance without running any specific code:
-$ java -classpath cloudsim-3.1-SNAPSHOT.jar:cloudsim-examples-3.1-SNAPSHOT.jar:lib/hazelcast-3.1.6.jar pt.inesc_id.gsd.cloud2sim.applications.main.dynamics.Initiator
+$ java -classpath cloudsim-3.1-SNAPSHOT.jar:cloudsim-examples-3.1-SNAPSHOT.jar:lib/hazelcast-3.1.6.jar:cloud2sim-1.0-SNAPSHOT.jar pt.inesc_id.gsd.cloud2sim.applications.main.dynamics.Initiator
 
 Copy the files to the other instances.
 $ scp -r . pradeeban@146.193.41.145:/home/pradeeban

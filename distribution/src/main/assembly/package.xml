@@ -10,6 +10,8 @@
 			<includes>
 				<include>${project.groupId}:cloudsim:jar</include>
 				<include>${project.groupId}:cloudsim:jar:sources</include>
+                <include>${project.groupId}:cloud2sim:jar</include>
+                <include>${project.groupId}:cloud2sim:jar:sources</include>
 				<include>${project.groupId}:cloudsim-examples:jar</include>
 				<include>${project.groupId}:cloudsim-examples:jar:sources</include>
 			</includes>
