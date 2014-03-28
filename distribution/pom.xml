@@ -70,13 +70,6 @@
   	</dependency> 	
   	<dependency>
   		<groupId>${project.groupId}</groupId>
-		<artifactId>cloud2sim</artifactId>
-		<version>${project.version}</version>
-		<type>jar</type>
-		<classifier>javadoc</classifier>
-  	</dependency>  	  	  	
-  	<dependency>
-  		<groupId>${project.groupId}</groupId>
 		<artifactId>cloudsim-examples</artifactId>
 		<version>${project.version}</version>
 		<type>jar</type>
