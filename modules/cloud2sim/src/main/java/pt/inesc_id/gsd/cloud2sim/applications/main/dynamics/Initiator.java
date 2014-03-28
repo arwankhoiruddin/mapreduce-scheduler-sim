@@ -11,12 +11,18 @@
 package pt.inesc_id.gsd.cloud2sim.applications.main.dynamics;
 
 import org.cloudbus.cloudsim.Log;
+import org.cloudbus.cloudsim.compatibility.ConfigReader;
 import org.cloudbus.cloudsim.compatibility.hazelcast.HazelSim;
 import org.cloudbus.cloudsim.compatibility.hazelcast.HazelSimCore;
 
 public class Initiator {
     public static void main(String[] args) {
+        initInstance();
+    }
+
+    public static void initInstance() {
         Log.printConcatLine("Initiating a Hazelcast instance for Cloud2Sim.");
+        ConfigReader.readConfig();
         HazelSim.spawnInstance(HazelSimCore.getCfg());
     }
 }
