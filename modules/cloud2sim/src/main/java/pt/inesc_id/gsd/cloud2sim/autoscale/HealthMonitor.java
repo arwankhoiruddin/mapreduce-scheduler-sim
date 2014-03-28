@@ -14,7 +14,7 @@ import java.lang.management.ManagementFactory;
 import java.lang.management.OperatingSystemMXBean;
 import java.lang.reflect.Method;
 
-public class HealthMonitor {
+public class HealthMonitor implements Runnable {
     private Runtime runtime;
     private OperatingSystemMXBean osMxBean;
     private double threshold = 70;
@@ -25,10 +25,10 @@ public class HealthMonitor {
     private double memoryUsedOfTotalPercentage;
     private double memoryUsedOfMaxPercentage;
     private double systemCpuLoad;
-    private double processCpuLoad;
-    private double systemLoadAverage;
+    private double processCpuLoad; // -100.0 in windows
+    private double systemLoadAverage; // -1.0 in windows
 
-    public HealthMonitor() {
+    public HealthMonitor () {
         runtime = Runtime.getRuntime();
         osMxBean = ManagementFactory.getOperatingSystemMXBean();
     }
@@ -40,9 +40,10 @@ public class HealthMonitor {
         memoryMax = runtime.maxMemory();
         memoryUsedOfTotalPercentage = 100d * memoryUsed / memoryTotal;
         memoryUsedOfMaxPercentage = 100d * memoryUsed / memoryMax;
-        systemLoadAverage = osMxBean.getSystemLoadAverage();
         systemCpuLoad = get(osMxBean, "getSystemCpuLoad", -1L);
         processCpuLoad = get(osMxBean, "getProcessCpuLoad", -1L);
+        systemLoadAverage = osMxBean.getSystemLoadAverage();
+        System.out.println(memoryUsedOfTotalPercentage);
     }
 
     private Long get(OperatingSystemMXBean mbean, String methodName, Long defaultValue) {
@@ -70,12 +71,20 @@ public class HealthMonitor {
         }
     }
 
-    public static void main(String[] args) {
-        HealthMonitor healthMonitor = new HealthMonitor();
-        healthMonitor.init();
-        System.out.println(healthMonitor.systemCpuLoad);
-        System.out.println(healthMonitor.processCpuLoad);
-        System.out.println(healthMonitor.systemLoadAverage);
+    @Override
+    public void run() {
+        while (true) {
+            init();
+            try {
+                Thread.sleep(10000);
+            } catch (InterruptedException e) {
+                return;
+            }
+        }
+    }
 
+    public static void main(String[] args) {
+        Thread t = new Thread(new HealthMonitor());
+        t.start();
     }
 }
