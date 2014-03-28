@@ -16,13 +16,10 @@ import org.cloudbus.cloudsim.UtilizationModel;
 import org.cloudbus.cloudsim.UtilizationModelFull;
 import org.cloudbus.cloudsim.compatibility.ConfigReader;
 import pt.inesc_id.gsd.cloud2sim.applications.roundrobin.RoundRobinDatacenterBroker;
-import pt.inesc_id.gsd.cloud2sim.hazelcast.HzCloudSim;
 import pt.inesc_id.gsd.cloud2sim.hazelcast.HzCloudlet;
 import pt.inesc_id.gsd.cloud2sim.hazelcast.HzDatacenterBroker;
 import pt.inesc_id.gsd.cloud2sim.hazelcast.HzObjectCollection;
 import pt.inesc_id.gsd.cloud2sim.hazelcast.HzVm;
-import pt.inesc_id.gsd.cloud2sim.util.AppBuilder;
-import pt.inesc_id.gsd.cloud2sim.util.AppUtil;
 
 public class SimulationEngine {
     private static boolean isRR = ConfigReader.getIsRR();
@@ -42,11 +39,6 @@ public class SimulationEngine {
         HzVm vm;
 
         int noOfVms = ConfigReader.getNoOfVms();
-//        int init = AppBuilder.getPartitionInit(noOfVms, HzCloudSim.getOffset());
-//        int end = AppBuilder.getPartitionFinal(noOfVms, HzCloudSim.getOffset());
-
-//        AppUtil.setVmsFinal(end);
-//        AppUtil.setVmsInit(init);
 
         for (int i = 0; i < noOfVms; i++) {
             if (isRR) {
@@ -69,11 +61,6 @@ public class SimulationEngine {
         HzCloudlet cloudlet;
 
         int noOfCloudlets = ConfigReader.getNoOfCloudlets();
-//        int init = AppBuilder.getPartitionInit(noOfCloudlets, HzCloudSim.getOffset());
-//        int end = AppBuilder.getPartitionFinal(noOfCloudlets, HzCloudSim.getOffset());
-//
-//        AppUtil.setCloudletsInit(init);
-//        AppUtil.setCloudletsFinal(end);
 
         for (int i = 0; i < noOfCloudlets; i++) {
             int f = (int) ((Math.random() * 40) + 1);
