@@ -21,7 +21,7 @@ public class Initiator {
     }
 
     public static void initInstance() {
-        Log.printConcatLine("Initiating a Hazelcast instance for Cloud2Sim.");
+        Log.printConcatLine("Initiating a Hazelcast instance.");
         ConfigReader.readConfig();
         HazelSim.spawnInstance(HazelSimCore.getCfg());
     }
