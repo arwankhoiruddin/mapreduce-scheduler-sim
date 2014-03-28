@@ -25,6 +25,7 @@ public class ConfigReader {
     private static boolean withWorkload; //true
     private static int simultaneousInstances; // 1
     private static int noOfExecutions; // 2
+    private static String hazelcastXml;
 
     public static void readConfig() {
         Properties prop = new Properties();
@@ -43,6 +44,7 @@ public class ConfigReader {
             withWorkload = Boolean.parseBoolean(prop.getProperty("withWorkload"));
             simultaneousInstances = Integer.parseInt(prop.getProperty("simultaneousInstances"));
             noOfExecutions = Integer.parseInt(prop.getProperty("noOfExecutions"));
+            hazelcastXml = prop.getProperty("hazelcastXml");
         } catch (IOException ex) {
             ex.printStackTrace();
         } finally {
@@ -90,5 +92,9 @@ public class ConfigReader {
 
     public static int getNoOfExecutions() {
         return noOfExecutions;
+    }
+
+    public static String getHazelcastXml() {
+        return hazelcastXml;
     }
 }

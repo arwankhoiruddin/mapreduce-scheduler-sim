@@ -21,7 +21,7 @@ public final class Cloud2SimConstants {
     public static final int NO_OF_HAZELCAST_INSTANCES = NO_OF_PARALLEL_EXECUTIONS *
             HAZELCAST_INSTANCES_STARTED_SIMULTANEOUSLY;
 
-    public static final String HAZELCAST_CONFIG_FILE = "conf/local/hazelcast.xml";
+    public static final String HAZELCAST_CONFIG_FILE = ConfigReader.getHazelcastXml();
     public static final String CLOUD2SIM_PROPERTIES_FILE = "conf/cloud2sim.properties";
     public static final String HAZELCAST_CONFIG_FILE_NOT_FOUND_ERROR =
         "Hazelcast Configuration File not found. Using the default.";
