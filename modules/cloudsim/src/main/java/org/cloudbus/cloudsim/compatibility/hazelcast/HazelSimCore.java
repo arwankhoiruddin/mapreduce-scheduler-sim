@@ -10,9 +10,9 @@ import java.io.FileNotFoundException;
 public class HazelSimCore {
     private static HazelSimCore hazelSimCore = null;
 
-    private HazelSimCore() {
+    private HazelSimCore(int noOfSimultaneousInstances) {
         Config cfg = getCfg();
-        HazelSim.spawnInstance(cfg);
+        HazelSim.spawnInstances(cfg, noOfSimultaneousInstances);
     }
 
     public static Config getCfg() {
@@ -28,9 +28,9 @@ public class HazelSimCore {
         return cfg;
     }
 
-    public static HazelSimCore getHazelSimCore() {
+    public static HazelSimCore getHazelSimCore(int noOfSimultaneousInstances) {
         if (hazelSimCore == null) {
-            hazelSimCore = new HazelSimCore();
+            hazelSimCore = new HazelSimCore(noOfSimultaneousInstances);
         }
         return hazelSimCore;
     }

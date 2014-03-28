@@ -15,12 +15,15 @@ import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.core.IMap;
 import org.cloudbus.cloudsim.compatibility.Cloud2SimConstants;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * A singleton that integrates Hazelcast into Cloud2Sim and initiates Hazelcast.
  */
 public class HazelSim {
     private static HazelSim hazelSim = null;
-    protected static HazelcastInstance[] instances = new HazelcastInstance[0];
+    protected static List<HazelcastInstance> instances = new ArrayList<>();
 
     /**
      * Protected constructor to avoid instantiation of the singleton class
@@ -40,23 +43,29 @@ public class HazelSim {
     }
 
     public static void spawnInstances(Config config, int instanceCount) {
-        instances = new HazelcastInstance[instanceCount];
         for (int i = 0; i < instanceCount; i++) {
-            instances[i] = Hazelcast.newHazelcastInstance(config);
+            instances.add(Hazelcast.newHazelcastInstance(config));
         }
     }
 
     public static void spawnInstance(Config config) {
-        instances = new HazelcastInstance[1];
-        instances[0] = Hazelcast.newHazelcastInstance(config);
+        instances.add(Hazelcast.newHazelcastInstance(config));
     }
 
     /**
      * Gets the compatibility instances.
      * @return the compatibility instances.
      */
-    public HazelcastInstance[] getHazelcastInstances() {
+    public List<HazelcastInstance> getHazelcastInstances() {
         return instances;
+    }
+
+    public HazelcastInstance getFirstInstance() {
+        return instances.get(Cloud2SimConstants.FIRST);
+    }
+
+    public HazelcastInstance getLastInstance() {
+        return instances.get(Cloud2SimConstants.LAST);
     }
 
     /**
@@ -64,7 +73,7 @@ public class HazelSim {
      * @return the map
      */
     public IMap<Integer, Double> getCloudletFinishedTime() {
-        return instances[Cloud2SimConstants.FIRST].getMap("finishedTime");
+        return instances.get(Cloud2SimConstants.FIRST).getMap("finishedTime");
     }
 }
 

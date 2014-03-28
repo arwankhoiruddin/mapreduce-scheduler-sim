@@ -12,6 +12,7 @@ package pt.inesc_id.gsd.cloud2sim.hazelcast;
 
 import org.cloudbus.cloudsim.Log;
 import org.cloudbus.cloudsim.compatibility.Cloud2SimConstants;
+import org.cloudbus.cloudsim.compatibility.ConfigReader;
 import org.cloudbus.cloudsim.compatibility.hazelcast.HazelSim;
 import org.cloudbus.cloudsim.compatibility.hazelcast.HazelSimCore;
 import pt.inesc_id.gsd.cloud2sim.util.AppBuilder;
@@ -25,7 +26,7 @@ public class HzCloudSim extends CloudSim {
 
     public static void init(int numUser, Calendar cal, boolean traceFlag) {
         Log.printConcatLine("Initiating the Hazelcast instances for Cloud2Sim.");
-        HazelSimCore hazelSimCore = HazelSimCore.getHazelSimCore();
+        HazelSimCore hazelSimCore = HazelSimCore.getHazelSimCore(ConfigReader.getSimultaneousInstances());
 
         initOffset();
 

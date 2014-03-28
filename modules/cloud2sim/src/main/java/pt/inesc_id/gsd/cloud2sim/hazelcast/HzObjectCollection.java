@@ -10,7 +10,6 @@
 
 package pt.inesc_id.gsd.cloud2sim.hazelcast;
 
-import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.core.IMap;
 import org.cloudbus.cloudsim.Datacenter;
 import org.cloudbus.cloudsim.compatibility.Cloud2SimConstants;
@@ -29,20 +28,12 @@ public class HzObjectCollection extends HazelSim {
         return hzObjectCollection;
     }
 
-    public HazelcastInstance getFirstInstance() {
-        return instances[Cloud2SimConstants.FIRST];
-    }
-
-    public HazelcastInstance getLastInstance() {
-        return instances[Cloud2SimConstants.LAST];
-    }
-
     /**
      * Map: vmId -> hostId
      * @return the map
      */
     public IMap<Integer, Integer> getHostForVm() {
-        return instances[Cloud2SimConstants.LAST].getMap("hostForVm");
+        return getFirstInstance().getMap("hostForVm");
     }
 
     /**
@@ -51,14 +42,14 @@ public class HzObjectCollection extends HazelSim {
      * @return the vm list
      */
     public IMap<Integer, HzVm> getUserVmList() {
-        while (instances[Cloud2SimConstants.FIRST] == null) {
+        while (instances.get(Cloud2SimConstants.FIRST) == null) {
             try {
                 Thread.sleep(100);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
-        return instances[Cloud2SimConstants.FIRST].getMap("userVmList");
+        return getFirstInstance().getMap("userVmList");
     }
 
     /**
@@ -67,14 +58,14 @@ public class HzObjectCollection extends HazelSim {
      * @return the cloudlet map
      */
     public IMap<Integer, HzCloudlet> getUserCloudletList() {
-        while (instances[Cloud2SimConstants.FIRST] == null) {
+        while (instances.get(Cloud2SimConstants.FIRST) == null) {
             try {
                 Thread.sleep(100);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
-        return instances[Cloud2SimConstants.FIRST].getMap("userCloudletList");
+        return getFirstInstance().getMap("userCloudletList");
     }
 
     /**
@@ -83,7 +74,7 @@ public class HzObjectCollection extends HazelSim {
      * @return the vm list
      */
     public IMap<Integer, HzVm> getVmList() {
-        return instances[Cloud2SimConstants.LAST].getMap("vmList");
+        return getFirstInstance().getMap("vmList");
     }
 
     /**
@@ -92,7 +83,7 @@ public class HzObjectCollection extends HazelSim {
      * @return the vm list
      */
     public IMap<Integer, HzVm> getVmsCreatedList() {
-        return instances[Cloud2SimConstants.LAST].getMap("vmCreatedList");
+        return getFirstInstance().getMap("vmCreatedList");
     }
 
     /**
@@ -101,7 +92,7 @@ public class HzObjectCollection extends HazelSim {
      * @return the cloudlet list
      */
     public IMap<Integer, HzCloudlet> getCloudletList() {
-        return instances[Cloud2SimConstants.FIRST].getMap("cloudletList");
+        return getFirstInstance().getMap("cloudletList");
     }
 
     /**
@@ -110,7 +101,7 @@ public class HzObjectCollection extends HazelSim {
      * @return the cloudlet submitted list
      */
     public IMap<Integer, HzCloudlet> getCloudletSubmittedList() {
-        return instances[Cloud2SimConstants.LAST].getMap("cloudletSubmittedList");
+        return getFirstInstance().getMap("cloudletSubmittedList");
     }
 
     /**
@@ -119,7 +110,7 @@ public class HzObjectCollection extends HazelSim {
      * @return the cloudlet received list
      */
     public IMap<Integer, HzCloudlet> getCloudletReceivedList() {
-        return instances[Cloud2SimConstants.LAST].getMap("cloudletReceivedList");
+        return getFirstInstance().getMap("cloudletReceivedList");
     }
 
     /**
@@ -128,11 +119,10 @@ public class HzObjectCollection extends HazelSim {
      * @return the cloudlet list
      */
     public IMap<Long, Integer> getDeploymentInformation() {
-        return instances[Cloud2SimConstants.FIRST].getMap("deploymentList");
+        return getFirstInstance().getMap("deploymentList");
     }
 
     public IMap<Integer, Datacenter> getDatacenterList() {
-        return instances[Cloud2SimConstants.FIRST].getMap("datacenterList");
+        return getFirstInstance().getMap("datacenterList");
     }
 }
-

@@ -91,6 +91,8 @@ public class Simulator {
                 while (objectCollection.getCloudletList().size() < AppUtil.getNoOfCloudlets() ||
                         objectCollection.getVmList().size() < AppUtil.getNoOfVms()) {
                     Thread.sleep(1000);
+                    System.out.println(objectCollection.getCloudletList().size() + " Cloudlets. VMs: " +
+                    objectCollection.getVmList().size());
                 }
                 // Fifth step: Starts the simulation
                 HzCloudSim.startSimulation();
