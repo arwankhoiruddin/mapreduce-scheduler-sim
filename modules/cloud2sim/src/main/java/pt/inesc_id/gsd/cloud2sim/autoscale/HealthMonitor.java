@@ -11,8 +11,7 @@
 package pt.inesc_id.gsd.cloud2sim.autoscale;
 
 import java.lang.management.ManagementFactory;
-import java.lang.management.OperatingSystemMXBean;
-import java.lang.reflect.Method;
+import com.sun.management.OperatingSystemMXBean;
 
 public class HealthMonitor implements Runnable {
     private Runtime runtime;
@@ -25,12 +24,12 @@ public class HealthMonitor implements Runnable {
     private double memoryUsedOfTotalPercentage;
     private double memoryUsedOfMaxPercentage;
     private double systemCpuLoad;
-    private double processCpuLoad; // -100.0 in windows
+    private double processCpuLoad;
     private double systemLoadAverage; // -1.0 in windows
 
     public HealthMonitor () {
         runtime = Runtime.getRuntime();
-        osMxBean = ManagementFactory.getOperatingSystemMXBean();
+        osMxBean = ManagementFactory.getPlatformMXBean(OperatingSystemMXBean.class);
     }
 
     public void init() {
@@ -40,35 +39,10 @@ public class HealthMonitor implements Runnable {
         memoryMax = runtime.maxMemory();
         memoryUsedOfTotalPercentage = 100d * memoryUsed / memoryTotal;
         memoryUsedOfMaxPercentage = 100d * memoryUsed / memoryMax;
-        systemCpuLoad = get(osMxBean, "getSystemCpuLoad", -1L);
-        processCpuLoad = get(osMxBean, "getProcessCpuLoad", -1L);
+        systemCpuLoad = osMxBean.getSystemCpuLoad(); // get(osMxBean, "getSystemCpuLoad", -1L);
+        processCpuLoad = osMxBean.getProcessCpuLoad();
         systemLoadAverage = osMxBean.getSystemLoadAverage();
-        System.out.println(memoryUsedOfTotalPercentage);
-    }
-
-    private Long get(OperatingSystemMXBean mbean, String methodName, Long defaultValue) {
-        try {
-            Method method = mbean.getClass().getMethod(methodName);
-            method.setAccessible(true);
-
-            Object value = method.invoke(mbean);
-            if (value == null) {
-                return defaultValue;
-            }
-            if (value instanceof Integer) {
-                return (long) (Integer) value;
-            }
-            if (value instanceof Double) {
-                double v = (Double) value;
-                return Math.round(v * 100);
-            }
-            if (value instanceof Long) {
-                return (Long) value;
-            }
-            return defaultValue;
-        } catch (Exception e) {
-            return defaultValue;
-        }
+        System.out.println(processCpuLoad);
     }
 
     @Override
@@ -81,10 +55,5 @@ public class HealthMonitor implements Runnable {
                 return;
             }
         }
-    }
-
-    public static void main(String[] args) {
-        Thread t = new Thread(new HealthMonitor());
-        t.start();
     }
 }

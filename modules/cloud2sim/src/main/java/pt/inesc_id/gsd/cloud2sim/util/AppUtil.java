@@ -14,6 +14,7 @@ import com.hazelcast.core.Hazelcast;
 import org.cloudbus.cloudsim.Log;
 import org.cloudbus.cloudsim.compatibility.ConfigReader;
 import org.cloudbus.cloudsim.core.CloudSim;
+import pt.inesc_id.gsd.cloud2sim.autoscale.HealthMonitor;
 
 public class AppUtil {
     private static long startTime;
@@ -30,6 +31,8 @@ public class AppUtil {
     public static void start() {
         startTime = System.currentTimeMillis();
         ConfigReader.readConfig();
+        Thread t = new Thread(new HealthMonitor());
+        t.start();
     }
 
     public static int getNoOfCloudlets() {
