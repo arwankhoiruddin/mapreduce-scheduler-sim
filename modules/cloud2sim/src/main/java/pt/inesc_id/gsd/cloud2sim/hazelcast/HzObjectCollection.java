@@ -42,13 +42,6 @@ public class HzObjectCollection extends HazelSim {
      * @return the vm list
      */
     public IMap<Integer, HzVm> getUserVmList() {
-        while (instances.get(Cloud2SimConstants.FIRST) == null) {
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
         return getFirstInstance().getMap("userVmList");
     }
 
@@ -58,13 +51,6 @@ public class HzObjectCollection extends HazelSim {
      * @return the cloudlet map
      */
     public IMap<Integer, HzCloudlet> getUserCloudletList() {
-        while (instances.get(Cloud2SimConstants.FIRST) == null) {
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
         return getFirstInstance().getMap("userCloudletList");
     }
 

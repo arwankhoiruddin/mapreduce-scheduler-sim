@@ -61,11 +61,22 @@ public class HazelSim {
     }
 
     public HazelcastInstance getFirstInstance() {
-        return instances.get(Cloud2SimConstants.FIRST);
+        return getNthInstance(Cloud2SimConstants.FIRST);
     }
 
     public HazelcastInstance getLastInstance() {
-        return instances.get(Cloud2SimConstants.LAST);
+        return getNthInstance(Cloud2SimConstants.LAST);
+    }
+
+    public HazelcastInstance getNthInstance(int i) {
+        while (instances.size() <= i) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        return instances.get(i);
     }
 
     /**
