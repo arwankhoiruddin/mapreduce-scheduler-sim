@@ -28,6 +28,7 @@ public class SubmittedCloudletsRemover implements Runnable, Serializable, Hazelc
     @Override
     public void run() {
         hzObjectCollection.getCloudletList().remove(cloudletId);
+        hzObjectCollection.getUserCloudletList().remove(cloudletId);
     }
 
     @Override
