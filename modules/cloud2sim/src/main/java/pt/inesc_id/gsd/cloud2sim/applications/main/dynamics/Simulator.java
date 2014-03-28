@@ -8,18 +8,18 @@
  * Copyright (c) 2014, Pradeeban Kathiravelu <pradeeban.kathiravelu@tecnico.ulisboa.pt>
  */
 
-package pt.inesc_id.gsd.cloud2sim.applications.main;
+package pt.inesc_id.gsd.cloud2sim.applications.main.dynamics;
 
-import org.cloudbus.cloudsim.*;
-import pt.inesc_id.gsd.cloud2sim.hazelcast.HzObjectCollection;
-import pt.inesc_id.gsd.cloud2sim.util.AppUtil;
+import org.cloudbus.cloudsim.Datacenter;
+import org.cloudbus.cloudsim.Log;
 import org.cloudbus.cloudsim.compatibility.ConfigReader;
-import pt.inesc_id.gsd.cloud2sim.util.OutputLogger;
+import pt.inesc_id.gsd.cloud2sim.applications.callables.DatacenterCreatorCallable;
 import pt.inesc_id.gsd.cloud2sim.hazelcast.HzCloudSim;
 import pt.inesc_id.gsd.cloud2sim.hazelcast.HzCloudlet;
 import pt.inesc_id.gsd.cloud2sim.hazelcast.HzDatacenterBroker;
-import pt.inesc_id.gsd.cloud2sim.applications.callables.DatacenterCreatorCallable;
-import pt.inesc_id.gsd.cloud2sim.applications.core.SimulationEngine;
+import pt.inesc_id.gsd.cloud2sim.hazelcast.HzObjectCollection;
+import pt.inesc_id.gsd.cloud2sim.util.AppUtil;
+import pt.inesc_id.gsd.cloud2sim.util.OutputLogger;
 
 import java.util.ArrayList;
 import java.util.Calendar;

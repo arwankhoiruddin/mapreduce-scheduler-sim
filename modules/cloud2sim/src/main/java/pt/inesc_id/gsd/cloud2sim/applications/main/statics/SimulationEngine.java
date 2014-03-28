@@ -8,7 +8,7 @@
  * Copyright (c) 2014, Pradeeban Kathiravelu <pradeeban.kathiravelu@tecnico.ulisboa.pt>
  */
 
-package pt.inesc_id.gsd.cloud2sim.applications.core;
+package pt.inesc_id.gsd.cloud2sim.applications.main.statics;
 
 import org.cloudbus.cloudsim.CloudletSchedulerSpaceShared;
 import org.cloudbus.cloudsim.CloudletSchedulerTimeShared;

@@ -8,7 +8,7 @@
  * Copyright (c) 2014, Pradeeban Kathiravelu <pradeeban.kathiravelu@tecnico.ulisboa.pt>
  */
 
-package pt.inesc_id.gsd.cloud2sim.applications.main;
+package pt.inesc_id.gsd.cloud2sim.applications.main.dynamics;
 
 import org.cloudbus.cloudsim.Log;
 import org.cloudbus.cloudsim.compatibility.hazelcast.HazelSim;
