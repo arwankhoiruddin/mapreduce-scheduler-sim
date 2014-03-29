@@ -16,7 +16,9 @@ import com.sun.management.OperatingSystemMXBean;
 public class HealthMonitor implements Runnable {
     private Runtime runtime;
     private OperatingSystemMXBean osMxBean;
-    private double threshold = 70;
+    private double highThreshold = 0.10;
+    private double lowThreshold = 0.02;
+    private double maxNumberOfInstancesToBeSpawned = 3;
     private long memoryFree;
     private long memoryTotal;
     private long memoryUsed;
@@ -32,7 +34,7 @@ public class HealthMonitor implements Runnable {
         osMxBean = ManagementFactory.getPlatformMXBean(OperatingSystemMXBean.class);
     }
 
-    public void init() {
+    private void init() {
         memoryFree = runtime.freeMemory();
         memoryTotal = runtime.totalMemory();
         memoryUsed = memoryTotal - memoryFree;
@@ -42,7 +44,15 @@ public class HealthMonitor implements Runnable {
         systemCpuLoad = osMxBean.getSystemCpuLoad(); // get(osMxBean, "getSystemCpuLoad", -1L);
         processCpuLoad = osMxBean.getProcessCpuLoad();
         systemLoadAverage = osMxBean.getSystemLoadAverage();
-        System.out.println(processCpuLoad);
+        scale();
+    }
+
+    private void scale() {
+        if ((processCpuLoad > highThreshold) && AutoScaler.getSize() < maxNumberOfInstancesToBeSpawned ) {
+            AutoScaler.spawnInstance();
+        } else if (processCpuLoad < lowThreshold) {
+            AutoScaler.terminateInstance();
+        }
     }
 
     @Override
