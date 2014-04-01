@@ -18,12 +18,12 @@ public class HazelSimCore {
     public static Config getCfg() {
         Config cfg;
         try {
-            cfg = new FileSystemXmlConfig(Cloud2SimConstants.HAZELCAST_CONFIG_FILE);
+            cfg = new FileSystemXmlConfig(HzConstants.HAZELCAST_CONFIG_FILE);
         } catch (FileNotFoundException e) {
-            Log.printConcatLine(Cloud2SimConstants.HAZELCAST_CONFIG_FILE_NOT_FOUND_ERROR);
+            Log.printConcatLine(HzConstants.HAZELCAST_CONFIG_FILE_NOT_FOUND_ERROR);
             cfg = new Config();
         }
-        cfg.setProperty("hazelcast.initial.min.cluster.size", String.valueOf(Cloud2SimConstants.NO_OF_PARALLEL_EXECUTIONS));
+        cfg.setProperty("hazelcast.initial.min.cluster.size", String.valueOf(HzConstants.NO_OF_PARALLEL_EXECUTIONS));
         cfg.setProperty("hazelcast.operation.call.timeout.millis", "50000000");
         return cfg;
     }

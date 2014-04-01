@@ -12,6 +12,7 @@ package pt.inesc_id.gsd.cloud2sim.util;
 
 import org.cloudbus.cloudsim.Pe;
 import org.cloudbus.cloudsim.compatibility.Cloud2SimConstants;
+import org.cloudbus.cloudsim.compatibility.hazelcast.HzConstants;
 import org.cloudbus.cloudsim.provisioners.PeProvisionerSimple;
 
 import java.util.ArrayList;
@@ -30,21 +31,21 @@ public class AppBuilder {
     }
 
     public static int getPartitionInit(int noOfParams, int offset) {
-        return (int) (offset * Math.ceil((noOfParams / (double) Cloud2SimConstants.NO_OF_PARALLEL_EXECUTIONS)));
+        return (int) (offset * Math.ceil((noOfParams / (double) HzConstants.NO_OF_PARALLEL_EXECUTIONS)));
     }
 
     public static int getPartitionFinal(int noOfParams, int offset) {
         int temp = (int) ((offset + 1) * Math.ceil((noOfParams /
-                (double) Cloud2SimConstants.NO_OF_PARALLEL_EXECUTIONS)));
+                (double) HzConstants.NO_OF_PARALLEL_EXECUTIONS)));
         return temp < noOfParams ? temp : noOfParams;
     }
 
     public static int getPartitionSize(int noOfParams) {
-        return (int) Math.ceil((noOfParams / (double) Cloud2SimConstants.NO_OF_PARALLEL_EXECUTIONS));
+        return (int) Math.ceil((noOfParams / (double) HzConstants.NO_OF_PARALLEL_EXECUTIONS));
     }
 
     public static void initWorkers(int offset) {
-        if (offset == Cloud2SimConstants.NO_OF_PARALLEL_EXECUTIONS - 1) {
+        if (offset == HzConstants.NO_OF_PARALLEL_EXECUTIONS - 1) {
             AppUtil.setIsPrimaryWorker(true);
         }
 

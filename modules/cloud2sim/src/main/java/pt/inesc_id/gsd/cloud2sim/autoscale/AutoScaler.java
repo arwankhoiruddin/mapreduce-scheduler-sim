@@ -22,17 +22,20 @@ import java.util.List;
 public class AutoScaler {
     protected static List<HazelcastInstance> instances = new ArrayList<>();
 
-    public static void spawnInstance() {
-        Log.printConcatLine("[Autoscaler] Initiating a Hazelcast instance.");
-        ConfigReader.readConfig();
+    public static boolean spawnInstance() {
+        Log.printConcatLine("[AutoScaler] Initiating a Hazelcast instance.");
+        AutoScaleConfigReader.readConfig();
         instances.add(Hazelcast.newHazelcastInstance(HazelSimCore.getCfg()));
+        return true;
     }
 
-    public static void terminateInstance() {
+    public static boolean terminateInstance() {
         if (getSize() > 0) {
-            Log.printConcatLine("[Autoscaler] Terminating a Hazelcast instance.");
+            Log.printConcatLine("[AutoScaler] Terminating a Hazelcast instance.");
             getLastInstance().shutdown();
+            return true;
         }
+        return false;
     }
 
     public static HazelcastInstance getLastInstance() {

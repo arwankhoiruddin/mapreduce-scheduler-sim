@@ -12,9 +12,9 @@ package pt.inesc_id.gsd.cloud2sim.util;
 
 import com.hazelcast.core.Hazelcast;
 import org.cloudbus.cloudsim.Log;
-import org.cloudbus.cloudsim.compatibility.ConfigReader;
 import org.cloudbus.cloudsim.core.CloudSim;
 import pt.inesc_id.gsd.cloud2sim.autoscale.HealthMonitor;
+import org.cloudbus.cloudsim.compatibility.hazelcast.HzConfigReader;
 
 public class AppUtil {
     private static long startTime;
@@ -30,7 +30,7 @@ public class AppUtil {
 
     public static void start() {
         startTime = System.currentTimeMillis();
-        ConfigReader.readConfig();
+        HzConfigReader.readConfig();
         Thread t = new Thread(new HealthMonitor());
         t.start();
     }

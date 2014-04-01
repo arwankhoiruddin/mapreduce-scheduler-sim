@@ -61,11 +61,11 @@ public class HazelSim {
     }
 
     public HazelcastInstance getFirstInstance() {
-        return getNthInstance(Cloud2SimConstants.FIRST);
+        return getNthInstance(HzConstants.FIRST);
     }
 
     public HazelcastInstance getLastInstance() {
-        return getNthInstance(Cloud2SimConstants.LAST);
+        return getNthInstance(HzConstants.LAST);
     }
 
     public HazelcastInstance getNthInstance(int i) {
@@ -84,7 +84,7 @@ public class HazelSim {
      * @return the map
      */
     public IMap<Integer, Double> getCloudletFinishedTime() {
-        return instances.get(Cloud2SimConstants.FIRST).getMap("finishedTime");
+        return instances.get(HzConstants.FIRST).getMap("finishedTime");
     }
 }
 

@@ -15,6 +15,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
+/**
+ * The class that reads the simulation properties from the properties file.
+ */
 public class ConfigReader {
     private static int noOfUsers;   // 200
     private static int noOfDatacenters; //1500
@@ -25,20 +28,34 @@ public class ConfigReader {
     private static boolean withWorkload; //true
     private static int simultaneousInstances; // 1
     private static int noOfExecutions; // 2
-    private static String hazelcastXml;
-    private static int maxNumberOfInstancesToBeSpawned;
-    private static double highThresholdProcessCpuLoad;
-    private static double lowThresholdProcessCpuLoad;
 
+    protected static Properties prop;
 
-    public static void readConfig() {
-        Properties prop = new Properties();
+    private static boolean loadProperties() {
+        prop = new Properties();
         InputStream input = null;
-
         try {
             input = new FileInputStream(Cloud2SimConstants.CLOUD2SIM_PROPERTIES_FILE);
             prop.load(input);
+            return true;
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            return false;
+        } finally {
+            if (input != null) {
+                try {
+                    input.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
 
+    public static void readConfig() {
+        boolean loaded = loadProperties();
+
+        if (loaded) {
             noOfUsers = Integer.parseInt(prop.getProperty("noOfUsers"));
             noOfDatacenters = Integer.parseInt(prop.getProperty("noOfDatacenters"));
             noOfHosts = Integer.parseInt(prop.getProperty("noOfHosts"));
@@ -48,20 +65,6 @@ public class ConfigReader {
             withWorkload = Boolean.parseBoolean(prop.getProperty("withWorkload"));
             simultaneousInstances = Integer.parseInt(prop.getProperty("simultaneousInstances"));
             noOfExecutions = Integer.parseInt(prop.getProperty("noOfExecutions"));
-            hazelcastXml = prop.getProperty("hazelcastXml");
-            maxNumberOfInstancesToBeSpawned = Integer.parseInt(prop.getProperty("maxNumberOfInstancesToBeSpawned"));
-            highThresholdProcessCpuLoad = Double.parseDouble(prop.getProperty("highThresholdProcessCpuLoad"));
-            lowThresholdProcessCpuLoad = Double.parseDouble(prop.getProperty("lowThresholdProcessCpuLoad"));
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        } finally {
-            if (input != null) {
-                try {
-                    input.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
         }
     }
 
@@ -99,21 +102,5 @@ public class ConfigReader {
 
     public static int getNoOfExecutions() {
         return noOfExecutions;
-    }
-
-    public static String getHazelcastXml() {
-        return hazelcastXml;
-    }
-
-    public static int getMaxNumberOfInstancesToBeSpawned() {
-        return maxNumberOfInstancesToBeSpawned;
-    }
-
-    public static double getHighThresholdProcessCpuLoad() {
-        return highThresholdProcessCpuLoad;
-    }
-
-    public static double getLowThresholdProcessCpuLoad() {
-        return lowThresholdProcessCpuLoad;
     }
 }

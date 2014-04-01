@@ -14,7 +14,6 @@ import java.lang.management.ManagementFactory;
 import com.sun.management.OperatingSystemMXBean;
 import org.cloudbus.cloudsim.Log;
 import org.cloudbus.cloudsim.compatibility.ConfigReader;
-import sun.util.logging.resources.logging;
 
 public class HealthMonitor implements Runnable {
     private Runtime runtime;
@@ -44,26 +43,32 @@ public class HealthMonitor implements Runnable {
         systemCpuLoad = osMxBean.getSystemCpuLoad(); // get(osMxBean, "getSystemCpuLoad", -1L);
         processCpuLoad = osMxBean.getProcessCpuLoad();
         systemLoadAverage = osMxBean.getSystemLoadAverage();
-        scale();
     }
 
-    private void scale() {
-        if ((processCpuLoad > ConfigReader.getHighThresholdProcessCpuLoad()) && AutoScaler.getSize() <
-                ConfigReader.getMaxNumberOfInstancesToBeSpawned()) {
-            Log.printConcatLine("Process CPU Load: " + processCpuLoad + ". Exceeds the allowed maximum.");
-            AutoScaler.spawnInstance();
-        } else if (processCpuLoad < ConfigReader.getLowThresholdProcessCpuLoad()) {
-            Log.printConcatLine("Process CPU Load: " + processCpuLoad + ". Falls below the minimum.");
-            AutoScaler.terminateInstance();
+    private boolean scale() {
+        if ((processCpuLoad > AutoScaleConfigReader.getHighThresholdProcessCpuLoad()) &&
+                AutoScaler.getSize() < AutoScaleConfigReader.getMaxNumberOfInstancesToBeSpawned()) {
+            Log.printConcatLine("[HealthMonitor] Process CPU Load: " + processCpuLoad +
+                    ". Exceeds the allowed maximum.");
+            return AutoScaler.spawnInstance();
+        } else if (processCpuLoad < AutoScaleConfigReader.getLowThresholdProcessCpuLoad()) {
+            Log.printConcatLine("[HealthMonitor] Process CPU Load: " + processCpuLoad + ". Falls below the minimum.");
+            return AutoScaler.terminateInstance();
         }
+        return false;
     }
 
     @Override
     public void run() {
         while (true) {
+            int waitTimeInMillis = AutoScaleConfigReader.getTimeBetweenHealthChecks() * 1000;
             init();
+            boolean scaled = scale();
+            if (scaled)
+                waitTimeInMillis = AutoScaleConfigReader.getTimeBetweenScalingDecisions() * 1000;
+
             try {
-                Thread.sleep(10000);
+                Thread.sleep(waitTimeInMillis);
             } catch (InterruptedException e) {
                 return;
             }
