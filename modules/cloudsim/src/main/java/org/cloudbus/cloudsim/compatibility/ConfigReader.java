@@ -26,6 +26,10 @@ public class ConfigReader {
     private static int simultaneousInstances; // 1
     private static int noOfExecutions; // 2
     private static String hazelcastXml;
+    private static int maxNumberOfInstancesToBeSpawned;
+    private static double highThresholdProcessCpuLoad;
+    private static double lowThresholdProcessCpuLoad;
+
 
     public static void readConfig() {
         Properties prop = new Properties();
@@ -45,6 +49,9 @@ public class ConfigReader {
             simultaneousInstances = Integer.parseInt(prop.getProperty("simultaneousInstances"));
             noOfExecutions = Integer.parseInt(prop.getProperty("noOfExecutions"));
             hazelcastXml = prop.getProperty("hazelcastXml");
+            maxNumberOfInstancesToBeSpawned = Integer.parseInt(prop.getProperty("maxNumberOfInstancesToBeSpawned"));
+            highThresholdProcessCpuLoad = Double.parseDouble(prop.getProperty("highThresholdProcessCpuLoad"));
+            lowThresholdProcessCpuLoad = Double.parseDouble(prop.getProperty("lowThresholdProcessCpuLoad"));
         } catch (IOException ex) {
             ex.printStackTrace();
         } finally {
@@ -96,5 +103,17 @@ public class ConfigReader {
 
     public static String getHazelcastXml() {
         return hazelcastXml;
+    }
+
+    public static int getMaxNumberOfInstancesToBeSpawned() {
+        return maxNumberOfInstancesToBeSpawned;
+    }
+
+    public static double getHighThresholdProcessCpuLoad() {
+        return highThresholdProcessCpuLoad;
+    }
+
+    public static double getLowThresholdProcessCpuLoad() {
+        return lowThresholdProcessCpuLoad;
     }
 }

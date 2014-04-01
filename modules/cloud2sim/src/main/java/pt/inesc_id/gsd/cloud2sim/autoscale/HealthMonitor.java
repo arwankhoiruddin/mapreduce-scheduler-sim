@@ -12,13 +12,13 @@ package pt.inesc_id.gsd.cloud2sim.autoscale;
 
 import java.lang.management.ManagementFactory;
 import com.sun.management.OperatingSystemMXBean;
+import org.cloudbus.cloudsim.Log;
+import org.cloudbus.cloudsim.compatibility.ConfigReader;
+import sun.util.logging.resources.logging;
 
 public class HealthMonitor implements Runnable {
     private Runtime runtime;
     private OperatingSystemMXBean osMxBean;
-    private double highThreshold = 0.10;
-    private double lowThreshold = 0.02;
-    private double maxNumberOfInstancesToBeSpawned = 3;
     private long memoryFree;
     private long memoryTotal;
     private long memoryUsed;
@@ -48,9 +48,12 @@ public class HealthMonitor implements Runnable {
     }
 
     private void scale() {
-        if ((processCpuLoad > highThreshold) && AutoScaler.getSize() < maxNumberOfInstancesToBeSpawned ) {
+        if ((processCpuLoad > ConfigReader.getHighThresholdProcessCpuLoad()) && AutoScaler.getSize() <
+                ConfigReader.getMaxNumberOfInstancesToBeSpawned()) {
+            Log.printConcatLine("Process CPU Load: " + processCpuLoad + ". Exceeds the allowed maximum.");
             AutoScaler.spawnInstance();
-        } else if (processCpuLoad < lowThreshold) {
+        } else if (processCpuLoad < ConfigReader.getLowThresholdProcessCpuLoad()) {
+            Log.printConcatLine("Process CPU Load: " + processCpuLoad + ". Falls below the minimum.");
             AutoScaler.terminateInstance();
         }
     }
