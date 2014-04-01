@@ -10,6 +10,9 @@
 
 package org.cloudbus.cloudsim.compatibility;
 
+/**
+ * Cloud2Sim/CloudSim General Constants
+ */
 public final class Cloud2SimConstants {
 
     /** Suppress instantiation. */

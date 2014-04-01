@@ -20,6 +20,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+/**
+ * Custom serializer for the abstract class CloudletScheduler
+ */
 public class CloudletSchedulerXmlSerializer implements StreamSerializer<CloudletScheduler> {
     @Override
     public int getTypeId() {

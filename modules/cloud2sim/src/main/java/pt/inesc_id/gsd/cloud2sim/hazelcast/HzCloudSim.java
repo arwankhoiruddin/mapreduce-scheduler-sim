@@ -20,9 +20,18 @@ import org.cloudbus.cloudsim.core.CloudSim;
 
 import java.util.Calendar;
 
+/**
+ * Extending CloudSim class to use in a distributed environment with hazelcast.
+ */
 public class HzCloudSim extends CloudSim {
     private static int offset;
 
+    /**
+     * Initiate Cloud2Sim/Hazelcast
+     * @param numUser, number of users
+     * @param cal, calendar object
+     * @param traceFlag, boolean
+     */
     public static void init(int numUser, Calendar cal, boolean traceFlag) {
         Log.printConcatLine("Initiating the Hazelcast instances for Cloud2Sim.");
         HazelSimCore hazelSimCore = HazelSimCore.getHazelSimCore(ConfigReader.getSimultaneousInstances());
@@ -33,10 +42,17 @@ public class HzCloudSim extends CloudSim {
         AppBuilder.initWorkers(offset);
     }
 
+    /**
+     * Gets the offset value for the distributed objects
+     * @return offset
+     */
     public static int getOffset() {
         return offset;
     }
 
+    /**
+     * Sets the offset value for the distributed objects, based on the deployment size
+     */
     public static void initOffset() {
         HzObjectCollection objectCollection = HzObjectCollection.getHzObjectCollection();
         offset = objectCollection.getDeploymentInformation().size();

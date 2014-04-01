@@ -33,7 +33,7 @@ import java.util.concurrent.Future;
 
 /**
  * An example showing how to create
- * scalable simulations.
+ * scalable dynamic simulations.
  */
 public class Simulator {
 

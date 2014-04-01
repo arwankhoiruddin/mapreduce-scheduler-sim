@@ -21,6 +21,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+/**
+ * Custom serializer for cloudlet
+ */
 public class CloudletXmlSerializer implements StreamSerializer<HzCloudlet> {
 
     @Override

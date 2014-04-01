@@ -15,6 +15,9 @@ import org.cloudbus.cloudsim.UtilizationModel;
 
 import java.util.List;
 
+/**
+ * Extending Cloudlet to use in a distributed environment with hazelcast.
+ */
 public class HzCloudlet extends Cloudlet {
     public HzCloudlet(int cloudletId, long cloudletLength, int pesNumber, long cloudletFileSize, long cloudletOutputSize, UtilizationModel utilizationModelCpu, UtilizationModel utilizationModelRam, UtilizationModel utilizationModelBw) {
         super(cloudletId, cloudletLength, pesNumber, cloudletFileSize, cloudletOutputSize, utilizationModelCpu, utilizationModelRam, utilizationModelBw);

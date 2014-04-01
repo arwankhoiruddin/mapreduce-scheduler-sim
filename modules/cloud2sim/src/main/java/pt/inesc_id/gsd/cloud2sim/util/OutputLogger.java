@@ -17,6 +17,9 @@ import org.cloudbus.cloudsim.Log;
 import java.text.DecimalFormat;
 import java.util.Map;
 
+/**
+ * Log the output of the simulations to the console.
+ */
 public class OutputLogger {
 
     /**

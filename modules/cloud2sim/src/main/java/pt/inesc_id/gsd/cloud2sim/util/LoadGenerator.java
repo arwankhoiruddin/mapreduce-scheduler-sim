@@ -10,8 +10,16 @@
 
 package pt.inesc_id.gsd.cloud2sim.util;
 
+/**
+ * Generate some random load to be attached to the cloudlets
+ */
 public class LoadGenerator {
 
+    /**
+     * Checks whether the number is prime
+     * @param n, the number to be checked
+     * @return true, if prime
+     */
     public static boolean isPrime(Double n) {
         if (n % 2 == 0) return false;
         for (int i = 3; i * i <= n; i += 2) {
@@ -21,6 +29,11 @@ public class LoadGenerator {
         return true;
     }
 
+    /**
+     * A double value generator, based on the input and complex mathematical calculations
+     * @param n, input double value
+     * @return the outcome of the complex operations
+     */
     public static Double iffPrime(Double n) {
         int val = 0;
         for (int i = 0; i < n; i++) {
@@ -42,6 +55,11 @@ public class LoadGenerator {
         }
     }
 
+    /**
+     * An integer value generator, based on the input and complex mathematical calculations
+     * @param n, input double value
+     * @return the outcome of the complex operations
+     */
     public static int ifPrime(Double n) {
         if (iffPrime(n).isNaN()) {
             n = Math.random() * n;

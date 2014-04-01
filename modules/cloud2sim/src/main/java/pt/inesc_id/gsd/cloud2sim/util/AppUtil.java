@@ -16,6 +16,9 @@ import org.cloudbus.cloudsim.core.CloudSim;
 import pt.inesc_id.gsd.cloud2sim.autoscale.HealthMonitor;
 import org.cloudbus.cloudsim.compatibility.hazelcast.HzConfigReader;
 
+/**
+ * The Application Utility class.
+ */
 public class AppUtil {
     private static long startTime;
     private static boolean isMaster = false;
@@ -28,6 +31,9 @@ public class AppUtil {
     private static int noOfVms;
 
 
+    /**
+     * Starts the executions
+     */
     public static void start() {
         startTime = System.currentTimeMillis();
         HzConfigReader.readConfig();
@@ -99,11 +105,17 @@ public class AppUtil {
         AppUtil.isPrimaryWorker = isPrimaryWorker;
     }
 
+    /**
+     * Shutdown the hazelcast instances
+     */
     public static void shutdown() {
         shutdownLogs();
         Hazelcast.shutdownAll();
     }
 
+    /**
+     * Final logs, marking the termination of simulation.
+     */
     public static void shutdownLogs() {
         long endTime = System.currentTimeMillis();
         double totalTimeTaken = (endTime - startTime)/1000.0;

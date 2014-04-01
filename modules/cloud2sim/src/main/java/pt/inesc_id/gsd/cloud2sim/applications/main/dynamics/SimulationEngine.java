@@ -21,10 +21,17 @@ import pt.inesc_id.gsd.cloud2sim.hazelcast.HzDatacenterBroker;
 import pt.inesc_id.gsd.cloud2sim.hazelcast.HzObjectCollection;
 import pt.inesc_id.gsd.cloud2sim.hazelcast.HzVm;
 
+/**
+ * The class that creates VMs and Cloudlets, with hard-coded values. Replace as appropriate.
+ */
 public class SimulationEngine {
     private static boolean isRR = ConfigReader.getIsRR();
     private static HzObjectCollection objectCollection = HzObjectCollection.getHzObjectCollection();
 
+    /**
+     * Create a vm with the values
+     * @param userId, the user.
+     */
     public static void createVM(int userId) {
 
         //VM Parameters
@@ -50,6 +57,10 @@ public class SimulationEngine {
         }
     }
 
+    /**
+     * Create a cloudlet with the parameters
+     * @param userId, the user.
+     */
     public static void createCloudlet(int userId) {
         //cloudlet parameters
         long length = 10; //100
@@ -72,6 +83,12 @@ public class SimulationEngine {
         }
     }
 
+    /**
+     * Create a datacenter broker
+     * @param name, the broker name
+     * @return the broker
+     * @throws Exception, if broker creation failed.
+     */
     public static HzDatacenterBroker createBroker(String name) throws Exception {
         if (isRR) {
             return new RoundRobinDatacenterBroker(name);

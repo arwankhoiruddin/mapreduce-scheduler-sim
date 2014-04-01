@@ -12,15 +12,21 @@ package pt.inesc_id.gsd.cloud2sim.hazelcast;
 
 import com.hazelcast.core.IMap;
 import org.cloudbus.cloudsim.Datacenter;
-import org.cloudbus.cloudsim.compatibility.Cloud2SimConstants;
 import org.cloudbus.cloudsim.compatibility.hazelcast.HazelSim;
 
+/**
+ * Access to the hazelcast distributed objects.
+ */
 public class HzObjectCollection extends HazelSim {
     private static HzObjectCollection hzObjectCollection = null;
 
     private HzObjectCollection() {
     }
 
+    /**
+     * Gets the singleton object
+     * @return the hzObjectCollection singleton object
+     */
     public static HzObjectCollection getHzObjectCollection() {
         if(hzObjectCollection == null) {
             hzObjectCollection = new HzObjectCollection();

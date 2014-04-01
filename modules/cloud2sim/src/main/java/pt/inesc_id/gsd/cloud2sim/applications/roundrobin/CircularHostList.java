@@ -22,28 +22,28 @@ import org.cloudbus.cloudsim.Host;
 
 public final class CircularHostList implements Iterable<Host> {
 
-    private final List<Host> host_list = new LinkedList<Host>();
+    private final List<Host> hostList = new LinkedList<Host>();
 
     private int ini;
 
     public CircularHostList(List<? extends Host> hosts) {
-        this.host_list.addAll(hosts);
+        this.hostList.addAll(hosts);
     }
 
     public boolean add(Host host) {
-        return this.host_list.add(host);
+        return this.hostList.add(host);
     }
 
     public boolean remove(Host host2Remove) {
-        return this.host_list.remove(host2Remove);
+        return this.hostList.remove(host2Remove);
     }
 
     public Host next() {
         Host host = null;
 
-        if (!host_list.isEmpty()) {
-            int index = (this.ini++ % this.host_list.size());
-            host = this.host_list.get(index);
+        if (!hostList.isEmpty()) {
+            int index = (this.ini++ % this.hostList.size());
+            host = this.hostList.get(index);
         }
 
         return host;
@@ -55,10 +55,10 @@ public final class CircularHostList implements Iterable<Host> {
     }
 
     public List<Host> get() {
-        return Collections.unmodifiableList(this.host_list);
+        return Collections.unmodifiableList(this.hostList);
     }
 
     public int size() {
-        return this.host_list.size();
+        return this.hostList.size();
     }
 }

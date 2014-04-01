@@ -21,6 +21,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+/**
+ * Custom serializer for hosts.
+ */
 public class HostXmlSerializer implements StreamSerializer<Host> {
     @Override
     public int getTypeId() {

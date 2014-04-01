@@ -20,6 +20,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+/**
+ * Custom serializer for UtilizationModel interface.
+ */
 public class UtilizationModelXmlSerializer implements StreamSerializer<UtilizationModel> {
     @Override
     public int getTypeId() {

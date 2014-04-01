@@ -22,6 +22,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+/**
+ * Custom serializer for datacenters.
+ */
 public class DatacenterXmlSerializer  implements StreamSerializer<Datacenter> {
 
     @Override

@@ -18,6 +18,9 @@ import pt.inesc_id.gsd.cloud2sim.hazelcast.HzObjectCollection;
 import java.io.Serializable;
 import java.util.concurrent.Callable;
 
+/**
+ * The vm list submitter callable
+ */
 public class VmListSubmitter implements Callable, Serializable, HazelcastInstanceAware {
     private transient HazelcastInstance hazelcastInstance;
     private transient HzObjectCollection hzObjectCollection;

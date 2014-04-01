@@ -14,6 +14,9 @@ import org.cloudbus.cloudsim.CloudletScheduler;
 import org.cloudbus.cloudsim.Host;
 import org.cloudbus.cloudsim.Vm;
 
+/**
+ * Extending VM to use in a distributed environment with hazelcast.
+ */
 public class HzVm extends Vm {
     private HzObjectCollection hzObjectCollection = HzObjectCollection.getHzObjectCollection();
 
@@ -36,6 +39,10 @@ public class HzVm extends Vm {
         }
     }
 
+    /**
+     * Gets the id of the host that the vm is assigned to.
+     * @return hostId.
+     */
     public int getHostId() {
         int id = -1;
         if (hzObjectCollection.getHostForVm().get(getId())!= null) {

@@ -10,7 +10,7 @@ import org.cloudbus.cloudsim.Vm;
 import org.cloudbus.cloudsim.core.CloudSim;
 
 public class RoundRobinVmAllocationPolicy extends org.cloudbus.cloudsim.VmAllocationPolicy {
-    private final Map<String, Host> vm_table = new HashMap<String, Host>();
+    private final Map<String, Host> vmTable = new HashMap<String, Host>();
     private final CircularHostList hosts;
 
     public RoundRobinVmAllocationPolicy(List<? extends Host> list) {
@@ -20,28 +20,26 @@ public class RoundRobinVmAllocationPolicy extends org.cloudbus.cloudsim.VmAlloca
 
     @Override
     public boolean allocateHostForVm(Vm vm) {
-        if (this.vm_table.containsKey(vm.getUid())) {
+        if (this.vmTable.containsKey(vm.getUid())) {
             return true;
         }
 
-        boolean vm_allocated = false;
+        boolean vmAllocated = false;
 
         Host host = this.hosts.next();
         if (host != null) {
-            vm_allocated = this.allocateHostForVm(vm, host);
+            vmAllocated = this.allocateHostForVm(vm, host);
         }
 
-        return vm_allocated;
+        return vmAllocated;
     }
 
     @Override
     public boolean allocateHostForVm(Vm vm, Host host) {
         if (host != null && host.vmCreate(vm)) {
-            vm_table.put(vm.getUid(), host);
-            Log.formatLine("%.4f: VM #" + vm.getId() + " has been allocated to the host#" + host
-                .getId() +
-                           " datacenter #" + host.getDatacenter().getId() + "(" + host
-                .getDatacenter().getName() + ") #",
+            vmTable.put(vm.getUid(), host);
+            Log.formatLine("%.4f: VM #" + vm.getId() + " has been allocated to the host#" + host.getId() +
+                           " datacenter #" + host.getDatacenter().getId() + "(" + host.getDatacenter().getName() + ") #",
                            CloudSim.clock());
             return true;
         }
@@ -55,7 +53,7 @@ public class RoundRobinVmAllocationPolicy extends org.cloudbus.cloudsim.VmAlloca
 
     @Override
     public void deallocateHostForVm(Vm vm) {
-        Host host = this.vm_table.remove(vm.getUid());
+        Host host = this.vmTable.remove(vm.getUid());
 
         if (host != null) {
             host.vmDestroy(vm);
@@ -64,11 +62,11 @@ public class RoundRobinVmAllocationPolicy extends org.cloudbus.cloudsim.VmAlloca
 
     @Override
     public Host getHost(Vm vm) {
-        return this.vm_table.get(vm.getUid());
+        return this.vmTable.get(vm.getUid());
     }
 
     @Override
     public Host getHost(int vmId, int userId) {
-        return this.vm_table.get(Vm.getUid(userId, vmId));
+        return this.vmTable.get(Vm.getUid(userId, vmId));
     }
 }

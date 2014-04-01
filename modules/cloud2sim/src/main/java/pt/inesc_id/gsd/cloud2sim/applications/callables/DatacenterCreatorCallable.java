@@ -18,6 +18,9 @@ import pt.inesc_id.gsd.cloud2sim.applications.core.DatacenterCreator;
 import java.io.Serializable;
 import java.util.concurrent.Callable;
 
+/**
+ * The callable that invokes creating datacenters.
+ */
 public class DatacenterCreatorCallable implements Callable<Datacenter>, Serializable, HazelcastInstanceAware {
     private String name;
     private transient HazelcastInstance hazelcastInstance;

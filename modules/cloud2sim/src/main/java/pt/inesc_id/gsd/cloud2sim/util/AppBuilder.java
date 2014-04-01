@@ -11,14 +11,23 @@
 package pt.inesc_id.gsd.cloud2sim.util;
 
 import org.cloudbus.cloudsim.Pe;
-import org.cloudbus.cloudsim.compatibility.Cloud2SimConstants;
 import org.cloudbus.cloudsim.compatibility.hazelcast.HzConstants;
 import org.cloudbus.cloudsim.provisioners.PeProvisionerSimple;
 
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Utility class for building the applications
+ */
 public class AppBuilder {
+
+    /**
+     * Create machines
+     * @param mips, millions of instructions per second
+     * @param noOfCores number of cores
+     * @return machines, the machines that are created with number of cores.
+     */
     public static List<Pe> createMachines(int mips, int noOfCores) {
         List<Pe> peList = new ArrayList<Pe>();
 
@@ -30,20 +39,41 @@ public class AppBuilder {
         return peList;
     }
 
+    /**
+     * Gets the initial value of the partition
+     * @param noOfParams total number of entities in the specific parameter.
+     * @param offset, the offset
+     * @return the initial value of the partition
+     */
     public static int getPartitionInit(int noOfParams, int offset) {
         return (int) (offset * Math.ceil((noOfParams / (double) HzConstants.NO_OF_PARALLEL_EXECUTIONS)));
     }
 
+    /**
+     * Gets the final value of the partition
+     * @param noOfParams total number of entities in the specific parameter.
+     * @param offset, the offset
+     * @return the final value of the partition
+     */
     public static int getPartitionFinal(int noOfParams, int offset) {
         int temp = (int) ((offset + 1) * Math.ceil((noOfParams /
                 (double) HzConstants.NO_OF_PARALLEL_EXECUTIONS)));
         return temp < noOfParams ? temp : noOfParams;
     }
 
+    /**
+     * Gets the size of the specific partition
+     * @param noOfParams total number of entities in the specific parameter.
+     * @return the size of the specific partition
+     */
     public static int getPartitionSize(int noOfParams) {
         return (int) Math.ceil((noOfParams / (double) HzConstants.NO_OF_PARALLEL_EXECUTIONS));
     }
 
+    /**
+     * Initialize the master and the primary worker.
+     * @param offset the offset.
+     */
     public static void initWorkers(int offset) {
         if (offset == HzConstants.NO_OF_PARALLEL_EXECUTIONS - 1) {
             AppUtil.setIsPrimaryWorker(true);

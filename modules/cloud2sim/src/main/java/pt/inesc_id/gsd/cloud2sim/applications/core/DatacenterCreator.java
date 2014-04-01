@@ -27,6 +27,9 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * The datacenter is defined here, with hard-coded values. Replace as appropriate.
+ */
 public class DatacenterCreator {
 
     public static Datacenter createDatacenter(String name) {

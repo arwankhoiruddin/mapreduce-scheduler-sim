@@ -21,6 +21,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+/**
+ * Custom serizlier for VMs.
+ */
 public class VmXmlSerializer implements StreamSerializer<HzVm> {
 
     @Override

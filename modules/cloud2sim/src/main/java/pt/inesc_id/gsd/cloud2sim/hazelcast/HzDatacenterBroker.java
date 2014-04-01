@@ -33,9 +33,7 @@ import pt.inesc_id.gsd.cloud2sim.concurrent.callables.CloudletListSubmitter;
 import pt.inesc_id.gsd.cloud2sim.concurrent.callables.VmListSubmitter;
 
 /**
- * DatacenterBroker represents a broker acting on behalf of a user. It hides VM management, as vm
- * creation, submission of cloudlets to this VMs and destruction of VMs.
- *
+ * A hazelcast based datacenter broker, facilitating a distributed execution.
  */
 public class HzDatacenterBroker extends DatacenterBroker {
 
@@ -95,6 +93,11 @@ public class HzDatacenterBroker extends DatacenterBroker {
         hzObjectCollection.getVmList().putAll(list);
     }
 
+    /**
+     * Submit the cloudlets and VMs, using callables.
+     * @throws InterruptedException, if the submission threads were interrupted.
+     * @throws ExecutionException, if the execution failed.
+     */
     public void submitCloudletsAndVms() throws InterruptedException, ExecutionException {
         Map <Member, Future< Integer >> vmResult =
                 vmExecutor.submitToAllMembers(new VmListSubmitter());

@@ -13,8 +13,10 @@ package pt.inesc_id.gsd.cloud2sim.autoscale;
 import java.lang.management.ManagementFactory;
 import com.sun.management.OperatingSystemMXBean;
 import org.cloudbus.cloudsim.Log;
-import org.cloudbus.cloudsim.compatibility.ConfigReader;
 
+/**
+ * The thread that monitors the health of the system.
+ */
 public class HealthMonitor implements Runnable {
     private Runtime runtime;
     private OperatingSystemMXBean osMxBean;
@@ -33,6 +35,9 @@ public class HealthMonitor implements Runnable {
         osMxBean = ManagementFactory.getPlatformMXBean(OperatingSystemMXBean.class);
     }
 
+    /**
+     * Periodically initiate the current values of the system parameters
+     */
     private void init() {
         memoryFree = runtime.freeMemory();
         memoryTotal = runtime.totalMemory();
@@ -45,6 +50,10 @@ public class HealthMonitor implements Runnable {
         systemLoadAverage = osMxBean.getSystemLoadAverage();
     }
 
+    /**
+     * Scale out or scale in, based on the defined values and current health.
+     * @return true, if a scaling decision was carried ahead successfully.
+     */
     private boolean scale() {
         if ((processCpuLoad > AutoScaleConfigReader.getHighThresholdProcessCpuLoad()) &&
                 AutoScaler.getSize() < AutoScaleConfigReader.getMaxNumberOfInstancesToBeSpawned()) {

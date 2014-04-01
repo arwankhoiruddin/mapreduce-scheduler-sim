@@ -13,6 +13,9 @@ package pt.inesc_id.gsd.cloud2sim.concurrent.runnables;
 import com.hazelcast.core.IMap;
 import pt.inesc_id.gsd.cloud2sim.hazelcast.HzObjectCollection;
 
+/**
+ * The userObjectsRemover runnable, which is now deprecated.
+ */
 @Deprecated
 public class UserObjectsRemover implements Runnable {
     private transient HzObjectCollection hzObjectCollection = HzObjectCollection.getHzObjectCollection();

@@ -1,12 +1,24 @@
+/*
+ * Title:        Cloud2Sim
+ * Description:  Distributed and Concurrent Cloud Simulation
+ *               Toolkit for Modeling and Simulation
+ *               of Clouds - Enhanced version of CloudSim.
+ * Licence:      GPL - http://www.gnu.org/copyleft/gpl.html
+ *
+ * Copyright (c) 2014, Pradeeban Kathiravelu <pradeeban.kathiravelu@tecnico.ulisboa.pt>
+ */
+
 package org.cloudbus.cloudsim.compatibility.hazelcast;
 
 import com.hazelcast.config.Config;
 import com.hazelcast.config.FileSystemXmlConfig;
 import org.cloudbus.cloudsim.Log;
-import org.cloudbus.cloudsim.compatibility.Cloud2SimConstants;
 
 import java.io.FileNotFoundException;
 
+/**
+ * The singleton base class integrating hazelcast into cloudsim, with its configurations
+ */
 public class HazelSimCore {
     private static HazelSimCore hazelSimCore = null;
 
@@ -15,6 +27,10 @@ public class HazelSimCore {
         HazelSim.spawnInstances(cfg, noOfSimultaneousInstances);
     }
 
+    /**
+     * Gets the configurations
+     * @return hazelcast configurations
+     */
     public static Config getCfg() {
         Config cfg;
         try {

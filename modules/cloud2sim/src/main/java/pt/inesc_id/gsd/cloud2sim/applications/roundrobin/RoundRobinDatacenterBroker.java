@@ -12,13 +12,6 @@ import pt.inesc_id.gsd.cloud2sim.hazelcast.HzDatacenterBroker;
 
 public class RoundRobinDatacenterBroker extends HzDatacenterBroker {
 
-    /**
-     * Creates an instance of this class associating to it a given name.
-     *
-     * @param name The name to be associated to this broker. It might not be <code>null</code> or
-     *             empty.
-     * @throws Exception If the name contains spaces.
-     */
     public RoundRobinDatacenterBroker(String name) throws Exception {
         super(name);
     }

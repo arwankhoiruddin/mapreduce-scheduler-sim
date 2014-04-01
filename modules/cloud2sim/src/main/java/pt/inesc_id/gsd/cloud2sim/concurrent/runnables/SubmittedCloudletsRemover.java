@@ -16,6 +16,9 @@ import pt.inesc_id.gsd.cloud2sim.hazelcast.HzObjectCollection;
 
 import java.io.Serializable;
 
+/**
+ * The submitted cloudlets remover runnable
+ */
 public class SubmittedCloudletsRemover implements Runnable, Serializable, HazelcastInstanceAware {
     private transient HazelcastInstance hazelcastInstance;
     private transient final int cloudletId;

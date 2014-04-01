@@ -15,11 +15,17 @@ import org.cloudbus.cloudsim.compatibility.hazelcast.HazelSim;
 import org.cloudbus.cloudsim.compatibility.hazelcast.HazelSimCore;
 import org.cloudbus.cloudsim.compatibility.hazelcast.HzConfigReader;
 
+/**
+ * An empty hazelcast instance
+ */
 public class Initiator {
     public static void main(String[] args) {
         initInstance();
     }
 
+    /**
+     * Initiates the empty hazelcast instances
+     */
     public static void initInstance() {
         Log.printConcatLine("Initiating a Hazelcast instance.");
         HzConfigReader.readConfig();

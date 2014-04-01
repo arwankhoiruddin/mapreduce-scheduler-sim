@@ -13,7 +13,6 @@ import com.hazelcast.config.Config;
 import com.hazelcast.core.Hazelcast;
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.core.IMap;
-import org.cloudbus.cloudsim.compatibility.Cloud2SimConstants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,12 +41,21 @@ public class HazelSim {
         return hazelSim;
     }
 
+    /**
+     * Start multiple hazelcast instances
+     * @param config hazelcast configurations
+     * @param instanceCount number of instances to be spawned
+     */
     public static void spawnInstances(Config config, int instanceCount) {
         for (int i = 0; i < instanceCount; i++) {
             instances.add(Hazelcast.newHazelcastInstance(config));
         }
     }
 
+    /**
+     * Start a single hazelcast instance
+     * @param config hazelcast configurations
+     */
     public static void spawnInstance(Config config) {
         instances.add(Hazelcast.newHazelcastInstance(config));
     }
@@ -68,6 +76,11 @@ public class HazelSim {
         return getNthInstance(HzConstants.LAST);
     }
 
+    /**
+     * Gets a specific instance, marked by the index
+     * @param i, the index
+     * @return the hazelcast instance
+     */
     public HazelcastInstance getNthInstance(int i) {
         while (instances.size() <= i) {
             try {

@@ -21,6 +21,9 @@ import pt.inesc_id.gsd.cloud2sim.hazelcast.HzCloudlet;
 import java.io.Serializable;
 import java.util.concurrent.Callable;
 
+/**
+ * The cloudlet list submitter callable
+ */
 public class CloudletListSubmitter implements Callable, Serializable, HazelcastInstanceAware {
     private transient HazelcastInstance hazelcastInstance;
     private transient HzObjectCollection hzObjectCollection;
