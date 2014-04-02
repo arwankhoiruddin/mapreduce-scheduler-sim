@@ -64,14 +64,14 @@ public class HealthMonitor implements Runnable {
                 AutoScaler.getSize() < AutoScaleConfigReader.getMaxNumberOfInstancesToBeSpawned()) {
             Log.printConcatLine("[HealthMonitor] Process CPU Load: " + processCpuLoad +
                     ". Exceeds the allowed maximum.");
-            if (AutoScaleConfigReader.getMode() == 0) {
+            if (AutoScaleConfigReader.getMode().equalsIgnoreCase("auto")) {
                 return AutoScaler.spawnInstance();
             } else {
                 return AdaptiveScaler.addInstance();
             }
         } else if (processCpuLoad < AutoScaleConfigReader.getLowThresholdProcessCpuLoad()) {
             Log.printConcatLine("[HealthMonitor] Process CPU Load: " + processCpuLoad + ". Falls below the minimum.");
-            if (AutoScaleConfigReader.getMode() == 0) {
+            if (AutoScaleConfigReader.getMode().equalsIgnoreCase("auto")) {
                 return AutoScaler.terminateInstance();
             } else {
                 return AdaptiveScaler.removeInstance();
@@ -82,9 +82,10 @@ public class HealthMonitor implements Runnable {
 
     @Override
     public void run() {
-        boolean scaled = true;
+        boolean scaled;
         while (true) {
             init();
+            scaled = scale();
             int waitTimeInMillis = AutoScaleConfigReader.getTimeBetweenHealthChecks() * 1000;
             if (scaled) {
                 waitTimeInMillis = AutoScaleConfigReader.getTimeBetweenScalingDecisions() * 1000;
@@ -94,7 +95,6 @@ public class HealthMonitor implements Runnable {
             } catch (InterruptedException e) {
                 return;
             }
-            scaled = scale();
         }
     }
 }

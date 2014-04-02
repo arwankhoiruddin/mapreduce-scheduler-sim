@@ -21,7 +21,7 @@ public class AutoScaleConfigReader extends HzConfigReader {
     private static double lowThresholdProcessCpuLoad;
     private static int timeBetweenScalingDecisions;
     private static int timeBetweenHealthChecks;
-    private static int scalingMode;
+    private static String scalingMode;
 
     /**
      * Read the config file for autoscaler properties
@@ -33,7 +33,7 @@ public class AutoScaleConfigReader extends HzConfigReader {
         lowThresholdProcessCpuLoad = Double.parseDouble(prop.getProperty("lowThresholdProcessCpuLoad"));
         timeBetweenScalingDecisions = Integer.parseInt(prop.getProperty("timeBetweenScalingDecisions"));
         timeBetweenHealthChecks = Integer.parseInt(prop.getProperty("timeBetweenHealthChecks"));
-        scalingMode = Integer.parseInt(prop.getProperty("scalingMode"));
+        scalingMode = prop.getProperty("scalingMode");
     }
 
     /**
@@ -77,7 +77,7 @@ public class AutoScaleConfigReader extends HzConfigReader {
         return timeBetweenHealthChecks;
     }
 
-    public static int getMode() {
+    public static String getMode() {
         return scalingMode;
     }
 }
