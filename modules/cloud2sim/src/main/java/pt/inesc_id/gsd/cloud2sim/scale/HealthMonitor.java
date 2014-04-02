@@ -66,7 +66,6 @@ public class HealthMonitor implements Runnable {
             Log.printConcatLine("[HealthMonitor] Process CPU Load: " + processCpuLoad +
                     ". Exceeds the allowed maximum.");
             if (AutoScaleConfigReader.getMode() == 0) {
-                System.out.println("I came here..");
                 return AutoScaler.spawnInstance();
             } else {
                 return AdaptiveScaler.addInstance();
@@ -74,7 +73,6 @@ public class HealthMonitor implements Runnable {
         } else if (processCpuLoad < AutoScaleConfigReader.getLowThresholdProcessCpuLoad()) {
             Log.printConcatLine("[HealthMonitor] Process CPU Load: " + processCpuLoad + ". Falls below the minimum.");
             if (AutoScaleConfigReader.getMode() == 0) {
-                System.out.println("I came here too");
                 return AutoScaler.terminateInstance();
             } else {
                 return AdaptiveScaler.removeInstance();
