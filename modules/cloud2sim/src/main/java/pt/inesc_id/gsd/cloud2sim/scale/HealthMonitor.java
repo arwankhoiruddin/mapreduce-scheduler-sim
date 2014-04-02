@@ -12,8 +12,10 @@ package pt.inesc_id.gsd.cloud2sim.scale;
 
 import java.lang.management.ManagementFactory;
 
+import com.hazelcast.core.Hazelcast;
 import com.sun.management.OperatingSystemMXBean;
 import org.cloudbus.cloudsim.Log;
+import pt.inesc_id.gsd.cloud2sim.hazelcast.HzObjectCollection;
 import pt.inesc_id.gsd.cloud2sim.scale.adaptive.AdaptiveScaler;
 import pt.inesc_id.gsd.cloud2sim.scale.auto.AutoScaler;
 
@@ -86,8 +88,10 @@ public class HealthMonitor implements Runnable {
         while (true) {
             init();
             scaled = scale();
+            int size = HzObjectCollection.getHzObjectCollection().getFirstInstance().getCluster().getMembers().size();
             int waitTimeInMillis = AutoScaleConfigReader.getTimeBetweenHealthChecks() * 1000;
             if (scaled) {
+                Log.printConcatLine("Number of instances in this cluster: " + size);
                 waitTimeInMillis = AutoScaleConfigReader.getTimeBetweenScalingDecisions() * 1000;
             }
             try {

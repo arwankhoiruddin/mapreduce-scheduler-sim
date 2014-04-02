@@ -12,6 +12,7 @@ package org.cloudbus.cloudsim.compatibility.hazelcast;
 
 import com.hazelcast.config.Config;
 import com.hazelcast.config.FileSystemXmlConfig;
+import com.hazelcast.config.GroupConfig;
 import org.cloudbus.cloudsim.Log;
 
 import java.io.FileNotFoundException;
@@ -41,6 +42,8 @@ public class HazelSimCore {
         }
         cfg.setProperty("hazelcast.initial.min.cluster.size", String.valueOf(HzConstants.NO_OF_PARALLEL_EXECUTIONS));
         cfg.setProperty("hazelcast.operation.call.timeout.millis", "50000000");
+        GroupConfig groupConfig = new GroupConfig("main");
+        cfg.setGroupConfig(groupConfig);
         return cfg;
     }
 
