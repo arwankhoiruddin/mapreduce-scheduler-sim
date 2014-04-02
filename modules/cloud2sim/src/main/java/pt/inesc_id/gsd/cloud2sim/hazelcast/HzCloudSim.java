@@ -28,15 +28,16 @@ public class HzCloudSim extends CloudSim {
 
     /**
      * Initiate Cloud2Sim/Hazelcast
-     * @param numUser, number of users
-     * @param cal, calendar object
+     *
+     * @param numUser,   number of users
+     * @param cal,       calendar object
      * @param traceFlag, boolean
      */
     public static void init(int numUser, Calendar cal, boolean traceFlag) {
         Log.printConcatLine("Initiating the Hazelcast instances for Cloud2Sim.");
         HazelSimCore hazelSimCore = HazelSimCore.getHazelSimCore(ConfigReader.getSimultaneousInstances());
 
-        initOffset();
+        initInstances();
 
         CloudSim.init(numUser, cal, traceFlag);
         AppBuilder.initWorkers(offset);
@@ -44,6 +45,7 @@ public class HzCloudSim extends CloudSim {
 
     /**
      * Gets the offset value for the distributed objects
+     *
      * @return offset
      */
     public static int getOffset() {
@@ -53,10 +55,10 @@ public class HzCloudSim extends CloudSim {
     /**
      * Sets the offset value for the distributed objects, based on the deployment size
      */
-    public static void initOffset() {
+    public static void initInstances() {
         HzObjectCollection objectCollection = HzObjectCollection.getHzObjectCollection();
         offset = objectCollection.getDeploymentInformation().size();
         objectCollection.getDeploymentInformation().
-                put(AppUtil.getStartTime(), HzConstants.HAZELCAST_INSTANCES_STARTED_SIMULTANEOUSLY);
+                put((long) offset, HzConstants.HAZELCAST_INSTANCES_STARTED_SIMULTANEOUSLY);
     }
 }

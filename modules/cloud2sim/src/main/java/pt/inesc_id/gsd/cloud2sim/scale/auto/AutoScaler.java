@@ -8,12 +8,13 @@
  * Copyright (c) 2014, Pradeeban Kathiravelu <pradeeban.kathiravelu@tecnico.ulisboa.pt>
  */
 
-package pt.inesc_id.gsd.cloud2sim.autoscale;
+package pt.inesc_id.gsd.cloud2sim.scale.auto;
 
 import com.hazelcast.core.Hazelcast;
 import com.hazelcast.core.HazelcastInstance;
 import org.cloudbus.cloudsim.Log;
 import org.cloudbus.cloudsim.compatibility.hazelcast.HazelSimCore;
+import pt.inesc_id.gsd.cloud2sim.scale.AutoScaleConfigReader;
 
 import java.util.ArrayList;
 import java.util.List;

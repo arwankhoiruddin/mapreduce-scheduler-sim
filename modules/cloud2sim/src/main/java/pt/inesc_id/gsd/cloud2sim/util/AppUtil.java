@@ -13,7 +13,7 @@ package pt.inesc_id.gsd.cloud2sim.util;
 import com.hazelcast.core.Hazelcast;
 import org.cloudbus.cloudsim.Log;
 import org.cloudbus.cloudsim.core.CloudSim;
-import pt.inesc_id.gsd.cloud2sim.autoscale.HealthMonitor;
+import pt.inesc_id.gsd.cloud2sim.scale.HealthMonitor;
 import org.cloudbus.cloudsim.compatibility.hazelcast.HzConfigReader;
 
 /**

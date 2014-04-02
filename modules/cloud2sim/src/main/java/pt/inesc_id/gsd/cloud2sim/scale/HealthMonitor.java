@@ -8,11 +8,14 @@
  * Copyright (c) 2014, Pradeeban Kathiravelu <pradeeban.kathiravelu@tecnico.ulisboa.pt>
  */
 
-package pt.inesc_id.gsd.cloud2sim.autoscale;
+package pt.inesc_id.gsd.cloud2sim.scale;
 
 import java.lang.management.ManagementFactory;
+
 import com.sun.management.OperatingSystemMXBean;
 import org.cloudbus.cloudsim.Log;
+import pt.inesc_id.gsd.cloud2sim.scale.adaptive.AdaptiveScaler;
+import pt.inesc_id.gsd.cloud2sim.scale.auto.AutoScaler;
 
 /**
  * The thread that monitors the health of the system.
@@ -30,7 +33,7 @@ public class HealthMonitor implements Runnable {
     private double processCpuLoad;
     private double systemLoadAverage; // -1.0 in windows
 
-    public HealthMonitor () {
+    public HealthMonitor() {
         runtime = Runtime.getRuntime();
         osMxBean = ManagementFactory.getPlatformMXBean(OperatingSystemMXBean.class);
     }
@@ -52,27 +55,39 @@ public class HealthMonitor implements Runnable {
 
     /**
      * Scale out or scale in, based on the defined values and current health.
+     *
      * @return true, if a scaling decision was carried ahead successfully.
      */
     private boolean scale() {
+//            System.out.println(AutoScaleConfigReader.getMode());
+//        System.out.println(AutoScaleConfigReader.getHighThresholdProcessCpuLoad());
         if ((processCpuLoad > AutoScaleConfigReader.getHighThresholdProcessCpuLoad()) &&
                 AutoScaler.getSize() < AutoScaleConfigReader.getMaxNumberOfInstancesToBeSpawned()) {
             Log.printConcatLine("[HealthMonitor] Process CPU Load: " + processCpuLoad +
                     ". Exceeds the allowed maximum.");
-            return AutoScaler.spawnInstance();
+            if (AutoScaleConfigReader.getMode() == 0) {
+                System.out.println("I came here..");
+                return AutoScaler.spawnInstance();
+            } else {
+                return AdaptiveScaler.addInstance();
+            }
         } else if (processCpuLoad < AutoScaleConfigReader.getLowThresholdProcessCpuLoad()) {
             Log.printConcatLine("[HealthMonitor] Process CPU Load: " + processCpuLoad + ". Falls below the minimum.");
-            return AutoScaler.terminateInstance();
+            if (AutoScaleConfigReader.getMode() == 0) {
+                System.out.println("I came here too");
+                return AutoScaler.terminateInstance();
+            } else {
+                return AdaptiveScaler.removeInstance();
+            }
         }
         return false;
     }
 
     @Override
     public void run() {
+        boolean scaled = true;
         while (true) {
             int waitTimeInMillis = AutoScaleConfigReader.getTimeBetweenHealthChecks() * 1000;
-            init();
-            boolean scaled = scale();
             if (scaled)
                 waitTimeInMillis = AutoScaleConfigReader.getTimeBetweenScalingDecisions() * 1000;
 
@@ -81,6 +96,8 @@ public class HealthMonitor implements Runnable {
             } catch (InterruptedException e) {
                 return;
             }
+            init();
+            scaled = scale();
         }
     }
 }

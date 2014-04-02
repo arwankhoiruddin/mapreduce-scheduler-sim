@@ -8,7 +8,7 @@
  * Copyright (c) 2014, Pradeeban Kathiravelu <pradeeban.kathiravelu@tecnico.ulisboa.pt>
  */
 
-package pt.inesc_id.gsd.cloud2sim.autoscale;
+package pt.inesc_id.gsd.cloud2sim.scale;
 
 import org.cloudbus.cloudsim.compatibility.hazelcast.HzConfigReader;
 
@@ -21,6 +21,7 @@ public class AutoScaleConfigReader extends HzConfigReader {
     private static double lowThresholdProcessCpuLoad;
     private static int timeBetweenScalingDecisions;
     private static int timeBetweenHealthChecks;
+    private static int scalingMode;
 
     /**
      * Read the config file for autoscaler properties
@@ -32,6 +33,7 @@ public class AutoScaleConfigReader extends HzConfigReader {
         lowThresholdProcessCpuLoad = Double.parseDouble(prop.getProperty("lowThresholdProcessCpuLoad"));
         timeBetweenScalingDecisions = Integer.parseInt(prop.getProperty("timeBetweenScalingDecisions"));
         timeBetweenHealthChecks = Integer.parseInt(prop.getProperty("timeBetweenHealthChecks"));
+        scalingMode = Integer.parseInt(prop.getProperty("scalingMode"));
     }
 
     /**
@@ -73,5 +75,9 @@ public class AutoScaleConfigReader extends HzConfigReader {
      */
     public static int getTimeBetweenHealthChecks() {
         return timeBetweenHealthChecks;
+    }
+
+    public static int getMode() {
+        return scalingMode;
     }
 }
