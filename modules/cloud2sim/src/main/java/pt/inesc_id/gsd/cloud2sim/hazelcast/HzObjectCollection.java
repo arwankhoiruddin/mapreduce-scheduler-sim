@@ -11,6 +11,7 @@
 package pt.inesc_id.gsd.cloud2sim.hazelcast;
 
 import com.hazelcast.core.IMap;
+import com.hazelcast.core.IdGenerator;
 import org.cloudbus.cloudsim.Datacenter;
 import org.cloudbus.cloudsim.compatibility.hazelcast.HazelSim;
 
@@ -116,5 +117,10 @@ public class HzObjectCollection extends HazelSim {
 
     public IMap<Integer, Datacenter> getDatacenterList() {
         return getFirstInstance().getMap("datacenterList");
+    }
+
+    public long getId() {
+        IdGenerator idGenerator =  getFirstInstance().getIdGenerator("deploymentId");
+        return idGenerator.newId();
     }
 }

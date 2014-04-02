@@ -15,7 +15,6 @@ import org.cloudbus.cloudsim.compatibility.ConfigReader;
 import org.cloudbus.cloudsim.compatibility.hazelcast.HazelSimCore;
 import org.cloudbus.cloudsim.compatibility.hazelcast.HzConstants;
 import pt.inesc_id.gsd.cloud2sim.util.AppBuilder;
-import pt.inesc_id.gsd.cloud2sim.util.AppUtil;
 import org.cloudbus.cloudsim.core.CloudSim;
 
 import java.util.Calendar;
@@ -59,6 +58,6 @@ public class HzCloudSim extends CloudSim {
         HzObjectCollection objectCollection = HzObjectCollection.getHzObjectCollection();
         offset = objectCollection.getDeploymentInformation().size();
         objectCollection.getDeploymentInformation().
-                put((long) offset, HzConstants.HAZELCAST_INSTANCES_STARTED_SIMULTANEOUSLY);
+                put(objectCollection.getId(), HzConstants.HAZELCAST_INSTANCES_STARTED_SIMULTANEOUSLY);
     }
 }
