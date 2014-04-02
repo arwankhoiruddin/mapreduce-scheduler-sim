@@ -14,6 +14,7 @@ import org.cloudbus.cloudsim.Log;
 import org.cloudbus.cloudsim.compatibility.hazelcast.HazelSim;
 import org.cloudbus.cloudsim.compatibility.hazelcast.HazelSimCore;
 import org.cloudbus.cloudsim.compatibility.hazelcast.HzConfigReader;
+import pt.inesc_id.gsd.cloud2sim.hazelcast.HzObjectCollection;
 
 /**
  * An empty hazelcast instance
@@ -30,5 +31,7 @@ public class Initiator {
         Log.printConcatLine("Initiating a Hazelcast instance.");
         HzConfigReader.readConfig();
         HazelSim.spawnInstance(HazelSimCore.getCfg());
+        int size = HzObjectCollection.getHzObjectCollection().getFirstInstance().getCluster().getMembers().size(); //this is not working.
+        Log.printConcatLine("Size of the instances in this cluster: " + size);
     }
 }
