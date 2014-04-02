@@ -31,7 +31,6 @@ public class AutoScaler {
      */
     public static boolean spawnInstance() {
         Log.printConcatLine("[AutoScaler] Initiating a Hazelcast instance.");
-        AutoScaleConfigReader.readConfig();
         instances.add(Hazelcast.newHazelcastInstance(HazelSimCore.getCfg()));
         return true;
     }

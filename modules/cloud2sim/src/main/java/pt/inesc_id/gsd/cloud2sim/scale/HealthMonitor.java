@@ -34,6 +34,7 @@ public class HealthMonitor implements Runnable {
     private double systemLoadAverage; // -1.0 in windows
 
     public HealthMonitor() {
+        AutoScaleConfigReader.readConfig();
         runtime = Runtime.getRuntime();
         osMxBean = ManagementFactory.getPlatformMXBean(OperatingSystemMXBean.class);
     }
@@ -59,8 +60,6 @@ public class HealthMonitor implements Runnable {
      * @return true, if a scaling decision was carried ahead successfully.
      */
     private boolean scale() {
-//            System.out.println(AutoScaleConfigReader.getMode());
-//        System.out.println(AutoScaleConfigReader.getHighThresholdProcessCpuLoad());
         if ((processCpuLoad > AutoScaleConfigReader.getHighThresholdProcessCpuLoad()) &&
                 AutoScaler.getSize() < AutoScaleConfigReader.getMaxNumberOfInstancesToBeSpawned()) {
             Log.printConcatLine("[HealthMonitor] Process CPU Load: " + processCpuLoad +
@@ -85,16 +84,16 @@ public class HealthMonitor implements Runnable {
     public void run() {
         boolean scaled = true;
         while (true) {
+            init();
             int waitTimeInMillis = AutoScaleConfigReader.getTimeBetweenHealthChecks() * 1000;
-            if (scaled)
+            if (scaled) {
                 waitTimeInMillis = AutoScaleConfigReader.getTimeBetweenScalingDecisions() * 1000;
-
+            }
             try {
                 Thread.sleep(waitTimeInMillis);
             } catch (InterruptedException e) {
                 return;
             }
-            init();
             scaled = scale();
         }
     }
