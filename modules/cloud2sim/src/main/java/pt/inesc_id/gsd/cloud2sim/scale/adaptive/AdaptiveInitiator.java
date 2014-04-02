@@ -18,6 +18,9 @@ import org.cloudbus.cloudsim.compatibility.hazelcast.HazelSimCore;
 import org.cloudbus.cloudsim.compatibility.hazelcast.HzConfigReader;
 import pt.inesc_id.gsd.cloud2sim.hazelcast.HzObjectCollection;
 
+/**
+ * Adaptive Initiator - Creating intiators belonging to the cluster named, 'sub'.
+ */
 public class AdaptiveInitiator {
     public static void main(String[] args) {
         initInstance();
@@ -34,11 +37,18 @@ public class AdaptiveInitiator {
         printSize();
     }
 
+    /**
+     * Prints the number of the instances in the cluster.
+     */
     private static void printSize() {
         int size = HzObjectCollection.getHzObjectCollection().getFirstInstance().getCluster().getMembers().size();
         Log.printConcatLine("Number of instances in this cluster: " + size);
     }
 
+    /**
+     * Gets the configuration for the cluster
+     * @return hazelcast configuration
+     */
     private static Config getConfig() {
         HzConfigReader.readConfig();
         Config cfg = HazelSimCore.getCfg();
