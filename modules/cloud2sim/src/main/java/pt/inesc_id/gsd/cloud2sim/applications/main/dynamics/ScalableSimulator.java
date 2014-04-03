@@ -35,14 +35,14 @@ import java.util.concurrent.Future;
  * An example showing how to create
  * scalable dynamic simulations.
  */
-public class Simulator {
+public class ScalableSimulator {
 
     /**
      * Creates main() to run this example
      */
     public static void main(String[] args) {
         AppUtil.start();
-        Log.printLine("# Starting the Simulator...");
+        Log.printLine("# Starting the ScalableSimulator...");
 
         try {
             // First step: Initialize the CloudSim package. It should be called
@@ -98,7 +98,7 @@ public class Simulator {
                 Map<Integer, HzCloudlet> newList = objectCollection.getCloudletReceivedList();
                 HzCloudSim.stopSimulation();
                 OutputLogger.printCloudletList(newList);
-                Log.printLine("# Simulator execution finished!");
+                Log.printLine("# ScalableSimulator execution finished!");
             }
         } catch (Exception e) {
             e.printStackTrace();

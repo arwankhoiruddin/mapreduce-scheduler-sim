@@ -8,15 +8,15 @@
  * Copyright (c) 2014, Pradeeban Kathiravelu <pradeeban.kathiravelu@tecnico.ulisboa.pt>
  */
 
-package pt.inesc_id.gsd.cloud2sim.scale;
+package pt.inesc_id.gsd.cloud2sim.scale.health;
 
 import java.lang.management.ManagementFactory;
 
-import com.hazelcast.core.Hazelcast;
 import com.sun.management.OperatingSystemMXBean;
 import org.cloudbus.cloudsim.Log;
 import pt.inesc_id.gsd.cloud2sim.hazelcast.HzObjectCollection;
-import pt.inesc_id.gsd.cloud2sim.scale.adaptive.AdaptiveScaler;
+import pt.inesc_id.gsd.cloud2sim.scale.AutoScaleConfigReader;
+import pt.inesc_id.gsd.cloud2sim.scale.adaptive.AdaptiveScalerProbe;
 import pt.inesc_id.gsd.cloud2sim.scale.auto.AutoScaler;
 
 /**
@@ -40,7 +40,7 @@ public class HealthMonitor implements Runnable {
         runtime = Runtime.getRuntime();
         osMxBean = ManagementFactory.getPlatformMXBean(OperatingSystemMXBean.class);
         if (AutoScaleConfigReader.getMode().equalsIgnoreCase("adaptive")) {
-            AdaptiveScaler.startMiddleManInstance();
+            AdaptiveScalerProbe.startHealthAnnouncerInstance();
         }
     }
 
@@ -72,14 +72,14 @@ public class HealthMonitor implements Runnable {
             if (AutoScaleConfigReader.getMode().equalsIgnoreCase("auto")) {
                 return AutoScaler.spawnInstance();
             } else {
-                return AdaptiveScaler.addInstance();
+                return AdaptiveScalerProbe.addInstance();
             }
         } else if (processCpuLoad < AutoScaleConfigReader.getLowThresholdProcessCpuLoad()) {
             Log.printConcatLine("[HealthMonitor] Process CPU Load: " + processCpuLoad + ". Falls below the minimum.");
             if (AutoScaleConfigReader.getMode().equalsIgnoreCase("auto")) {
                 return AutoScaler.terminateInstance();
             } else {
-                return AdaptiveScaler.removeInstance();
+                return AdaptiveScalerProbe.removeInstance();
             }
         }
         return false;

@@ -41,7 +41,7 @@ public class Simulator {
      */
     public static void main(String[] args) {
         AppUtil.start();
-        Log.printLine("# Starting the Simulator...");
+        Log.printLine("# Starting the ScalableSimulator...");
 
         try {
             // First step: Initialize the CloudSim package. It should be called
@@ -97,7 +97,7 @@ public class Simulator {
                 Map<Integer, HzCloudlet> newList = objectCollection.getCloudletReceivedList();
                 HzCloudSim.stopSimulation();
                 OutputLogger.printCloudletList(newList);
-                Log.printLine("# Simulator execution finished!");
+                Log.printLine("# ScalableSimulator execution finished!");
             }
         } catch (Exception e) {
             e.printStackTrace();

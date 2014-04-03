@@ -13,7 +13,8 @@ package pt.inesc_id.gsd.cloud2sim.util;
 import com.hazelcast.core.Hazelcast;
 import org.cloudbus.cloudsim.Log;
 import org.cloudbus.cloudsim.core.CloudSim;
-import pt.inesc_id.gsd.cloud2sim.scale.HealthMonitor;
+import pt.inesc_id.gsd.cloud2sim.scale.adaptive.AdaptiveScalerProbe;
+import pt.inesc_id.gsd.cloud2sim.scale.health.HealthMonitor;
 import org.cloudbus.cloudsim.compatibility.hazelcast.HzConfigReader;
 
 /**
@@ -32,13 +33,16 @@ public class AppUtil {
 
 
     /**
-     * Starts the executions
+     * Starts the executions and threads.
      */
     public static void start() {
         startTime = System.currentTimeMillis();
         HzConfigReader.readConfig();
         Thread t = new Thread(new HealthMonitor());
+        AdaptiveScalerProbe.startHealthAnnouncerInstance();
+        Thread t2 = new Thread(new AdaptiveScalerProbe());
         t.start();
+        t2.start();
     }
 
     public static int getNoOfCloudlets() {
