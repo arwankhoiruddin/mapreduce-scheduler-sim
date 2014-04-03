@@ -10,10 +10,20 @@
 
 package pt.inesc_id.gsd.cloud2sim.scale.adaptive;
 
+import com.hazelcast.config.Config;
+import org.cloudbus.cloudsim.Log;
+import org.cloudbus.cloudsim.compatibility.hazelcast.HazelSim;
+
 /**
  * Scale adaptively.
  */
 public class AdaptiveScaler {
+
+    public static void startMiddleManInstance() {
+        Config config = AdaptiveInitiator.getConfig();
+        Log.printConcatLine("[AdaptiveScaler] Starting the middle man instance.");
+        HazelSim.spawnInstance(config);
+    }
 
     public static boolean addInstance() {
         return true;

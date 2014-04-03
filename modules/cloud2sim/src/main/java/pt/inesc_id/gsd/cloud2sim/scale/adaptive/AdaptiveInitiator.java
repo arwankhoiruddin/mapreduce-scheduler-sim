@@ -49,7 +49,7 @@ public class AdaptiveInitiator {
      * Gets the configuration for the cluster
      * @return hazelcast configuration
      */
-    private static Config getConfig() {
+    public static Config getConfig() {
         HzConfigReader.readConfig();
         Config cfg = HazelSimCore.getCfg();
         GroupConfig groupConfig = new GroupConfig("sub");

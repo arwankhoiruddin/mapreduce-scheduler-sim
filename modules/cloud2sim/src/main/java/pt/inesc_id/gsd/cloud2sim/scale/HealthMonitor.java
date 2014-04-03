@@ -39,6 +39,9 @@ public class HealthMonitor implements Runnable {
         AutoScaleConfigReader.readConfig();
         runtime = Runtime.getRuntime();
         osMxBean = ManagementFactory.getPlatformMXBean(OperatingSystemMXBean.class);
+        if (AutoScaleConfigReader.getMode().equalsIgnoreCase("adaptive")) {
+            AdaptiveScaler.startMiddleManInstance();
+        }
     }
 
     /**
