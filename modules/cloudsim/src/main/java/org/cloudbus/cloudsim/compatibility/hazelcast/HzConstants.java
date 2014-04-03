@@ -33,4 +33,6 @@ public final class HzConstants {
     public static final int FIRST = 0;
     public static final int LAST = HAZELCAST_INSTANCES_STARTED_SIMULTANEOUSLY - 1;
 
+    public static final String MAIN_HZ_CLUSTER = "main";
+    public static final String SUB_HZ_CLUSTER = "sub";
 }

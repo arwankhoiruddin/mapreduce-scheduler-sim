@@ -42,7 +42,7 @@ public class HazelSimCore {
         }
         cfg.setProperty("hazelcast.initial.min.cluster.size", String.valueOf(HzConstants.NO_OF_PARALLEL_EXECUTIONS));
         cfg.setProperty("hazelcast.operation.call.timeout.millis", "50000000");
-        GroupConfig groupConfig = new GroupConfig("main");
+        GroupConfig groupConfig = new GroupConfig(HzConstants.MAIN_HZ_CLUSTER);
         cfg.setGroupConfig(groupConfig);
         return cfg;
     }

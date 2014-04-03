@@ -16,6 +16,7 @@ import org.cloudbus.cloudsim.Log;
 import org.cloudbus.cloudsim.compatibility.hazelcast.HazelSim;
 import org.cloudbus.cloudsim.compatibility.hazelcast.HazelSimCore;
 import org.cloudbus.cloudsim.compatibility.hazelcast.HzConfigReader;
+import org.cloudbus.cloudsim.compatibility.hazelcast.HzConstants;
 import pt.inesc_id.gsd.cloud2sim.hazelcast.HzObjectCollection;
 
 /**
@@ -52,7 +53,7 @@ public class AdaptiveInitiator {
     public static Config getConfig() {
         HzConfigReader.readConfig();
         Config cfg = HazelSimCore.getCfg();
-        GroupConfig groupConfig = new GroupConfig("sub");
+        GroupConfig groupConfig = new GroupConfig(HzConstants.SUB_HZ_CLUSTER);
         cfg.setGroupConfig(groupConfig);
         return cfg;
     }
