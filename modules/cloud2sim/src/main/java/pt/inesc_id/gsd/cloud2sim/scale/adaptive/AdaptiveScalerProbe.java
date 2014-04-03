@@ -19,20 +19,25 @@ import pt.inesc_id.gsd.cloud2sim.scale.AutoScaleConfigReader;
 import pt.inesc_id.gsd.cloud2sim.scale.core.ClusterConfig;
 import pt.inesc_id.gsd.cloud2sim.scale.health.HealthParams;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Scale adaptively.
  */
 public class AdaptiveScalerProbe implements Runnable {
 
-    private static HazelcastInstance instance;
+    private static List<HazelcastInstance> instances = new ArrayList<>();
 
     /**
      * Spawns an instance in the "SUB" cluster.
      */
     public static void startHealthAnnouncerInstance() {
-        Config config = ClusterConfig.getSubClusterConfig();
-        Log.printConcatLine("[AdaptiveScalerProbe] Starting the middle man instance.");
-        instance = Hazelcast.newHazelcastInstance(config);
+        if (instances.size() == 0) {
+            Config config = ClusterConfig.getSubClusterConfig();
+            Log.printConcatLine("[AdaptiveScalerProbe] Starting the middle man instance.");
+            instances.add(Hazelcast.newHazelcastInstance(config));
+        }
     }
 
     public static boolean addInstance() {
@@ -46,7 +51,7 @@ public class AdaptiveScalerProbe implements Runnable {
     }
 
     public IMap<String, Boolean> getNodeHealth() {
-        return instance.getMap("nodeHealth");
+        return instances.get(0).getMap("nodeHealth");
     }
 
     @Override
