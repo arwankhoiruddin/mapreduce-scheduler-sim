@@ -42,7 +42,7 @@ public class IasRunnable implements Runnable {
         }
     }
 
-    public IMap<String, Boolean> getNodeHealth() {
+    public static IMap<String, Boolean> getNodeHealth() {
         return HzObjectCollection.getHzObjectCollection().getFirstInstance().getMap("nodeHealth");
     }
 
@@ -58,18 +58,30 @@ public class IasRunnable implements Runnable {
     /**
      * Probes to see whether it needs to spawn a new instance in the MAIN cluster.
      */
-    private void probe() {
+    private static void probe() {
         if (instances.size() == 0) {
             if (getNodeHealth().get("toScaleOut")) {
                 getNodeHealth().put("toScaleOut", false);
                 spawnInstance();
             }
         } else {
-            if (getNodeHealth().get("toScaleOut")) {
+            if (getNodeHealth().get("toScaleIn")) {
                 getNodeHealth().put("toScaleIn", false);
                 instances.get(0).shutdown();
                 instances.remove(0);
             }
+        }
+    }
+
+    /**
+     * Initialize the health map once.
+     */
+    public static void initHealthMap() {
+        if (getNodeHealth().get("toScaleOut") == null) {
+            getNodeHealth().put("toScaleOut", false);
+        }
+        if (getNodeHealth().get("toScaleIn") == null) {
+            getNodeHealth().put("toScaleIn", false);
         }
     }
 }

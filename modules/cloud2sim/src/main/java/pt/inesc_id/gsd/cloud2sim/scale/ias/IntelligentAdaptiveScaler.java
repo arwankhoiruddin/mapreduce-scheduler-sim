@@ -35,5 +35,6 @@ public class IntelligentAdaptiveScaler {
         Log.printConcatLine("Initiating a Hazelcast instance.");
         Config cfg = ClusterConfig.getSubClusterConfig();
         HazelSim.spawnInstance(cfg);
+        IasRunnable.initHealthMap();
     }
 }
