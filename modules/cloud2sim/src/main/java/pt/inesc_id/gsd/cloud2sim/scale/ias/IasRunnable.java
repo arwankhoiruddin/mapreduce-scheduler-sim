@@ -51,7 +51,7 @@ public class IasRunnable implements Runnable {
      */
     private static void spawnInstance() {
         Config config = HazelSimCore.getCfg();
-        Log.printConcatLine("[ISA Runnable] Starting the Initiator instances.");
+        Log.printConcatLine("[ISA Runnable] Starting the Initiator Instance, as master exceeded the maximum load.");
         instances.add(Hazelcast.newHazelcastInstance(config));
     }
 
@@ -67,6 +67,8 @@ public class IasRunnable implements Runnable {
         } else {
             if (getNodeHealth().get("toScaleIn")) {
                 getNodeHealth().put("toScaleIn", false);
+                Log.printConcatLine("[IAS Runnable] Terminating the Initiator Instance, " +
+                        "due to minimum work load in the master");
                 instances.get(0).shutdown();
                 instances.remove(0);
             }
