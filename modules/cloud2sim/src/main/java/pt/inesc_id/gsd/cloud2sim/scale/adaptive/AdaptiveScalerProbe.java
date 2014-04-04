@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Scale adaptively.
+ * The class from the simulator master node that sends out information to other nodes for an adaptive scalability.
  */
 public class AdaptiveScalerProbe implements Runnable {
 

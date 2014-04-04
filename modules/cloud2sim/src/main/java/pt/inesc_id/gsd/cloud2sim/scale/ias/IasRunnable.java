@@ -22,6 +22,10 @@ import pt.inesc_id.gsd.cloud2sim.scale.AutoScaleConfigReader;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Thread that is responsible for creating an Initiator instance in the node, by listening to the work load of the
+ * master.
+ */
 public class IasRunnable implements Runnable {
     private static List<HazelcastInstance> instances = new ArrayList<>();
 

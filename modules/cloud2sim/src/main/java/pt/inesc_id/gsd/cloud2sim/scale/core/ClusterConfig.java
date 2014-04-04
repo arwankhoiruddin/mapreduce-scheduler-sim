@@ -16,9 +16,12 @@ import org.cloudbus.cloudsim.compatibility.hazelcast.HazelSimCore;
 import org.cloudbus.cloudsim.compatibility.hazelcast.HzConfigReader;
 import org.cloudbus.cloudsim.compatibility.hazelcast.HzConstants;
 
+/**
+ * Configurations for Hazelcast clusters.
+ */
 public class ClusterConfig {
     /**
-     * Gets the configuration for the cluster
+     * Gets the configuration for the SUB cluster
      * @return hazelcast configuration
      */
     public static Config getSubClusterConfig() {
