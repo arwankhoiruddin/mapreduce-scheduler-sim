@@ -9,27 +9,42 @@ $ mvn clean install -Dmaven.skip.test=true
 To skip executing the tests:
 $ mvn clean install -DskipTests
 
+
 Built distribution inside distribution/target.
+--------------------------------------------------
 $ tar -xzvf distribution/target/cloudsim-3.1-SNAPSHOT.tar.gz
 $ mv cloudsim-3.1-SNAPSHOT/jars/cloudsim-3.1-SNAPSHOT.jar cloudsim-3.1-SNAPSHOT/jars/cloudsim-examples-3.1-SNAPSHOT.jar cloudsim-3.1-SNAPSHOT/jars/cloud2sim-1.0-SNAPSHOT.jar .
 
+
+Running the Simulations.
+-------------------------
 To run an existing example:
 $ java -classpath cloudsim-3.1-SNAPSHOT.jar:cloudsim-examples-3.1-SNAPSHOT.jar:lib/hazelcast-3.2.jar:cloud2sim-1.0-SNAPSHOT.jar pt.inesc_id.gsd.cloud2sim.applications.main.statics.Simulator
 
 To initiate an instance without running any specific code:
 $ java -classpath cloudsim-3.1-SNAPSHOT.jar:cloudsim-examples-3.1-SNAPSHOT.jar:lib/hazelcast-3.2.jar:cloud2sim-1.0-SNAPSHOT.jar pt.inesc_id.gsd.cloud2sim.applications.main.dynamics.Initiator
 
-To initiate the Intelligent Adaptive Scaler Instances.
+
+Running Cloud2Sim with Adaptive Scaling.
+--------------------------------------------
+Initiate the ScalableSimulator from the master node.
+$ java -classpath cloudsim-3.1-SNAPSHOT.jar:cloudsim-examples-3.1-SNAPSHOT.jar:lib/hazelcast-3.2.jar:cloud2sim-1.0-SNAPSHOT.jar pt.inesc_id.gsd.cloud2sim.applications.main.dynamics.ScalableSimulator
+
+Initiate the IntelligentAdaptiveScaler from the other nodes.
 $ java -classpath cloudsim-3.1-SNAPSHOT.jar:cloudsim-examples-3.1-SNAPSHOT.jar:lib/hazelcast-3.2.jar:cloud2sim-1.0-SNAPSHOT.jar pt.inesc_id.gsd.cloud2sim.scale.ias.IntelligentAdaptiveScaler
 
+
 Copy the files to the other instances.
+----------------------------------------
 $ scp -r . pradeeban@146.193.41.145:/home/pradeeban
 or just,
 $ scp cloudsim-3.1-SNAPSHOT.jar cloudsim-examples-3.1-SNAPSHOT.jar cloud2sim-1.0-SNAPSHOT.jar pradeeban@146.193.41.145:/home/pradeeban
 and
 $ scp -r conf pradeeban@146.193.41.145:/home/pradeeban/conf
 
+
 Test environment
+-------------------
 146.193.41.141  ginja-a1
 146.193.41.142  ginja-a2
 146.193.41.143  ginja-a3
