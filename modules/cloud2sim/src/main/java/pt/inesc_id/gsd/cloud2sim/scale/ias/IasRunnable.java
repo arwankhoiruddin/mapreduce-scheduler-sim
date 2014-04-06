@@ -13,6 +13,7 @@ package pt.inesc_id.gsd.cloud2sim.scale.ias;
 import com.hazelcast.config.Config;
 import com.hazelcast.core.Hazelcast;
 import com.hazelcast.core.HazelcastInstance;
+import com.hazelcast.core.IAtomicLong;
 import com.hazelcast.core.IMap;
 import org.cloudbus.cloudsim.Log;
 import org.cloudbus.cloudsim.compatibility.hazelcast.HazelSimCore;
@@ -28,6 +29,9 @@ import java.util.List;
  */
 public class IasRunnable implements Runnable {
     private static List<HazelcastInstance> instances = new ArrayList<>();
+
+    private static IAtomicLong key =
+            HzObjectCollection.getHzObjectCollection().getFirstInstance().getAtomicLong("counter");
 
     @Override
     public void run() {
@@ -58,21 +62,42 @@ public class IasRunnable implements Runnable {
     /**
      * Probes to see whether it needs to spawn a new instance in the MAIN cluster.
      */
-    private static void probe() {
+    private static int probe() {
         if (instances.size() == 0) {
             if (getNodeHealth().get("toScaleOut")) {
                 getNodeHealth().put("toScaleOut", false);
-                spawnInstance();
+                long currentValue = key.getAndSet(1);
+                if (currentValue != 0) {
+                    return 0;
+                } else {
+                    spawnInstance();
+                    try {
+                        Thread.sleep(AutoScaleConfigReader.getTimeBetweenScalingDecisions() * 1000);
+                    } catch (InterruptedException ignored) {
+                    }
+                    key.set(0);
+                }
             }
         } else {
             if (getNodeHealth().get("toScaleIn")) {
                 getNodeHealth().put("toScaleIn", false);
-                Log.printConcatLine("[IAS Runnable] Terminating the Initiator Instance, " +
-                        "due to minimum work load in the master");
-                instances.get(0).shutdown();
-                instances.remove(0);
+                long currentValue = key.getAndSet(-1);
+                if (currentValue != 0) {
+                    return 0;
+                } else {
+                    Log.printConcatLine("[IAS Runnable] Terminating the Initiator Instance, " +
+                            "due to minimum work load in the master");
+                    instances.get(0).shutdown();
+                    instances.remove(0);
+                }
+                try {
+                    Thread.sleep(AutoScaleConfigReader.getTimeBetweenScalingDecisions() * 1000);
+                } catch (InterruptedException ignored) {
+                }
+                key.set(0);
             }
         }
+        return 0;
     }
 
     /**
@@ -84,6 +109,9 @@ public class IasRunnable implements Runnable {
         }
         if (getNodeHealth().get("toScaleIn") == null) {
             getNodeHealth().put("toScaleIn", false);
+        }
+        if (key.get() != 0) {
+            key.set(0);
         }
     }
 }
