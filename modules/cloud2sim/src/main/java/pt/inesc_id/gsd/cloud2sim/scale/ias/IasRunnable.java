@@ -31,7 +31,7 @@ public class IasRunnable implements Runnable {
     private static List<HazelcastInstance> instances = new ArrayList<>();
 
     private static IAtomicLong key =
-            HzObjectCollection.getHzObjectCollection().getFirstInstance().getAtomicLong("counter");
+            HzObjectCollection.getHzObjectCollection().getFirstInstance().getAtomicLong("scalingDecision");
 
     @Override
     public void run() {
@@ -78,26 +78,37 @@ public class IasRunnable implements Runnable {
                     key.set(0);
                 }
             }
+            return 1;
         } else {
             if (getNodeHealth().get("toScaleIn")) {
-                getNodeHealth().put("toScaleIn", false);
-                long currentValue = key.getAndSet(-1);
-                if (currentValue != 0) {
-                    return 0;
-                } else {
-                    Log.printConcatLine("[IAS Runnable] Terminating the Initiator Instance, " +
-                            "due to minimum work load in the master");
+                if (key.get() == -2) {
+                    if (instances.get(0).getCluster().getMembers().size() == 2) {
+                        for (Object o : HzObjectCollection.getHzObjectCollection().getFirstInstance().getDistributedObjects()) {
+                            HzObjectCollection.getHzObjectCollection().getFirstInstance().getDistributedObjects().remove(o);
+                        }
+                    }
                     instances.get(0).shutdown();
                     instances.remove(0);
+                } else {
+                    getNodeHealth().put("toScaleIn", false);
+                    long currentValue = key.getAndSet(-1);
+                    if (currentValue != 0) {
+                        return 0;
+                    } else {
+                        Log.printConcatLine("[IAS Runnable] Terminating the Initiator Instance, " +
+                                "due to minimum work load in the master");
+                        instances.get(0).shutdown();
+                        instances.remove(0);
+                    }
+                    try {
+                        Thread.sleep(AutoScaleConfigReader.getTimeBetweenScalingDecisions() * 1000);
+                    } catch (InterruptedException ignored) {
+                    }
+                    key.set(0);
                 }
-                try {
-                    Thread.sleep(AutoScaleConfigReader.getTimeBetweenScalingDecisions() * 1000);
-                } catch (InterruptedException ignored) {
-                }
-                key.set(0);
             }
+            return -1;
         }
-        return 0;
     }
 
     /**

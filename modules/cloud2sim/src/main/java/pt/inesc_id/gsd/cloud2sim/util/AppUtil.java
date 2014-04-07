@@ -114,6 +114,7 @@ public class AppUtil {
      */
     public static void shutdown() {
         shutdownLogs();
+        AdaptiveScalerProbe.setTerminateAllKey();
         Hazelcast.shutdownAll();
     }
 

@@ -13,6 +13,7 @@ package pt.inesc_id.gsd.cloud2sim.scale.adaptive;
 import com.hazelcast.config.Config;
 import com.hazelcast.core.Hazelcast;
 import com.hazelcast.core.HazelcastInstance;
+import com.hazelcast.core.IAtomicLong;
 import com.hazelcast.core.IMap;
 import org.cloudbus.cloudsim.Log;
 import pt.inesc_id.gsd.cloud2sim.scale.AutoScaleConfigReader;
@@ -54,6 +55,11 @@ public class AdaptiveScalerProbe implements Runnable {
         return instances.get(0).getMap("nodeHealth");
     }
 
+    public static void setTerminateAllKey() {
+        HealthParams.setToScaleIn(true);
+        instances.get(0).getAtomicLong("scalingDecision").getAndSet(-2);
+    }
+
     @Override
     public void run() {
         while (true) {
@@ -69,11 +75,11 @@ public class AdaptiveScalerProbe implements Runnable {
 
     private void probe() {
         if (HealthParams.getToScaleOut()) {
-            getNodeHealth().put("toScaleOut", true);
             HealthParams.setToScaleOut(false);
+            getNodeHealth().put("toScaleOut", true);
         } else if (HealthParams.getToScaleIn()) {
-            getNodeHealth().put("toScaleIn", true);
             HealthParams.setToScaleIn(false);
+            getNodeHealth().put("toScaleIn", true);
         }
     }
 }

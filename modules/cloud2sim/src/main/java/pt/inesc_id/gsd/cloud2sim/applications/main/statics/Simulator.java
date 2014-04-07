@@ -103,6 +103,6 @@ public class Simulator {
             e.printStackTrace();
             Log.printLine("# The simulation has been terminated due to an unexpected error");
         }
-        AppUtil.shutdownLogs();
+        AppUtil.shutdown();
     }
 }
