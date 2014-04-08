@@ -51,7 +51,7 @@ public class MapReduceSimulator {
             Map<String, Long> countsPerWord = mapReduce(hazelcastInstance);
             System.out.println("Counts per words over " + DATA_RESOURCES_TO_LOAD.length + " files:");
             for (Map.Entry<String, Long> entry : countsPerWord.entrySet()) {
-                System.out.println("\tWord '" + entry.getKey() + "' occured " + entry.getValue() + " times");
+                System.out.println("\tWord '" + entry.getKey() + "' occurred " + entry.getValue() + " times");
             }
 
             long wordCount = mapReduceCollate(hazelcastInstance);

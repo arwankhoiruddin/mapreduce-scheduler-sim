@@ -22,6 +22,7 @@ import java.io.FileNotFoundException;
  */
 public class HazelSimCore {
     private static HazelSimCore hazelSimCore = null;
+    private static String clusterGroup = HzConstants.MAIN_HZ_CLUSTER;
 
     private HazelSimCore(int noOfSimultaneousInstances) {
         Config cfg = getCfg();
@@ -42,9 +43,17 @@ public class HazelSimCore {
         }
         cfg.setProperty("hazelcast.initial.min.cluster.size", String.valueOf(HzConstants.NO_OF_PARALLEL_EXECUTIONS));
         cfg.setProperty("hazelcast.operation.call.timeout.millis", "50000000");
-        GroupConfig groupConfig = new GroupConfig(HzConstants.MAIN_HZ_CLUSTER);
+        GroupConfig groupConfig = new GroupConfig(clusterGroup);
         cfg.setGroupConfig(groupConfig);
         return cfg;
+    }
+
+    public static HazelSimCore getHazelSimCore(int noOfSimultaneousInstances, String _clusterGroup) {
+        if (hazelSimCore == null) {
+            clusterGroup = _clusterGroup;
+            hazelSimCore = new HazelSimCore(noOfSimultaneousInstances);
+        }
+        return hazelSimCore;
     }
 
     public static HazelSimCore getHazelSimCore(int noOfSimultaneousInstances) {

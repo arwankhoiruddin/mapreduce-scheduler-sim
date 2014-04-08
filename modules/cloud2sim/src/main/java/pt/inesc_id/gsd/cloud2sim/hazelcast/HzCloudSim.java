@@ -33,9 +33,24 @@ public class HzCloudSim extends CloudSim {
      * @param traceFlag, boolean
      */
     public static void init(int numUser, Calendar cal, boolean traceFlag) {
-        Log.printConcatLine("Initiating the Hazelcast instances for Cloud2Sim.");
         HazelSimCore hazelSimCore = HazelSimCore.getHazelSimCore(ConfigReader.getSimultaneousInstances());
+        initInstances(numUser, cal, traceFlag);
+    }
 
+    /**
+     * Initiate Cloud2Sim/Hazelcast
+     *
+     * @param numUser,   number of users
+     * @param cal,       calendar object
+     * @param traceFlag, boolean
+     */
+    public static void init(int numUser, Calendar cal, boolean traceFlag, String clusterGroup) {
+        HazelSimCore hazelSimCore = HazelSimCore.getHazelSimCore(ConfigReader.getSimultaneousInstances(), clusterGroup);
+        initInstances(numUser, cal, traceFlag);
+    }
+
+    private static void initInstances(int numUser, Calendar cal, boolean traceFlag) {
+        Log.printConcatLine("Initiating the Hazelcast instances for Cloud2Sim.");
         initInstances();
 
         CloudSim.init(numUser, cal, traceFlag);
