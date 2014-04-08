@@ -14,9 +14,9 @@ import org.cloudbus.cloudsim.CloudletSchedulerSpaceShared;
 import org.cloudbus.cloudsim.CloudletSchedulerTimeShared;
 import org.cloudbus.cloudsim.UtilizationModel;
 import org.cloudbus.cloudsim.UtilizationModelFull;
+import pt.inesc_id.gsd.cloud2sim.core.Cloud2SimEngine;
+import pt.inesc_id.gsd.cloud2sim.core.PartitionUtil;
 import pt.inesc_id.gsd.cloud2sim.hazelcast.HzObjectCollection;
-import pt.inesc_id.gsd.cloud2sim.util.AppBuilder;
-import pt.inesc_id.gsd.cloud2sim.util.AppUtil;
 import org.cloudbus.cloudsim.compatibility.ConfigReader;
 import pt.inesc_id.gsd.cloud2sim.hazelcast.HzCloudSim;
 import pt.inesc_id.gsd.cloud2sim.hazelcast.HzCloudlet;
@@ -49,11 +49,11 @@ public class SimulationEngine {
         HzVm vm;
 
         int noOfVms = ConfigReader.getNoOfVms();
-        int init = AppBuilder.getPartitionInit(noOfVms, HzCloudSim.getOffset());
-        int end = AppBuilder.getPartitionFinal(noOfVms, HzCloudSim.getOffset());
+        int init = PartitionUtil.getPartitionInit(noOfVms, HzCloudSim.getOffset());
+        int end = PartitionUtil.getPartitionFinal(noOfVms, HzCloudSim.getOffset());
 
-        AppUtil.setVmsInit(init);
-        AppUtil.setVmsFinal(end);
+        Cloud2SimEngine.setVmsInit(init);
+        Cloud2SimEngine.setVmsFinal(end);
 
         for (int i = init; i < end; i++) {
             if (isRR) {
@@ -80,11 +80,11 @@ public class SimulationEngine {
         HzCloudlet cloudlet;
 
         int noOfCloudlets = ConfigReader.getNoOfCloudlets();
-        int init = AppBuilder.getPartitionInit(noOfCloudlets, HzCloudSim.getOffset());
-        int end = AppBuilder.getPartitionFinal(noOfCloudlets, HzCloudSim.getOffset());
+        int init = PartitionUtil.getPartitionInit(noOfCloudlets, HzCloudSim.getOffset());
+        int end = PartitionUtil.getPartitionFinal(noOfCloudlets, HzCloudSim.getOffset());
 
-        AppUtil.setCloudletsInit(init);
-        AppUtil.setCloudletsFinal(end);
+        Cloud2SimEngine.setCloudletsInit(init);
+        Cloud2SimEngine.setCloudletsFinal(end);
 
         for (int i = init; i < end; i++) {
             int f = (int) ((Math.random() * 40) + 1);

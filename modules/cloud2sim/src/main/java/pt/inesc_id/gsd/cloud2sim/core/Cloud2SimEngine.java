@@ -8,20 +8,26 @@
  * Copyright (c) 2014, Pradeeban Kathiravelu <pradeeban.kathiravelu@tecnico.ulisboa.pt>
  */
 
-package pt.inesc_id.gsd.cloud2sim.util;
+package pt.inesc_id.gsd.cloud2sim.core;
 
 import com.hazelcast.core.Hazelcast;
 import org.cloudbus.cloudsim.Log;
+import org.cloudbus.cloudsim.Pe;
+import org.cloudbus.cloudsim.compatibility.hazelcast.HzConstants;
 import org.cloudbus.cloudsim.core.CloudSim;
+import org.cloudbus.cloudsim.provisioners.PeProvisionerSimple;
 import pt.inesc_id.gsd.cloud2sim.scale.AutoScaleConfigReader;
 import pt.inesc_id.gsd.cloud2sim.scale.adaptive.AdaptiveScalerProbe;
 import pt.inesc_id.gsd.cloud2sim.scale.health.HealthMonitor;
 import org.cloudbus.cloudsim.compatibility.hazelcast.HzConfigReader;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
- * The Application Utility class.
+ * The Cloud2Sim Engine that starts Cloud2Sim simulations.
  */
-public class AppUtil {
+public class Cloud2SimEngine {
     private static long startTime;
     private static boolean isMaster = false;
     private static boolean isPrimaryWorker = false;
@@ -53,7 +59,7 @@ public class AppUtil {
     }
 
     public static void setNoOfCloudlets(int noOfCloudlets) {
-        AppUtil.noOfCloudlets = noOfCloudlets;
+        Cloud2SimEngine.noOfCloudlets = noOfCloudlets;
     }
 
     public static int getNoOfVms() {
@@ -61,7 +67,7 @@ public class AppUtil {
     }
 
     public static void setNoOfVms(int noOfVms) {
-        AppUtil.noOfVms = noOfVms;
+        Cloud2SimEngine.noOfVms = noOfVms;
     }
 
     public static boolean getIsMaster() {
@@ -69,7 +75,7 @@ public class AppUtil {
     }
 
     public static void setIsMaster(boolean isMaster) {
-        AppUtil.isMaster = isMaster;
+        Cloud2SimEngine.isMaster = isMaster;
     }
 
     public static int getVmsInit() {
@@ -77,7 +83,7 @@ public class AppUtil {
     }
 
     public static void setVmsInit(int vmsInit) {
-        AppUtil.vmsInit = vmsInit;
+        Cloud2SimEngine.vmsInit = vmsInit;
     }
 
     public static int getVmsFinal() {
@@ -85,7 +91,7 @@ public class AppUtil {
     }
 
     public static void setVmsFinal(int vmsFinal) {
-        AppUtil.vmsFinal = vmsFinal;
+        Cloud2SimEngine.vmsFinal = vmsFinal;
     }
 
     public static int getCloudletsInit() {
@@ -93,7 +99,7 @@ public class AppUtil {
     }
 
     public static void setCloudletsInit(int cloudletsInit) {
-        AppUtil.cloudletsInit = cloudletsInit;
+        Cloud2SimEngine.cloudletsInit = cloudletsInit;
     }
 
     public static int getCloudletsFinal() {
@@ -101,7 +107,7 @@ public class AppUtil {
     }
 
     public static void setCloudletsFinal(int cloudletsFinal) {
-        AppUtil.cloudletsFinal = cloudletsFinal;
+        Cloud2SimEngine.cloudletsFinal = cloudletsFinal;
     }
 
     public static boolean getIsPrimaryWorker() {
@@ -109,7 +115,7 @@ public class AppUtil {
     }
 
     public static void setIsPrimaryWorker(boolean isPrimaryWorker) {
-        AppUtil.isPrimaryWorker = isPrimaryWorker;
+        Cloud2SimEngine.isPrimaryWorker = isPrimaryWorker;
     }
 
     /**
@@ -136,5 +142,36 @@ public class AppUtil {
 
     public static long getStartTime() {
         return startTime;
+    }
+
+    /**
+     * Initialize the master and the primary worker.
+     * @param offset the offset.
+     */
+    public static void initWorkers(int offset) {
+        if (offset == HzConstants.NO_OF_PARALLEL_EXECUTIONS - 1) {
+            setIsPrimaryWorker(true);
+        }
+
+        if (offset == 0) {
+            setIsMaster(true);
+        }
+    }
+
+    /**
+     * Create machines
+     * @param mips, millions of instructions per second
+     * @param noOfCores number of cores
+     * @return machines, the machines that are created with number of cores.
+     */
+    public static List<Pe> createMachines(int mips, int noOfCores) {
+        List<Pe> peList = new ArrayList<Pe>();
+
+        // Create PEs and add these into the list.
+        //for a quad-hazelcast machine, a list of 4 PEs is required:
+        for (int i = 0; i < noOfCores; i++) {
+            peList.add(new Pe(i, new PeProvisionerSimple(mips)));
+        }
+        return peList;
     }
 }

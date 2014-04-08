@@ -8,41 +8,20 @@
  * Copyright (c) 2014, Pradeeban Kathiravelu <pradeeban.kathiravelu@tecnico.ulisboa.pt>
  */
 
-package pt.inesc_id.gsd.cloud2sim.util;
+package pt.inesc_id.gsd.cloud2sim.core;
 
-import org.cloudbus.cloudsim.Pe;
 import org.cloudbus.cloudsim.compatibility.hazelcast.HzConstants;
-import org.cloudbus.cloudsim.provisioners.PeProvisionerSimple;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
- * Utility class for building the applications
+ * Utility class for partitioning the executions.
  */
-public class AppBuilder {
-
-    /**
-     * Create machines
-     * @param mips, millions of instructions per second
-     * @param noOfCores number of cores
-     * @return machines, the machines that are created with number of cores.
-     */
-    public static List<Pe> createMachines(int mips, int noOfCores) {
-        List<Pe> peList = new ArrayList<Pe>();
-
-        // Create PEs and add these into the list.
-        //for a quad-hazelcast machine, a list of 4 PEs is required:
-        for (int i = 0; i < noOfCores; i++) {
-            peList.add(new Pe(i, new PeProvisionerSimple(mips)));
-        }
-        return peList;
-    }
+public class PartitionUtil {
 
     /**
      * Gets the initial value of the partition
+     *
      * @param noOfParams total number of entities in the specific parameter.
-     * @param offset, the offset
+     * @param offset,    the offset
      * @return the initial value of the partition
      */
     public static int getPartitionInit(int noOfParams, int offset) {
@@ -51,8 +30,9 @@ public class AppBuilder {
 
     /**
      * Gets the final value of the partition
+     *
      * @param noOfParams total number of entities in the specific parameter.
-     * @param offset, the offset
+     * @param offset,    the offset
      * @return the final value of the partition
      */
     public static int getPartitionFinal(int noOfParams, int offset) {
@@ -63,24 +43,11 @@ public class AppBuilder {
 
     /**
      * Gets the size of the specific partition
+     *
      * @param noOfParams total number of entities in the specific parameter.
      * @return the size of the specific partition
      */
     public static int getPartitionSize(int noOfParams) {
         return (int) Math.ceil((noOfParams / (double) HzConstants.NO_OF_PARALLEL_EXECUTIONS));
-    }
-
-    /**
-     * Initialize the master and the primary worker.
-     * @param offset the offset.
-     */
-    public static void initWorkers(int offset) {
-        if (offset == HzConstants.NO_OF_PARALLEL_EXECUTIONS - 1) {
-            AppUtil.setIsPrimaryWorker(true);
-        }
-
-        if (offset == 0) {
-            AppUtil.setIsMaster(true);
-        }
     }
 }

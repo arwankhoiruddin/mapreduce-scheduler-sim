@@ -17,7 +17,7 @@ import org.cloudbus.cloudsim.Pe;
 import org.cloudbus.cloudsim.Storage;
 import org.cloudbus.cloudsim.VmAllocationPolicySimple;
 import org.cloudbus.cloudsim.VmSchedulerTimeShared;
-import pt.inesc_id.gsd.cloud2sim.util.AppBuilder;
+import pt.inesc_id.gsd.cloud2sim.core.Cloud2SimEngine;
 import org.cloudbus.cloudsim.compatibility.ConfigReader;
 import pt.inesc_id.gsd.cloud2sim.applications.roundrobin.RoundRobinVmAllocationPolicy;
 import org.cloudbus.cloudsim.provisioners.BwProvisionerSimple;
@@ -44,10 +44,10 @@ public class DatacenterCreator {
         //    a Machine.
 
         int mips = 400000;
-        List<Pe> peList1 = AppBuilder.createMachines(mips, 4);
+        List<Pe> peList1 = Cloud2SimEngine.createMachines(mips, 4);
 
         //Another list, for a dual-hazelcast machine
-        List<Pe> peList2 = AppBuilder.createMachines(mips, 2);
+        List<Pe> peList2 = Cloud2SimEngine.createMachines(mips, 2);
 
         //4. Create Hosts with its id and list of PEs and add them to the list of machines
         int ram = 2048000; //host memory (MB)

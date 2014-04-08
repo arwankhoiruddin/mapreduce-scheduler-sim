@@ -11,8 +11,8 @@
 package pt.inesc_id.gsd.cloud2sim.applications.main.statics;
 
 import org.cloudbus.cloudsim.*;
+import pt.inesc_id.gsd.cloud2sim.core.Cloud2SimEngine;
 import pt.inesc_id.gsd.cloud2sim.hazelcast.HzObjectCollection;
-import pt.inesc_id.gsd.cloud2sim.util.AppUtil;
 import org.cloudbus.cloudsim.compatibility.ConfigReader;
 import pt.inesc_id.gsd.cloud2sim.util.OutputLogger;
 import pt.inesc_id.gsd.cloud2sim.hazelcast.HzCloudSim;
@@ -40,7 +40,7 @@ public class Simulator {
      * Creates main() to run this example
      */
     public static void main(String[] args) {
-        AppUtil.start();
+        Cloud2SimEngine.start();
         Log.printLine("# Starting the ScalableSimulator...");
 
         try {
@@ -79,16 +79,16 @@ public class Simulator {
             /* The cloudlet list. */
             SimulationEngine.createCloudlet(brokerId); //2000
 
-            AppUtil.setNoOfCloudlets(ConfigReader.getNoOfCloudlets());
-            AppUtil.setNoOfVms(ConfigReader.getNoOfVms());
+            Cloud2SimEngine.setNoOfCloudlets(ConfigReader.getNoOfCloudlets());
+            Cloud2SimEngine.setNoOfVms(ConfigReader.getNoOfVms());
 
             broker.submitCloudletsAndVms();
 
 
-            if (AppUtil.getIsMaster()) {
+            if (Cloud2SimEngine.getIsMaster()) {
                 HzObjectCollection objectCollection = HzObjectCollection.getHzObjectCollection();
-                while (objectCollection.getCloudletList().size() < AppUtil.getNoOfCloudlets() ||
-                        objectCollection.getVmList().size() < AppUtil.getNoOfVms()) {
+                while (objectCollection.getCloudletList().size() < Cloud2SimEngine.getNoOfCloudlets() ||
+                        objectCollection.getVmList().size() < Cloud2SimEngine.getNoOfVms()) {
                     Thread.sleep(1000);
                 }
                 // Fifth step: Starts the simulation
@@ -103,6 +103,6 @@ public class Simulator {
             e.printStackTrace();
             Log.printLine("# The simulation has been terminated due to an unexpected error");
         }
-        AppUtil.shutdown();
+        Cloud2SimEngine.shutdown();
     }
 }

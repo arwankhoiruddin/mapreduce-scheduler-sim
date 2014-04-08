@@ -20,9 +20,9 @@ import com.hazelcast.mapreduce.JobTracker;
 import com.hazelcast.mapreduce.KeyValueSource;
 import org.cloudbus.cloudsim.Log;
 import org.cloudbus.cloudsim.compatibility.ConfigReader;
+import pt.inesc_id.gsd.cloud2sim.core.Cloud2SimEngine;
 import pt.inesc_id.gsd.cloud2sim.hazelcast.HzCloudSim;
 import pt.inesc_id.gsd.cloud2sim.hazelcast.HzObjectCollection;
-import pt.inesc_id.gsd.cloud2sim.util.AppUtil;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -34,7 +34,7 @@ public class MapReduceSimulator {
     private static final String[] DATA_RESOURCES_TO_LOAD = {"text1.txt", "text2.txt", "text3.txt"};
 
     public static void main(String[] args) throws Exception {
-        AppUtil.start();
+        Cloud2SimEngine.start();
         Log.printLine("# Starting the Map Reduce Simulator...");
 
         Calendar calendar = Calendar.getInstance();

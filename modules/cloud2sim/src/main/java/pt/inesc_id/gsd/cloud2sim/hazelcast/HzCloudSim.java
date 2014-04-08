@@ -14,8 +14,8 @@ import org.cloudbus.cloudsim.Log;
 import org.cloudbus.cloudsim.compatibility.ConfigReader;
 import org.cloudbus.cloudsim.compatibility.hazelcast.HazelSimCore;
 import org.cloudbus.cloudsim.compatibility.hazelcast.HzConstants;
-import pt.inesc_id.gsd.cloud2sim.util.AppBuilder;
 import org.cloudbus.cloudsim.core.CloudSim;
+import pt.inesc_id.gsd.cloud2sim.core.Cloud2SimEngine;
 
 import java.util.Calendar;
 
@@ -54,7 +54,7 @@ public class HzCloudSim extends CloudSim {
         initInstances();
 
         CloudSim.init(numUser, cal, traceFlag);
-        AppBuilder.initWorkers(offset);
+        Cloud2SimEngine.initWorkers(offset);
     }
 
     /**
