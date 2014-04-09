@@ -48,13 +48,13 @@
 		<type>jar</type>
 		<classifier>sources</classifier>
   	</dependency> 	
-  	<dependency>
+  	<!--dependency>
   		<groupId>${project.groupId}</groupId>
 		<artifactId>cloudsim</artifactId>
 		<version>${project.version}</version>
 		<type>jar</type>
 		<classifier>javadoc</classifier>
-  	</dependency>  	  	  	
+  	</dependency-->
   	<dependency>
   		<groupId>${project.groupId}</groupId>
 		<artifactId>cloud2sim</artifactId>
