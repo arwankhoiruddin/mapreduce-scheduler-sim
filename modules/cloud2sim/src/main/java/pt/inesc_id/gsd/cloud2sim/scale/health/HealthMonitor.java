@@ -59,6 +59,42 @@ public class HealthMonitor implements Runnable {
         systemLoadAverage = osMxBean.getSystemLoadAverage();
     }
 
+    public long getMemoryFree() {
+        return memoryFree;
+    }
+
+    public long getMemoryTotal() {
+        return memoryTotal;
+    }
+
+    public long getMemoryUsed() {
+        return memoryUsed;
+    }
+
+    public long getMemoryMax() {
+        return memoryMax;
+    }
+
+    public double getMemoryUsedOfTotalPercentage() {
+        return memoryUsedOfTotalPercentage;
+    }
+
+    public double getMemoryUsedOfMaxPercentage() {
+        return memoryUsedOfMaxPercentage;
+    }
+
+    public double getSystemCpuLoad() {
+        return systemCpuLoad;
+    }
+
+    public double getProcessCpuLoad() {
+        return processCpuLoad;
+    }
+
+    public double getSystemLoadAverage() {
+        return systemLoadAverage;
+    }
+
     /**
      * Scale out or scale in, based on the defined values and current health.
      *
