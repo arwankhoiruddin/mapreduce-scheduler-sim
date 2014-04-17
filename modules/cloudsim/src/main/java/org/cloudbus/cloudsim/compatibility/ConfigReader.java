@@ -25,6 +25,7 @@ public class ConfigReader {
     private static int noOfVms; //2000
     private static int noOfCloudlets;  //20000
     private static boolean isRR; // true
+    private static boolean isVerbose; //true
     private static boolean withWorkload; //true
     private static int simultaneousInstances; // 1
     private static int noOfExecutions; // 2
@@ -65,6 +66,7 @@ public class ConfigReader {
             withWorkload = Boolean.parseBoolean(prop.getProperty("withWorkload"));
             simultaneousInstances = Integer.parseInt(prop.getProperty("simultaneousInstances"));
             noOfExecutions = Integer.parseInt(prop.getProperty("noOfExecutions"));
+            isVerbose = Boolean.parseBoolean(prop.getProperty("isVerbose"));
         }
     }
 
@@ -102,5 +104,9 @@ public class ConfigReader {
 
     public static int getNoOfExecutions() {
         return noOfExecutions;
+    }
+
+    public static boolean getIsVerbose() {
+        return isVerbose;
     }
 }

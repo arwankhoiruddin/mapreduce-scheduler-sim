@@ -50,13 +50,16 @@ public class MapReduceSimulator {
             fillMapWithData(hazelcastInstance);
 
             Map<String, Long> countsPerWord = mapReduce(hazelcastInstance);
-            System.out.println("Counts per words over " + DATA_RESOURCES_TO_LOAD.length + " files:");
-            for (Map.Entry<String, Long> entry : countsPerWord.entrySet()) {
-                System.out.println("\tWord '" + entry.getKey() + "' occurred " + entry.getValue() + " times");
+
+            if (HzConfigReader.getIsVerbose()) {
+                Log.printConcatLine("Counts per words over " + DATA_RESOURCES_TO_LOAD.length + " files:");
+                for (Map.Entry<String, Long> entry : countsPerWord.entrySet()) {
+                    Log.printConcatLine("\tWord '" + entry.getKey() + "' occurred " + entry.getValue() + " times");
+                }
             }
 
             long wordCount = mapReduceCollate(hazelcastInstance);
-            System.out.println("All content sums up to " + wordCount + " words.");
+            Log.printConcatLine("All content sums up to " + wordCount + " words.");
 
         } finally {
             Hazelcast.shutdownAll();
@@ -117,7 +120,7 @@ public class MapReduceSimulator {
         return new ExecutionCallback<Map<String, Long>>() {
             @Override
             public void onResponse(Map<String, Long> stringLongMap) {
-                System.out.println("Calculation finished! :)");
+                Log.printConcatLine("Calculation finished.");
             }
 
             @Override
@@ -140,7 +143,7 @@ public class MapReduceSimulator {
             int lineNumber = 0;
             while ((line = reader.readLine()) != null) {
                 sb.append(line).append("\n");
-                lineNumber ++;
+                lineNumber++;
                 if (lineNumber == HzConfigReader.getMapReduceSize()) {
                     break;
                 }
