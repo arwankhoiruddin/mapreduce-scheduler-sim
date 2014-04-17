@@ -17,13 +17,19 @@ import org.cloudbus.cloudsim.compatibility.ConfigReader;
  */
 public class HzConfigReader extends ConfigReader {
     private static String hazelcastXml;
+    private static int mapReduceSize;
 
     public static void readConfig() {
         ConfigReader.readConfig();
         hazelcastXml = prop.getProperty("hazelcastXml");
+        mapReduceSize = Integer.parseInt(prop.getProperty("mapReduceSize"));
     }
 
     public static String getHazelcastXml() {
         return hazelcastXml;
+    }
+
+    public static int getMapReduceSize() {
+        return mapReduceSize;
     }
 }

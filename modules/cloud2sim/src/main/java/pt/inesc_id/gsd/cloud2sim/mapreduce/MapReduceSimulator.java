@@ -20,6 +20,7 @@ import com.hazelcast.mapreduce.JobTracker;
 import com.hazelcast.mapreduce.KeyValueSource;
 import org.cloudbus.cloudsim.Log;
 import org.cloudbus.cloudsim.compatibility.ConfigReader;
+import org.cloudbus.cloudsim.compatibility.hazelcast.HzConfigReader;
 import pt.inesc_id.gsd.cloud2sim.core.Cloud2SimEngine;
 import pt.inesc_id.gsd.cloud2sim.hazelcast.HzCloudSim;
 import pt.inesc_id.gsd.cloud2sim.hazelcast.HzObjectCollection;
@@ -64,6 +65,7 @@ public class MapReduceSimulator {
 
     private static Map<String, Long> mapReduce(HazelcastInstance hazelcastInstance)
             throws Exception {
+        Log.printConcatLine("Starting the Map Reduce Job with size " + HzConfigReader.getMapReduceSize());
 
         // Retrieving the JobTracker by name
         JobTracker jobTracker = hazelcastInstance.getJobTracker("default");
@@ -134,9 +136,14 @@ public class MapReduceSimulator {
             LineNumberReader reader = new LineNumberReader(new InputStreamReader(is));
 
             StringBuilder sb = new StringBuilder();
-            String line = null;
+            String line;
+            int lineNumber = 0;
             while ((line = reader.readLine()) != null) {
                 sb.append(line).append("\n");
+                lineNumber ++;
+                if (lineNumber == HzConfigReader.getMapReduceSize()) {
+                    break;
+                }
             }
             map.put(file, sb.toString());
 
