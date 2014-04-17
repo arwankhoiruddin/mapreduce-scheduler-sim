@@ -62,7 +62,7 @@ public class MapReduceSimulator {
             Log.printConcatLine("All content sums up to " + wordCount + " words.");
 
         } finally {
-            Hazelcast.shutdownAll();
+            Cloud2SimEngine.shutdown();
         }
     }
 

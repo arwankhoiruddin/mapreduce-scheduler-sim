@@ -123,7 +123,9 @@ public class Cloud2SimEngine {
      */
     public static void shutdown() {
         shutdownLogs();
-        AdaptiveScalerProbe.setTerminateAllKey();
+        if (AutoScaleConfigReader.getMode().equalsIgnoreCase("adaptive")) {
+            AdaptiveScalerProbe.setTerminateAllKey();
+        }
         Hazelcast.shutdownAll();
     }
 
@@ -146,6 +148,7 @@ public class Cloud2SimEngine {
 
     /**
      * Initialize the master and the primary worker.
+     *
      * @param offset the offset.
      */
     public static void initWorkers(int offset) {
@@ -160,7 +163,8 @@ public class Cloud2SimEngine {
 
     /**
      * Create machines
-     * @param mips, millions of instructions per second
+     *
+     * @param mips,     millions of instructions per second
      * @param noOfCores number of cores
      * @return machines, the machines that are created with number of cores.
      */
