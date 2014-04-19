@@ -14,11 +14,14 @@
  * limitations under the License.
  */
 
-package pt.inesc_id.gsd.cloud2sim.mapreduce;
+package pt.inesc_id.gsd.cloud2sim.mapreduce.impl;
 
 import com.hazelcast.mapreduce.Combiner;
 import com.hazelcast.mapreduce.CombinerFactory;
 
+/**
+ * Adopted from Hazelcast source code.
+ */
 public class WordCountCombinerFactory
         implements CombinerFactory<String, Long, Long> {
 

@@ -65,7 +65,7 @@ public class CloudSim {
 	/** The minimal time between events. Events within shorter periods after the last event are discarded. */
 	private static double minTimeBetweenEvents = 0.1;
 
-    private static long simulationStartedTime;
+    protected static long simulationStartedTime;
 	
 	/**
 	 * Initialises all the common attributes.
@@ -137,7 +137,11 @@ public class CloudSim {
 		}
 	}
 
-	/**
+    public static void setSimulationStartedTime(long simulationStartedTime) {
+        CloudSim.simulationStartedTime = simulationStartedTime;
+    }
+
+    /**
 	 * Initialises CloudSim parameters. This method should be called before creating any entities.
 	 * <p>
 	 * Inside this method, it will create the following CloudSim entities:

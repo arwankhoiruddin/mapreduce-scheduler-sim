@@ -14,13 +14,16 @@
  * limitations under the License.
  */
 
-package pt.inesc_id.gsd.cloud2sim.mapreduce;
+package pt.inesc_id.gsd.cloud2sim.mapreduce.impl;
 
 import com.hazelcast.mapreduce.Context;
 import com.hazelcast.mapreduce.Mapper;
 
 import java.util.StringTokenizer;
 
+/**
+ * Adopted from Hazelcast source code.
+ */
 public class TokenizerMapper
         implements Mapper<String, String, String, Long> {
 

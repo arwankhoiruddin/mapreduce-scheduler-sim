@@ -14,11 +14,14 @@
  * limitations under the License.
  */
 
-package pt.inesc_id.gsd.cloud2sim.mapreduce;
+package pt.inesc_id.gsd.cloud2sim.mapreduce.impl;
 
 import com.hazelcast.mapreduce.Reducer;
 import com.hazelcast.mapreduce.ReducerFactory;
 
+/**
+ * Adopted from Hazelcast source code.
+ */
 public class WordCountReducerFactory
         implements ReducerFactory<String, Long, Long> {
 
@@ -36,7 +39,7 @@ public class WordCountReducerFactory
         @Override
         public void reduce(Long value) {
             // Just increment the sum by the pre combined chunk value
-            sum += value.longValue();
+            sum += value;
         }
 
         @Override
