@@ -11,7 +11,6 @@
 package pt.inesc_id.gsd.cloud2sim.mapreduce.impl;
 
 import com.hazelcast.core.ExecutionCallback;
-import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.core.ICompletableFuture;
 import com.hazelcast.core.IMap;
 import com.hazelcast.mapreduce.Job;
@@ -32,18 +31,20 @@ import java.util.Map;
  * calling the other map reduce implementation classes.
  */
 public class MapReduceCore {
+    private static HzJob hzJob;
 
     /**
      * Initiate the map reduce simulation
-     * @param hazelcastInstance, hazelcast instance to simulate the map-reduce application
      * @throws Exception, if the simulation failed.
      */
-    public static void initiate(HazelcastInstance hazelcastInstance) throws Exception {
+    public static void initiate(HzJob hzJob1) throws Exception {
+        hzJob = hzJob1;
         Log.printConcatLine("Initiating the MapReduceCore.");
-        try {
-            fillMapWithData(hazelcastInstance);
 
-            Map<String, Long> countsPerWord = mapReduce(hazelcastInstance);
+        try {
+            fillMapWithData();
+
+            Map<String, Long> countsPerWord = mapReduce();
 
             if (HzConfigReader.getIsVerbose()) {
                 Log.printConcatLine("Counts per words over " + MapReduceConstants.DATA_RESOURCES_TO_LOAD.length +
@@ -53,7 +54,7 @@ public class MapReduceCore {
                 }
             }
 
-            long wordCount = mapReduceCollate(hazelcastInstance);
+            long wordCount = mapReduceCollate();
             Log.printConcatLine("All content sums up to " + wordCount + " words.");
 
         } finally {
@@ -61,10 +62,10 @@ public class MapReduceCore {
         }
     }
 
-    private static Map<String, Long> mapReduce(HazelcastInstance hazelcastInstance)
+    private static Map<String, Long> mapReduce()
             throws Exception {
         Log.printConcatLine("Starting the Primary Map Reduce Job with size " + HzConfigReader.getMapReduceSize());
-        Job<String, String> job = HzJob.getJob(hazelcastInstance);
+        Job<String, String> job = hzJob.getJob();
 
         Log.printConcatLine("*** Starting the primary map reduce operations..");
         // Creating a new Job
@@ -83,10 +84,10 @@ public class MapReduceCore {
         return future.get();
     }
 
-    private static long mapReduceCollate(HazelcastInstance hazelcastInstance)
+    private static long mapReduceCollate()
             throws Exception {
         Log.printConcatLine("Starting the Collation Map Reduce Job");
-        Job<String, String> job = HzJob.getJob(hazelcastInstance);
+        Job<String, String> job = hzJob.getJob();
 
         Log.printConcatLine("*** Starting the map reduce operations for collation..");
         ICompletableFuture<Long> future = job // returned future
@@ -113,11 +114,11 @@ public class MapReduceCore {
         };
     }
 
-    private static void fillMapWithData(HazelcastInstance hazelcastInstance)
+    private static void fillMapWithData()
             throws Exception {
 
         Log.printConcatLine("Filling the map with data..");
-        IMap<String, String> map = hazelcastInstance.getMap(MapReduceConstants.DEFAULT_KEY_VALUE_STORE);
+        IMap<String, String> map = HzJob.getHazelcastInstance().getMap(MapReduceConstants.DEFAULT_KEY_VALUE_STORE);
         for (String file : MapReduceConstants.DATA_RESOURCES_TO_LOAD) {
             InputStream is = MapReduceSimulator.class.getResourceAsStream(MapReduceConstants.LOAD_FOLDER +
                     File.separator + file);

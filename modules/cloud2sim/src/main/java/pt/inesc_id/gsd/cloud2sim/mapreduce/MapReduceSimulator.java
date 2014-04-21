@@ -28,9 +28,9 @@ public class MapReduceSimulator {
         Cloud2SimEngine.start();
         Log.printLine("# Starting the Map Reduce Simulator...");
         initCloud2Sim();
-
-        HazelcastInstance hazelcastInstance = HzObjectCollection.getHzObjectCollection().getFirstInstance();
-        MapReduceCore.initiate(hazelcastInstance);
+        HzJob hzJob = new HzJob();
+        hzJob.init();
+        MapReduceCore.initiate(hzJob);
     }
 
     /**
