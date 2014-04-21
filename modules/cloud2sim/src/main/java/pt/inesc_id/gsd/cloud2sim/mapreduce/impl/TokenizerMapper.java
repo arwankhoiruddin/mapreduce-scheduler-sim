@@ -18,6 +18,8 @@ package pt.inesc_id.gsd.cloud2sim.mapreduce.impl;
 
 import com.hazelcast.mapreduce.Context;
 import com.hazelcast.mapreduce.Mapper;
+import org.cloudbus.cloudsim.Log;
+import org.cloudbus.cloudsim.compatibility.hazelcast.HzConfigReader;
 
 import java.util.StringTokenizer;
 
@@ -27,11 +29,14 @@ import java.util.StringTokenizer;
 public class TokenizerMapper
         implements Mapper<String, String, String, Long> {
 
-    private static final Long ONE = Long.valueOf(1L);
+    private static final Long ONE = 1L;
 
     @Override
 
     public void map(String key, String document, Context<String, Long> context) {
+        if (HzConfigReader.getIsVerbose()) {
+            Log.printConcatLine("Map..");
+        }
         // Just splitting the text by whitespaces
         StringTokenizer tokenizer = new StringTokenizer(document.toLowerCase());
 

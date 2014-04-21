@@ -22,6 +22,7 @@ import org.cloudbus.cloudsim.compatibility.hazelcast.HzConfigReader;
 import pt.inesc_id.gsd.cloud2sim.core.Cloud2SimEngine;
 import pt.inesc_id.gsd.cloud2sim.mapreduce.MapReduceSimulator;
 
+import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.LineNumberReader;
@@ -32,7 +33,6 @@ import java.util.Map;
  * calling the other map reduce implementation classes.
  */
 public class MapReduceCore {
-    private static final String[] DATA_RESOURCES_TO_LOAD = {"text1.txt", "text2.txt", "text3.txt"};
 
     /**
      * Initiate the map reduce simulation
@@ -40,13 +40,15 @@ public class MapReduceCore {
      * @throws Exception, if the simulation failed.
      */
     public static void initiate(HazelcastInstance hazelcastInstance) throws Exception {
+        Log.printConcatLine("Initiating the MapReduceCore.");
         try {
             fillMapWithData(hazelcastInstance);
 
             Map<String, Long> countsPerWord = mapReduce(hazelcastInstance);
 
             if (HzConfigReader.getIsVerbose()) {
-                Log.printConcatLine("Counts per words over " + DATA_RESOURCES_TO_LOAD.length + " files:");
+                Log.printConcatLine("Counts per words over " + MapReduceConstants.DATA_RESOURCES_TO_LOAD.length +
+                        " files:");
                 for (Map.Entry<String, Long> entry : countsPerWord.entrySet()) {
                     Log.printConcatLine("\tWord '" + entry.getKey() + "' occurred " + entry.getValue() + " times");
                 }
@@ -65,14 +67,16 @@ public class MapReduceCore {
         Log.printConcatLine("Starting the Map Reduce Job with size " + HzConfigReader.getMapReduceSize());
 
         // Retrieving the JobTracker by name
-        JobTracker jobTracker = hazelcastInstance.getJobTracker("default");
+        JobTracker jobTracker = hazelcastInstance.getJobTracker(MapReduceConstants.DEFAULT_JOB_TRACKER);
 
         // Creating the KeyValueSource for a Hazelcast IMap
-        IMap<String, String> map = hazelcastInstance.getMap("articles");
+        IMap<String, String> map = hazelcastInstance.getMap(MapReduceConstants.DEFAULT_KEY_VALUE_STORE);
         KeyValueSource<String, String> source = KeyValueSource.fromMap(map);
 
+        Log.printConcatLine("Creating a new job for the primary map-reduce task..");
         Job<String, String> job = jobTracker.newJob(source);
 
+        Log.printConcatLine("*** Starting the primary map reduce operations..");
         // Creating a new Job
         ICompletableFuture<Map<String, Long>> future = job // returned future
                 .mapper(new TokenizerMapper())             // adding a mapper
@@ -83,6 +87,8 @@ public class MapReduceCore {
         // Attach a callback listener
         future.andThen(buildCallback());
 
+        Log.printConcatLine("Completing the primary map reduce task with size " + HzConfigReader.getMapReduceSize());
+        Cloud2SimEngine.shutdownLogs();
         // Wait and retrieve the result
         return future.get();
     }
@@ -91,15 +97,17 @@ public class MapReduceCore {
             throws Exception {
 
         // Retrieving the JobTracker by name
-        JobTracker jobTracker = hazelcastInstance.getJobTracker("default");
+        JobTracker jobTracker = hazelcastInstance.getJobTracker(MapReduceConstants.DEFAULT_JOB_TRACKER);
 
         // Creating the KeyValueSource for a Hazelcast IMap
-        IMap<String, String> map = hazelcastInstance.getMap("articles");
+        IMap<String, String> map = hazelcastInstance.getMap(MapReduceConstants.DEFAULT_KEY_VALUE_STORE);
         KeyValueSource<String, String> source = KeyValueSource.fromMap(map);
 
         // Creating a new Job
+        Log.printConcatLine("Creating a new job for Collation..");
         Job<String, String> job = jobTracker.newJob(source);
 
+        Log.printConcatLine("*** Starting the map reduce operations for collation..");
         ICompletableFuture<Long> future = job // returned future
                 .mapper(new TokenizerMapper())             // adding a mapper
                 .combiner(new WordCountCombinerFactory())  // adding a combiner through the factory
@@ -127,9 +135,11 @@ public class MapReduceCore {
     private static void fillMapWithData(HazelcastInstance hazelcastInstance)
             throws Exception {
 
-        IMap<String, String> map = hazelcastInstance.getMap("articles");
-        for (String file : DATA_RESOURCES_TO_LOAD) {
-            InputStream is = MapReduceSimulator.class.getResourceAsStream("conf/" + file);
+        Log.printConcatLine("Filling the map with data..");
+        IMap<String, String> map = hazelcastInstance.getMap(MapReduceConstants.DEFAULT_KEY_VALUE_STORE);
+        for (String file : MapReduceConstants.DATA_RESOURCES_TO_LOAD) {
+            InputStream is = MapReduceSimulator.class.getResourceAsStream(MapReduceConstants.LOAD_FOLDER +
+                    File.separator + file);
             LineNumberReader reader = new LineNumberReader(new InputStreamReader(is));
 
             StringBuilder sb = new StringBuilder();

@@ -17,24 +17,25 @@
 package pt.inesc_id.gsd.cloud2sim.mapreduce.impl;
 
 import com.hazelcast.mapreduce.Collator;
+import org.cloudbus.cloudsim.Log;
 
 import java.util.Map;
 
 /**
- * Adopted from Hazelcast source code.
+ * Adopted from Hazelcast source code. Optional, and used only in specific use cases.
  */
 public class WordCountCollator
         implements Collator<Map.Entry<String, Long>, Long> {
 
     @Override
     public Long collate(Iterable<Map.Entry<String, Long>> values) {
+        Log.printLine("Collate Phase.. Returning the results to the user..");
         long sum = 0;
 
         // Just sum up all resulting numbers to calculate the overall amount of words
         for (Map.Entry<String, Long> entry : values) {
-            sum += entry.getValue().longValue();
+            sum += entry.getValue();
         }
-
         return sum;
     }
 }
