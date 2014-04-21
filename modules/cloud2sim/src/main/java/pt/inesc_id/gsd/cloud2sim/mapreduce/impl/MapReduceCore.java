@@ -15,11 +15,10 @@ import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.core.ICompletableFuture;
 import com.hazelcast.core.IMap;
 import com.hazelcast.mapreduce.Job;
-import com.hazelcast.mapreduce.JobTracker;
-import com.hazelcast.mapreduce.KeyValueSource;
 import org.cloudbus.cloudsim.Log;
 import org.cloudbus.cloudsim.compatibility.hazelcast.HzConfigReader;
 import pt.inesc_id.gsd.cloud2sim.core.Cloud2SimEngine;
+import pt.inesc_id.gsd.cloud2sim.mapreduce.HzJob;
 import pt.inesc_id.gsd.cloud2sim.mapreduce.MapReduceSimulator;
 
 import java.io.File;
@@ -64,17 +63,8 @@ public class MapReduceCore {
 
     private static Map<String, Long> mapReduce(HazelcastInstance hazelcastInstance)
             throws Exception {
-        Log.printConcatLine("Starting the Map Reduce Job with size " + HzConfigReader.getMapReduceSize());
-
-        // Retrieving the JobTracker by name
-        JobTracker jobTracker = hazelcastInstance.getJobTracker(MapReduceConstants.DEFAULT_JOB_TRACKER);
-
-        // Creating the KeyValueSource for a Hazelcast IMap
-        IMap<String, String> map = hazelcastInstance.getMap(MapReduceConstants.DEFAULT_KEY_VALUE_STORE);
-        KeyValueSource<String, String> source = KeyValueSource.fromMap(map);
-
-        Log.printConcatLine("Creating a new job for the primary map-reduce task..");
-        Job<String, String> job = jobTracker.newJob(source);
+        Log.printConcatLine("Starting the Primary Map Reduce Job with size " + HzConfigReader.getMapReduceSize());
+        Job<String, String> job = HzJob.getJob(hazelcastInstance);
 
         Log.printConcatLine("*** Starting the primary map reduce operations..");
         // Creating a new Job
@@ -95,17 +85,8 @@ public class MapReduceCore {
 
     private static long mapReduceCollate(HazelcastInstance hazelcastInstance)
             throws Exception {
-
-        // Retrieving the JobTracker by name
-        JobTracker jobTracker = hazelcastInstance.getJobTracker(MapReduceConstants.DEFAULT_JOB_TRACKER);
-
-        // Creating the KeyValueSource for a Hazelcast IMap
-        IMap<String, String> map = hazelcastInstance.getMap(MapReduceConstants.DEFAULT_KEY_VALUE_STORE);
-        KeyValueSource<String, String> source = KeyValueSource.fromMap(map);
-
-        // Creating a new Job
-        Log.printConcatLine("Creating a new job for Collation..");
-        Job<String, String> job = jobTracker.newJob(source);
+        Log.printConcatLine("Starting the Collation Map Reduce Job");
+        Job<String, String> job = HzJob.getJob(hazelcastInstance);
 
         Log.printConcatLine("*** Starting the map reduce operations for collation..");
         ICompletableFuture<Long> future = job // returned future
