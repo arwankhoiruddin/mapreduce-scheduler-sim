@@ -64,7 +64,7 @@ public class MapReduceCore {
 
     private static Map<String, Long> mapReduce()
             throws Exception {
-        Log.printConcatLine("Starting the Primary Map Reduce Job with size " + HzConfigReader.getMapReduceSize());
+        Log.printConcatLine("Starting the Primary Map Reduce Job with size " + hzJob.getSize());
         Job<String, String> job = hzJob.getJob();
 
         Log.printConcatLine("*** Starting the primary map reduce operations..");
@@ -78,7 +78,7 @@ public class MapReduceCore {
         // Attach a callback listener
         future.andThen(buildCallback());
 
-        Log.printConcatLine("Completing the primary map reduce task with size " + HzConfigReader.getMapReduceSize());
+        Log.printConcatLine("Completing the primary map reduce task with size " + hzJob.getSize());
         Cloud2SimEngine.shutdownLogs();
         // Wait and retrieve the result
         return future.get();
@@ -127,12 +127,9 @@ public class MapReduceCore {
             StringBuilder sb = new StringBuilder();
             String line;
             int lineNumber = 0;
-            while ((line = reader.readLine()) != null) {
+            while (((line = reader.readLine()) != null) && (lineNumber < hzJob.getSize())) {
                 sb.append(line).append("\n");
                 lineNumber++;
-                if (lineNumber == HzConfigReader.getMapReduceSize()) {
-                    break;
-                }
             }
             map.put(file, sb.toString());
 

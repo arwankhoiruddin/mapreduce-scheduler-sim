@@ -10,13 +10,12 @@
 
 package pt.inesc_id.gsd.cloud2sim.mapreduce;
 
-import com.hazelcast.core.HazelcastInstance;
 import org.cloudbus.cloudsim.Log;
 import org.cloudbus.cloudsim.compatibility.ConfigReader;
 import org.cloudbus.cloudsim.compatibility.hazelcast.HazelSimCore;
+import org.cloudbus.cloudsim.compatibility.hazelcast.HzConfigReader;
 import pt.inesc_id.gsd.cloud2sim.core.Cloud2SimEngine;
 import pt.inesc_id.gsd.cloud2sim.hazelcast.HzCloudSim;
-import pt.inesc_id.gsd.cloud2sim.hazelcast.HzObjectCollection;
 import pt.inesc_id.gsd.cloud2sim.mapreduce.impl.MapReduceCore;
 
 /**
@@ -25,11 +24,20 @@ import pt.inesc_id.gsd.cloud2sim.mapreduce.impl.MapReduceCore;
 public class MapReduceSimulator {
 
     public static void main(String[] args) throws Exception {
+        simulateMapReduce();
+    }
+
+    /**
+     * Simulates a map-reduce job
+     * @throws Exception, if the simulation failed.
+     */
+    public static void simulateMapReduce() throws Exception {
         Cloud2SimEngine.start();
         Log.printLine("# Starting the Map Reduce Simulator...");
         initCloud2Sim();
         HzJob hzJob = new HzJob();
-        hzJob.init();
+        // initiate the job with the size
+        hzJob.init(HzConfigReader.getMapReduceSize());
         MapReduceCore.initiate(hzJob);
     }
 
@@ -37,7 +45,8 @@ public class MapReduceSimulator {
      * Initiate Cloud2Sim/Hazelcast
      *
      */
-    public static void initCloud2Sim() {
+    private static void initCloud2Sim() {
+        @SuppressWarnings("unused")
         HazelSimCore hazelSimCore = HazelSimCore.getHazelSimCore(ConfigReader.getSimultaneousInstances());
         HzCloudSim.initInstances();
         Cloud2SimEngine.initWorkers(HzCloudSim.getOffset());
