@@ -37,7 +37,7 @@ $ java -classpath cloudsim-3.1-SNAPSHOT.jar:cloudsim-examples-3.1-SNAPSHOT.jar:l
 Running the Map-Reduce Simulations.
 -----------------------------------
 The workload files are inside the folder conf/mapreduce/
-You may replace tex1.txt, text2.txt, and text3.txt with bigger loads.
+You may replace or add more or bigger load files.
 
 Set the map-reduce workload size in the cloud2sim.properties.
 # By default, up to 128 460, by using the 3 default files in conf/mapreduce

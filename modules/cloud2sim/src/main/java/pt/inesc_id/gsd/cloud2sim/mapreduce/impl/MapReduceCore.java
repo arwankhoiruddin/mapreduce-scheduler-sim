@@ -33,6 +33,7 @@ import java.util.Map;
  */
 public class MapReduceCore {
     private static HzJob hzJob;
+    private static File folder;
 
     /**
      * Initiate the map reduce simulation
@@ -48,7 +49,7 @@ public class MapReduceCore {
             Map<String, Long> countsPerWord = mapReduce();
 
             if (HzConfigReader.getIsVerbose()) {
-                Log.printConcatLine("Counts per words over " + MapReduceConstants.DATA_RESOURCES_TO_LOAD.length +
+                Log.printConcatLine("Counts per words over " + folder.listFiles().length +
                         " files:");
                 for (Map.Entry<String, Long> entry : countsPerWord.entrySet()) {
                     Log.printConcatLine("\tWord '" + entry.getKey() + "' occurred " + entry.getValue() + " times");
@@ -118,10 +119,16 @@ public class MapReduceCore {
     private static void fillMapWithData()
             throws Exception {
 
+        folder = new File(MapReduceConstants.LOAD_FOLDER);
         Log.printConcatLine("Filling the map with data..");
         IMap<String, String> map = HzJob.getHazelcastInstance().getMap(MapReduceConstants.DEFAULT_KEY_VALUE_STORE);
-        for (String file : MapReduceConstants.DATA_RESOURCES_TO_LOAD) {
-            InputStream is = new FileInputStream(MapReduceConstants.LOAD_FOLDER + File.separator + file) ;
+        if (folder.listFiles() == null) {
+            Log.printConcatLine("Empty load provided. Terminating the simulation.");
+            return;
+        }
+        for (File file : folder.listFiles()) {
+            String fileName = file.getName();
+            InputStream is = new FileInputStream(MapReduceConstants.LOAD_FOLDER + File.separator + fileName) ;
             LineNumberReader reader = new LineNumberReader(new InputStreamReader(is));
 
             StringBuilder sb = new StringBuilder();
@@ -131,7 +138,7 @@ public class MapReduceCore {
                 sb.append(line).append("\n");
                 lineNumber++;
             }
-            map.put(file, sb.toString());
+            map.put(fileName, sb.toString());
 
             is.close();
             reader.close();
