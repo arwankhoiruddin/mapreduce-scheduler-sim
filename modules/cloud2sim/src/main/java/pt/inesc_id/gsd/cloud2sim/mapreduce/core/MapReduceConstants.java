@@ -8,7 +8,7 @@
  * Copyright (c) 2014, Pradeeban Kathiravelu <pradeeban.kathiravelu@tecnico.ulisboa.pt>
  */
 
-package pt.inesc_id.gsd.cloud2sim.mapreduce.impl;
+package pt.inesc_id.gsd.cloud2sim.mapreduce.core;
 
 /**
  * Constants of Map Reduce Simulation
@@ -21,6 +21,6 @@ public class MapReduceConstants {
 
     public static final String DEFAULT_KEY_VALUE_STORE = "articles";
 
-    public static final String LOAD_FOLDER = "conf";
+    public static final String LOAD_FOLDER = "conf/mapreduce";
 
 }

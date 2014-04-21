@@ -34,6 +34,19 @@ Initiate the IntelligentAdaptiveScaler from the other nodes.
 $ java -classpath cloudsim-3.1-SNAPSHOT.jar:cloudsim-examples-3.1-SNAPSHOT.jar:lib/hazelcast-3.2.jar:cloud2sim-1.0-SNAPSHOT.jar pt.inesc_id.gsd.cloud2sim.scale.ias.IntelligentAdaptiveScaler
 
 
+Running the Map-Reduce Simulations.
+-----------------------------------
+The workload files are inside the folder conf/mapreduce/
+You may replace tex1.txt, text2.txt, and text3.txt with bigger loads.
+
+Set the map-reduce workload size in the cloud2sim.properties.
+# By default, up to 128 460, by using the 3 default files in conf/mapreduce
+mapReduceSize=10
+
+To run the simulations,
+$ java -classpath cloudsim-3.1-SNAPSHOT.jar:cloudsim-examples-3.1-SNAPSHOT.jar:lib/hazelcast-3.2.jar:cloud2sim-1.0-SNAPSHOT.jar pt.inesc_id.gsd.cloud2sim.mapreduce.MapReduceSimulator
+
+
 Copy the files to the other instances.
 ----------------------------------------
 $ scp -r . pradeeban@146.193.41.145:/home/pradeeban

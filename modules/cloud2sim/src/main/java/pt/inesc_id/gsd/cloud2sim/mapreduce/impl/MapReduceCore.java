@@ -17,10 +17,11 @@ import com.hazelcast.mapreduce.Job;
 import org.cloudbus.cloudsim.Log;
 import org.cloudbus.cloudsim.compatibility.hazelcast.HzConfigReader;
 import pt.inesc_id.gsd.cloud2sim.core.Cloud2SimEngine;
-import pt.inesc_id.gsd.cloud2sim.mapreduce.HzJob;
-import pt.inesc_id.gsd.cloud2sim.mapreduce.MapReduceSimulator;
+import pt.inesc_id.gsd.cloud2sim.mapreduce.core.HzJob;
+import pt.inesc_id.gsd.cloud2sim.mapreduce.core.MapReduceConstants;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.LineNumberReader;
@@ -120,8 +121,7 @@ public class MapReduceCore {
         Log.printConcatLine("Filling the map with data..");
         IMap<String, String> map = HzJob.getHazelcastInstance().getMap(MapReduceConstants.DEFAULT_KEY_VALUE_STORE);
         for (String file : MapReduceConstants.DATA_RESOURCES_TO_LOAD) {
-            InputStream is = MapReduceSimulator.class.getResourceAsStream(MapReduceConstants.LOAD_FOLDER +
-                    File.separator + file);
+            InputStream is = new FileInputStream(MapReduceConstants.LOAD_FOLDER + File.separator + file) ;
             LineNumberReader reader = new LineNumberReader(new InputStreamReader(is));
 
             StringBuilder sb = new StringBuilder();

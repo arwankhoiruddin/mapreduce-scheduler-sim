@@ -16,6 +16,7 @@ import org.cloudbus.cloudsim.compatibility.hazelcast.HazelSimCore;
 import org.cloudbus.cloudsim.compatibility.hazelcast.HzConfigReader;
 import pt.inesc_id.gsd.cloud2sim.core.Cloud2SimEngine;
 import pt.inesc_id.gsd.cloud2sim.hazelcast.HzCloudSim;
+import pt.inesc_id.gsd.cloud2sim.mapreduce.core.HzJob;
 import pt.inesc_id.gsd.cloud2sim.mapreduce.impl.MapReduceCore;
 
 /**

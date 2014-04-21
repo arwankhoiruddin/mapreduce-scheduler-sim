@@ -8,7 +8,7 @@
  * Copyright (c) 2014, Pradeeban Kathiravelu <pradeeban.kathiravelu@tecnico.ulisboa.pt>
  */
 
-package pt.inesc_id.gsd.cloud2sim.mapreduce;
+package pt.inesc_id.gsd.cloud2sim.mapreduce.core;
 
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.core.IMap;
@@ -17,12 +17,11 @@ import com.hazelcast.mapreduce.JobTracker;
 import com.hazelcast.mapreduce.KeyValueSource;
 import org.cloudbus.cloudsim.Log;
 import pt.inesc_id.gsd.cloud2sim.hazelcast.HzObjectCollection;
-import pt.inesc_id.gsd.cloud2sim.mapreduce.impl.MapReduceConstants;
 
 /**
  * Cloud2Sim representation of the Job
  */
-public class HzJob implements pt.inesc_id.gsd.cloud2sim.mapreduce.Job {
+public class HzJob implements pt.inesc_id.gsd.cloud2sim.mapreduce.core.Job {
 
     private static HazelcastInstance hazelcastInstance;
 

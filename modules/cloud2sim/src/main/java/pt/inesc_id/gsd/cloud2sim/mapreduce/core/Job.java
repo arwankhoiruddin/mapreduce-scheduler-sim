@@ -8,7 +8,7 @@
  * Copyright (c) 2014, Pradeeban Kathiravelu <pradeeban.kathiravelu@tecnico.ulisboa.pt>
  */
 
-package pt.inesc_id.gsd.cloud2sim.mapreduce;
+package pt.inesc_id.gsd.cloud2sim.mapreduce.core;
 
 /**
  * The Map-Reduce Job interface.
