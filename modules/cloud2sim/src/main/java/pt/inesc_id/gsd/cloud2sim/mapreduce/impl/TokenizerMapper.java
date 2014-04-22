@@ -20,6 +20,7 @@ import com.hazelcast.mapreduce.Context;
 import com.hazelcast.mapreduce.Mapper;
 import org.cloudbus.cloudsim.Log;
 import org.cloudbus.cloudsim.compatibility.hazelcast.HzConfigReader;
+import pt.inesc_id.gsd.cloud2sim.mapreduce.core.MapReduceParams;
 
 import java.util.StringTokenizer;
 
@@ -30,6 +31,10 @@ public class TokenizerMapper
         implements Mapper<String, String, String, Long> {
 
     private static final Long ONE = 1L;
+
+    public TokenizerMapper() {
+        MapReduceParams.numberOfMappers.getAndIncrement();
+    }
 
     @Override
 

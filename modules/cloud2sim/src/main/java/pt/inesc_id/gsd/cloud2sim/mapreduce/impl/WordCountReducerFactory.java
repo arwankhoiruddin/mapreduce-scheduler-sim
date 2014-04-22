@@ -20,6 +20,7 @@ import com.hazelcast.mapreduce.Reducer;
 import com.hazelcast.mapreduce.ReducerFactory;
 import org.cloudbus.cloudsim.Log;
 import org.cloudbus.cloudsim.compatibility.hazelcast.HzConfigReader;
+import pt.inesc_id.gsd.cloud2sim.mapreduce.core.MapReduceParams;
 import sun.rmi.log.LogHandler;
 
 /**
@@ -28,9 +29,12 @@ import sun.rmi.log.LogHandler;
 public class WordCountReducerFactory
         implements ReducerFactory<String, Long, Long> {
 
+
+
     @Override
     public Reducer<String, Long, Long> newReducer(String key) {
         // Create a new Reducer for the given key
+        MapReduceParams.numberOfReducers.getAndIncrement();
         return new WordCountReducer();
     }
 

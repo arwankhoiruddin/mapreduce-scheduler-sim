@@ -19,6 +19,7 @@ import org.cloudbus.cloudsim.compatibility.hazelcast.HzConfigReader;
 import pt.inesc_id.gsd.cloud2sim.core.Cloud2SimEngine;
 import pt.inesc_id.gsd.cloud2sim.mapreduce.core.HzJob;
 import pt.inesc_id.gsd.cloud2sim.mapreduce.core.MapReduceConstants;
+import pt.inesc_id.gsd.cloud2sim.mapreduce.core.MapReduceParams;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -60,6 +61,7 @@ public class MapReduceCore {
             Log.printConcatLine("All content sums up to " + wordCount + " words.");
 
         } finally {
+            MapReduceParams.printStatus();
             Cloud2SimEngine.shutdown();
         }
     }

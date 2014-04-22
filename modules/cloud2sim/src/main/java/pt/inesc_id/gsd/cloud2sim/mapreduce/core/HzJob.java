@@ -58,6 +58,7 @@ public class HzJob implements pt.inesc_id.gsd.cloud2sim.mapreduce.core.Job {
         KeyValueSource<String, String> source = KeyValueSource.fromMap(map);
 
         Log.printConcatLine("Creating a new job for the map-reduce task..");
+        MapReduceParams.numberOfJobs.getAndIncrement();
         return jobTracker.newJob(source);
     }
 
