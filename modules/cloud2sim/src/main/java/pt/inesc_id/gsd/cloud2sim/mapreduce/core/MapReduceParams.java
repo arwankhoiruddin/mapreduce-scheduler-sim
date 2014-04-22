@@ -30,6 +30,15 @@ public final class MapReduceParams {
     public static IAtomicLong numberOfJobs =
             HzObjectCollection.getHzObjectCollection().getFirstInstance().getAtomicLong("numberOfJobs");
 
+    public static IAtomicLong mappersOfTheJob =
+            HzObjectCollection.getHzObjectCollection().getFirstInstance().getAtomicLong("mappersOfTheJob");
+
+    public static IAtomicLong reducersOfTheJob =
+            HzObjectCollection.getHzObjectCollection().getFirstInstance().getAtomicLong("reducersOfTheJob");
+
+    public static IAtomicLong combinersOfTheJob =
+            HzObjectCollection.getHzObjectCollection().getFirstInstance().getAtomicLong("combinersOfTheJob");
+
     /**
      * Printing the characteristics of the map reduce jobs.
      */
@@ -42,4 +51,23 @@ public final class MapReduceParams {
         Log.printConcatLine("****************************************************************************************");
     }
 
+    /**
+     * Printing the characteristics of the current job.
+     */
+    public static void printJobStatus() {
+        Log.printConcatLine("******Printing the number of jobs, mappers, combiners, and reducers executed************");
+        Log.printConcatLine("Number of Mappers: " + mappersOfTheJob.get());
+        Log.printConcatLine("Number of Combiners: " + combinersOfTheJob.get());
+        Log.printConcatLine("Number of Reducers: " + reducersOfTheJob.get());
+        Log.printConcatLine("****************************************************************************************");
+    }
+
+    /**
+     * Initializes the job parameters to zero.
+     */
+    public static void initJobParams() {
+        mappersOfTheJob.set(0);
+        combinersOfTheJob.set(0);
+        reducersOfTheJob.set(0);
+    }
 }

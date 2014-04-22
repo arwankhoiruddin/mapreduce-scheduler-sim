@@ -56,10 +56,15 @@ public class MapReduceImpl {
                 }
             }
 
+            Log.printConcatLine("Printing the params of the primary map reduce job..");
+            MapReduceParams.printJobStatus();
+
             long wordCount = mapReduceCollate();
             Log.printConcatLine("All content sums up to " + wordCount + " words.");
 
         } finally {
+            Log.printConcatLine("Printing the params of the collation map reduce job..");
+            MapReduceParams.printJobStatus();
             MapReduceParams.printStatus();
             Cloud2SimEngine.shutdown();
         }
@@ -91,6 +96,7 @@ public class MapReduceImpl {
             throws Exception {
         Log.printConcatLine("Starting the Collation Map Reduce Job");
         Job<String, String> job = hzJob.getJob();
+        MapReduceParams.initJobParams();
 
         Log.printConcatLine("*** Starting the map reduce operations for collation..");
         ICompletableFuture<Long> future = job // returned future

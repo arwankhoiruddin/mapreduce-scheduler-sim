@@ -32,6 +32,7 @@ public class WordCountCombinerFactory
     public Combiner<String, Long, Long> newCombiner(String key) {
         // Create a new Combiner for the given key
         MapReduceParams.numberOfCombiners.getAndIncrement();
+        MapReduceParams.combinersOfTheJob.getAndIncrement();
         return new WordCountCombiner();
     }
 

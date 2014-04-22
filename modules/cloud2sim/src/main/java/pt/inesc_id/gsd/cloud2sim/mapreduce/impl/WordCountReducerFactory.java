@@ -35,6 +35,7 @@ public class WordCountReducerFactory
     public Reducer<String, Long, Long> newReducer(String key) {
         // Create a new Reducer for the given key
         MapReduceParams.numberOfReducers.getAndIncrement();
+        MapReduceParams.reducersOfTheJob.getAndIncrement();
         return new WordCountReducer();
     }
 

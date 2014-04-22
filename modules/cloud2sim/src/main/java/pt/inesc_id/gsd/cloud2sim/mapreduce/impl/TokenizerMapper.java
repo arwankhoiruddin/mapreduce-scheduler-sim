@@ -34,6 +34,7 @@ public class TokenizerMapper
 
     public TokenizerMapper() {
         MapReduceParams.numberOfMappers.getAndIncrement();
+        MapReduceParams.mappersOfTheJob.getAndIncrement();
     }
 
     @Override
