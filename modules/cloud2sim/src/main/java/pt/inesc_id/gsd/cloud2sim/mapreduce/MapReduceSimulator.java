@@ -17,7 +17,7 @@ import org.cloudbus.cloudsim.compatibility.hazelcast.HzConfigReader;
 import pt.inesc_id.gsd.cloud2sim.core.Cloud2SimEngine;
 import pt.inesc_id.gsd.cloud2sim.hazelcast.HzCloudSim;
 import pt.inesc_id.gsd.cloud2sim.mapreduce.core.HzJob;
-import pt.inesc_id.gsd.cloud2sim.mapreduce.impl.MapReduceCore;
+import pt.inesc_id.gsd.cloud2sim.mapreduce.impl.MapReduceImpl;
 
 /**
  * The Map Reduce Simulator of Cloud2Sim
@@ -39,7 +39,7 @@ public class MapReduceSimulator {
         HzJob hzJob = new HzJob();
         // initiate the job with the size
         hzJob.init(HzConfigReader.getMapReduceSize());
-        MapReduceCore.initiate(hzJob);
+        MapReduceImpl.initiate(hzJob);
     }
 
     /**

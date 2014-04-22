@@ -32,9 +32,8 @@ import java.util.Map;
  * The implementation class of map-reduce based on the hazelcast map-redeuce word-count sample,
  * calling the other map reduce implementation classes.
  */
-public class MapReduceCore {
+public class MapReduceImpl {
     private static HzJob hzJob;
-    private static File folder;
     private static int processedFiles = 0;
 
     /**
@@ -121,7 +120,7 @@ public class MapReduceCore {
     private static void fillMapWithData()
             throws Exception {
 
-        folder = new File(MapReduceConstants.LOAD_FOLDER);
+        File folder = new File(MapReduceConstants.LOAD_FOLDER);
         Log.printConcatLine("Filling the map with data..");
         IMap<String, String> map = HzJob.getHazelcastInstance().getMap(MapReduceConstants.DEFAULT_KEY_VALUE_STORE);
         if (folder.listFiles() == null) {
