@@ -34,6 +34,7 @@ import java.util.Map;
 public class MapReduceCore {
     private static HzJob hzJob;
     private static File folder;
+    private static int processedFiles = 0;
 
     /**
      * Initiate the map reduce simulation
@@ -49,8 +50,7 @@ public class MapReduceCore {
             Map<String, Long> countsPerWord = mapReduce();
 
             if (HzConfigReader.getIsVerbose()) {
-                Log.printConcatLine("Counts per words over " + folder.listFiles().length +
-                        " files:");
+                Log.printConcatLine("Counts per words over " + processedFiles + " files:");
                 for (Map.Entry<String, Long> entry : countsPerWord.entrySet()) {
                     Log.printConcatLine("\tWord '" + entry.getKey() + "' occurred " + entry.getValue() + " times");
                 }
@@ -142,6 +142,7 @@ public class MapReduceCore {
 
             is.close();
             reader.close();
+            processedFiles++;
         }
     }
 }
