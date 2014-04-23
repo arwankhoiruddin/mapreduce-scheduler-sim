@@ -22,16 +22,16 @@ To run an existing example:
 $ java -classpath cloudsim-3.1-SNAPSHOT.jar:cloudsim-examples-3.1-SNAPSHOT.jar:lib/hazelcast-3.2.jar:cloud2sim-1.0-SNAPSHOT.jar pt.inesc_id.gsd.cloud2sim.applications.main.statics.Simulator
 
 To initiate an instance without running any specific code:
-$ java -classpath cloudsim-3.1-SNAPSHOT.jar:cloudsim-examples-3.1-SNAPSHOT.jar:lib/hazelcast-3.2.jar:cloud2sim-1.0-SNAPSHOT.jar pt.inesc_id.gsd.cloud2sim.applications.main.dynamics.Initiator
+$ java -classpath cloudsim-3.1-SNAPSHOT.jar:lib/hazelcast-3.2.jar:cloud2sim-1.0-SNAPSHOT.jar pt.inesc_id.gsd.cloud2sim.applications.main.dynamics.Initiator
 
 
 Running Cloud2Sim with Adaptive Scaling.
 --------------------------------------------
 Initiate the ScalableSimulator from the master node.
-$ java -classpath cloudsim-3.1-SNAPSHOT.jar:cloudsim-examples-3.1-SNAPSHOT.jar:lib/hazelcast-3.2.jar:cloud2sim-1.0-SNAPSHOT.jar pt.inesc_id.gsd.cloud2sim.applications.main.dynamics.ScalableSimulator
+$ java -classpath cloudsim-3.1-SNAPSHOT.jar:lib/hazelcast-3.2.jar:cloud2sim-1.0-SNAPSHOT.jar pt.inesc_id.gsd.cloud2sim.applications.main.dynamics.ScalableSimulator
 
 Initiate the IntelligentAdaptiveScaler from the other nodes.
-$ java -classpath cloudsim-3.1-SNAPSHOT.jar:cloudsim-examples-3.1-SNAPSHOT.jar:lib/hazelcast-3.2.jar:cloud2sim-1.0-SNAPSHOT.jar pt.inesc_id.gsd.cloud2sim.scale.ias.IntelligentAdaptiveScaler
+$ java -classpath cloudsim-3.1-SNAPSHOT.jar:lib/hazelcast-3.2.jar:cloud2sim-1.0-SNAPSHOT.jar pt.inesc_id.gsd.cloud2sim.scale.ias.IntelligentAdaptiveScaler
 
 
 Running the Map-Reduce Simulations.
@@ -44,7 +44,7 @@ Set the map-reduce workload size in the cloud2sim.properties.
 mapReduceSize=10
 
 To run the simulations,
-$ java -classpath cloudsim-3.1-SNAPSHOT.jar:cloudsim-examples-3.1-SNAPSHOT.jar:lib/hazelcast-3.2.jar:cloud2sim-1.0-SNAPSHOT.jar pt.inesc_id.gsd.cloud2sim.mapreduce.MapReduceSimulator
+$ java -classpath cloudsim-3.1-SNAPSHOT.jar:lib/hazelcast-3.2.jar:cloud2sim-1.0-SNAPSHOT.jar pt.inesc_id.gsd.cloud2sim.mapreduce.MapReduceSimulator
 
 
 Copy the files to the other instances.
