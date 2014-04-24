@@ -13,7 +13,7 @@ package pt.inesc_id.gsd.cloud2sim.applications.main.statics;
 import org.cloudbus.cloudsim.*;
 import pt.inesc_id.gsd.cloud2sim.core.Cloud2SimEngine;
 import pt.inesc_id.gsd.cloud2sim.hazelcast.HzObjectCollection;
-import org.cloudbus.cloudsim.compatibility.hazelcast.ConfigReader;
+import org.cloudbus.cloudsim.compatibility.common.ConfigReader;
 import pt.inesc_id.gsd.cloud2sim.util.OutputLogger;
 import pt.inesc_id.gsd.cloud2sim.hazelcast.HzCloudSim;
 import pt.inesc_id.gsd.cloud2sim.hazelcast.HzCloudlet;

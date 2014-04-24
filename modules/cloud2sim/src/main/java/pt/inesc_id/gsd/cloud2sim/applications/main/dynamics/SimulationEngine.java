@@ -14,7 +14,7 @@ import org.cloudbus.cloudsim.CloudletSchedulerSpaceShared;
 import org.cloudbus.cloudsim.CloudletSchedulerTimeShared;
 import org.cloudbus.cloudsim.UtilizationModel;
 import org.cloudbus.cloudsim.UtilizationModelFull;
-import org.cloudbus.cloudsim.compatibility.hazelcast.ConfigReader;
+import org.cloudbus.cloudsim.compatibility.common.ConfigReader;
 import pt.inesc_id.gsd.cloud2sim.applications.roundrobin.RoundRobinDatacenterBroker;
 import pt.inesc_id.gsd.cloud2sim.hazelcast.HzCloudlet;
 import pt.inesc_id.gsd.cloud2sim.hazelcast.HzDatacenterBroker;

@@ -8,7 +8,7 @@
  * Copyright (c) 2014, Pradeeban Kathiravelu <pradeeban.kathiravelu@tecnico.ulisboa.pt>
  */
 
-package org.cloudbus.cloudsim.compatibility.hazelcast;
+package org.cloudbus.cloudsim.compatibility.common;
 
 import org.cloudbus.cloudsim.compatibility.Cloud2SimConstants;
 
@@ -31,6 +31,7 @@ public class ConfigReader {
     private static boolean withWorkload; //true
     private static int simultaneousInstances; // 1
     private static int noOfExecutions; // 2
+    private static int mapReduceSize;
 
     protected static Properties prop;
 
@@ -69,6 +70,7 @@ public class ConfigReader {
             simultaneousInstances = Integer.parseInt(prop.getProperty("simultaneousInstances"));
             noOfExecutions = Integer.parseInt(prop.getProperty("noOfExecutions"));
             isVerbose = Boolean.parseBoolean(prop.getProperty("isVerbose"));
+            mapReduceSize = Integer.parseInt(prop.getProperty("mapReduceSize"));
         }
     }
 
@@ -110,5 +112,9 @@ public class ConfigReader {
 
     public static boolean getIsVerbose() {
         return isVerbose;
+    }
+
+    public static int getMapReduceSize() {
+        return mapReduceSize;
     }
 }

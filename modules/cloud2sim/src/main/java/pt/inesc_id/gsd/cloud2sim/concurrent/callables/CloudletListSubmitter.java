@@ -14,7 +14,7 @@ import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.core.HazelcastInstanceAware;
 import com.hazelcast.core.IMap;
 import pt.inesc_id.gsd.cloud2sim.hazelcast.HzObjectCollection;
-import org.cloudbus.cloudsim.compatibility.hazelcast.ConfigReader;
+import org.cloudbus.cloudsim.compatibility.common.ConfigReader;
 import pt.inesc_id.gsd.cloud2sim.util.LoadGenerator;
 import pt.inesc_id.gsd.cloud2sim.hazelcast.HzCloudlet;
 

@@ -11,7 +11,7 @@
 package pt.inesc_id.gsd.cloud2sim.mapreduce.infinispan;
 
 import org.cloudbus.cloudsim.Log;
-import org.cloudbus.cloudsim.compatibility.infinispan.InfConfigReader;
+import org.cloudbus.cloudsim.compatibility.common.ConfigReader;
 import org.cloudbus.cloudsim.core.CloudSim;
 import org.infinispan.Cache;
 import org.infinispan.distexec.mapreduce.MapReduceTask;
@@ -32,7 +32,7 @@ public class MapReduceImpl {
     public static void startMapReduce(Cache defaultCache){
         CloudSim.setSimulationStartedTime(System.currentTimeMillis());
 
-        Log.printConcatLine(InfConfigReader.getMapReduceSize());
+        Log.printConcatLine(ConfigReader.getMapReduceSize());
         try {
             fillMapWithData(defaultCache);
 //        c2.put("2", "Infinispan rules the world");
@@ -66,7 +66,7 @@ public class MapReduceImpl {
             StringBuilder sb = new StringBuilder();
             String line;
             int lineNumber = 0;
-            while (((line = reader.readLine()) != null) && (lineNumber < InfConfigReader.getMapReduceSize())) {
+            while (((line = reader.readLine()) != null) && (lineNumber < ConfigReader.getMapReduceSize())) {
                 sb.append(line).append("\n");
                 lineNumber++;
             }

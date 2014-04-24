@@ -13,8 +13,8 @@ package pt.inesc_id.gsd.cloud2sim.core;
 import com.hazelcast.core.Hazelcast;
 import org.cloudbus.cloudsim.Log;
 import org.cloudbus.cloudsim.Pe;
+import org.cloudbus.cloudsim.compatibility.common.ConfigReader;
 import org.cloudbus.cloudsim.compatibility.hazelcast.HzConstants;
-import org.cloudbus.cloudsim.compatibility.infinispan.InfConfigReader;
 import org.cloudbus.cloudsim.core.CloudSim;
 import org.cloudbus.cloudsim.provisioners.PeProvisionerSimple;
 import pt.inesc_id.gsd.cloud2sim.scale.AutoScaleConfigReader;
@@ -57,7 +57,7 @@ public class Cloud2SimEngine {
 
     public static void startInfinispan() {
         startTime = System.currentTimeMillis();
-        InfConfigReader.readConfig();
+        ConfigReader.readConfig();
     }
 
     public static int getNoOfCloudlets() {

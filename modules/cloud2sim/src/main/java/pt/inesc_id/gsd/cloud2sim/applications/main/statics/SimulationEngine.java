@@ -17,7 +17,7 @@ import org.cloudbus.cloudsim.UtilizationModelFull;
 import pt.inesc_id.gsd.cloud2sim.core.Cloud2SimEngine;
 import pt.inesc_id.gsd.cloud2sim.core.PartitionUtil;
 import pt.inesc_id.gsd.cloud2sim.hazelcast.HzObjectCollection;
-import org.cloudbus.cloudsim.compatibility.hazelcast.ConfigReader;
+import org.cloudbus.cloudsim.compatibility.common.ConfigReader;
 import pt.inesc_id.gsd.cloud2sim.hazelcast.HzCloudSim;
 import pt.inesc_id.gsd.cloud2sim.hazelcast.HzCloudlet;
 import pt.inesc_id.gsd.cloud2sim.hazelcast.HzDatacenterBroker;
