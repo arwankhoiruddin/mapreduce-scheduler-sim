@@ -12,6 +12,7 @@ package pt.inesc_id.gsd.cloud2sim.mapreduce.infinispan;
 
 import org.cloudbus.cloudsim.Log;
 import org.cloudbus.cloudsim.compatibility.infinispan.InfConfigReader;
+import org.cloudbus.cloudsim.core.CloudSim;
 import org.infinispan.Cache;
 import org.infinispan.distexec.mapreduce.MapReduceTask;
 import pt.inesc_id.gsd.cloud2sim.core.Cloud2SimEngine;
@@ -29,6 +30,7 @@ import java.util.Map;
  */
 public class MapReduceImpl {
     public static void startMapReduce(Cache defaultCache){
+        CloudSim.setSimulationStartedTime(System.currentTimeMillis());
 
         Log.printConcatLine(InfConfigReader.getMapReduceSize());
         try {
@@ -43,7 +45,7 @@ public class MapReduceImpl {
         } catch (Exception e) {
             Log.printConcatLine("Exception in starting the map reduce simulation with Infinispan", e);
         } finally {
-            Cloud2SimEngine.logTotalExecTime();
+            Cloud2SimEngine.shutdownLogs();
         }
     }
 

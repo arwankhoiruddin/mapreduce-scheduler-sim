@@ -13,7 +13,6 @@ package pt.inesc_id.gsd.cloud2sim.mapreduce.infinispan;
 import org.cloudbus.cloudsim.Log;
 import org.cloudbus.cloudsim.compatibility.infinispan.InfiniSim;
 import org.infinispan.Cache;
-import org.infinispan.manager.DefaultCacheManager;
 import pt.inesc_id.gsd.cloud2sim.core.Cloud2SimEngine;
 
 /**
