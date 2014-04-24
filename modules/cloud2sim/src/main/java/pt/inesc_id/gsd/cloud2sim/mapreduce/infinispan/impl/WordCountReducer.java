@@ -8,21 +8,21 @@
  * Copyright (c) 2014, Pradeeban Kathiravelu <pradeeban.kathiravelu@tecnico.ulisboa.pt>
  */
 
-package pt.inesc_id.gsd.cloud2sim.mapreduce.infinispan;
+package pt.inesc_id.gsd.cloud2sim.mapreduce.infinispan.impl;
 
 import org.infinispan.distexec.mapreduce.Reducer;
 
 import java.util.Iterator;
 
-public class WordCountReducer implements Reducer<String, Integer> {
-    /** The serialVersionUID */
-    private static final long serialVersionUID = 1901016598354633256L;
+public class WordCountReducer implements Reducer<String, Long> {
+//    /** The serialVersionUID */
+//    private static final long serialVersionUID = 1901016598354633256L;
 
     @Override
-    public Integer reduce(String key, Iterator<Integer> iter) {
-        int sum = 0;
+    public Long reduce(String key, Iterator<Long> iter) {
+        Long sum = 0L;
         while (iter.hasNext()) {
-            Integer i = iter.next();
+            Long i = iter.next();
             sum += i;
         }
         return sum;

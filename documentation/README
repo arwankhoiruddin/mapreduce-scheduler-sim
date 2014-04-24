@@ -46,7 +46,7 @@ Set the map-reduce workload size in the conf/cloud2sim.properties.
 mapReduceSize=10
 
 To run the simulations,
-$ java -classpath cloudsim-3.1-SNAPSHOT.jar:lib/hazelcast-3.2.jar:cloud2sim-1.0-SNAPSHOT.jar pt.inesc_id.gsd.cloud2sim.mapreduce.MapReduceSimulator
+$ java -classpath cloudsim-3.1-SNAPSHOT.jar:lib/hazelcast-3.2.jar:cloud2sim-1.0-SNAPSHOT.jar pt.inesc_id.gsd.cloud2sim.mapreduce.hazelcast.HzMapReduceSimulator
 
 
 2) Using Infinispan

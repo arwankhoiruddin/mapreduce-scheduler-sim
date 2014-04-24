@@ -8,7 +8,7 @@
  * Copyright (c) 2014, Pradeeban Kathiravelu <pradeeban.kathiravelu@tecnico.ulisboa.pt>
  */
 
-package pt.inesc_id.gsd.cloud2sim.mapreduce.core;
+package pt.inesc_id.gsd.cloud2sim.mapreduce.hazelcast;
 
 import com.hazelcast.core.IAtomicLong;
 import org.cloudbus.cloudsim.Log;

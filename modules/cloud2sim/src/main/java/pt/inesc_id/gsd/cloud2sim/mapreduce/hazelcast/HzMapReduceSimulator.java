@@ -8,7 +8,7 @@
  * Copyright (c) 2014, Pradeeban Kathiravelu <pradeeban.kathiravelu@tecnico.ulisboa.pt>
  */
 
-package pt.inesc_id.gsd.cloud2sim.mapreduce;
+package pt.inesc_id.gsd.cloud2sim.mapreduce.hazelcast;
 
 import org.cloudbus.cloudsim.Log;
 import org.cloudbus.cloudsim.compatibility.common.ConfigReader;
@@ -16,13 +16,12 @@ import org.cloudbus.cloudsim.compatibility.hazelcast.HazelSimCore;
 import org.cloudbus.cloudsim.compatibility.hazelcast.HzConfigReader;
 import pt.inesc_id.gsd.cloud2sim.core.Cloud2SimEngine;
 import pt.inesc_id.gsd.cloud2sim.hazelcast.HzCloudSim;
-import pt.inesc_id.gsd.cloud2sim.mapreduce.core.HzJob;
-import pt.inesc_id.gsd.cloud2sim.mapreduce.impl.MapReduceImpl;
+import pt.inesc_id.gsd.cloud2sim.mapreduce.hazelcast.impl.HzMapReduceImpl;
 
 /**
  * The Map Reduce Simulator of Cloud2Sim
  */
-public class MapReduceSimulator {
+public class HzMapReduceSimulator {
 
     public static void main(String[] args) throws Exception {
         simulateMapReduce();
@@ -39,7 +38,7 @@ public class MapReduceSimulator {
         HzJob hzJob = new HzJob();
         // initiate the job with the size
         hzJob.init(HzConfigReader.getMapReduceSize());
-        MapReduceImpl.initiate(hzJob);
+        HzMapReduceImpl.initiate(hzJob);
     }
 
     /**

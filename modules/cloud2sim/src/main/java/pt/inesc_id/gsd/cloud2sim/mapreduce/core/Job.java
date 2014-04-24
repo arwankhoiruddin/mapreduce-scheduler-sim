@@ -25,19 +25,6 @@ public interface Job {
     public void init(int size);
 
     /**
-     * Gets the job with <K,V> as <String, String>
-     * @return the job
-     */
-    public com.hazelcast.mapreduce.Job<String, String> getJob();
-
-    /**
-     * Gets the job with <K,V> as <String, String>
-     * @param size, size of the job
-     * @return the job
-     */
-    public com.hazelcast.mapreduce.Job<String, String> getJob(int size);
-
-    /**
      * Gets the size of the map reduce job
      * @return size
      */

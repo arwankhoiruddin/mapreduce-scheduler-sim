@@ -8,7 +8,7 @@
  * Copyright (c) 2014, Pradeeban Kathiravelu <pradeeban.kathiravelu@tecnico.ulisboa.pt>
  */
 
-package pt.inesc_id.gsd.cloud2sim.mapreduce.impl;
+package pt.inesc_id.gsd.cloud2sim.mapreduce.hazelcast.impl;
 
 import com.hazelcast.core.ExecutionCallback;
 import com.hazelcast.core.ICompletableFuture;
@@ -17,9 +17,9 @@ import com.hazelcast.mapreduce.Job;
 import org.cloudbus.cloudsim.Log;
 import org.cloudbus.cloudsim.compatibility.hazelcast.HzConfigReader;
 import pt.inesc_id.gsd.cloud2sim.core.Cloud2SimEngine;
-import pt.inesc_id.gsd.cloud2sim.mapreduce.core.HzJob;
+import pt.inesc_id.gsd.cloud2sim.mapreduce.hazelcast.HzJob;
 import pt.inesc_id.gsd.cloud2sim.mapreduce.core.MapReduceConstants;
-import pt.inesc_id.gsd.cloud2sim.mapreduce.core.MapReduceParams;
+import pt.inesc_id.gsd.cloud2sim.mapreduce.hazelcast.MapReduceParams;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -32,18 +32,15 @@ import java.util.Map;
  * The implementation class of map-reduce based on the hazelcast map-redeuce word-count sample,
  * calling the other map reduce implementation classes.
  */
-public class MapReduceImpl {
+public class HzMapReduceImpl {
     private static HzJob hzJob;
     private static int processedFiles = 0;
 
     /**
-     * Initiate the map reduce simulation
-     * @throws Exception, if the simulation failed.
+     * Initiate the map reduce simulation with Hazelcast
      */
-    public static void initiate(HzJob hzJob1) throws Exception {
+    public static void initiate(HzJob hzJob1) {
         hzJob = hzJob1;
-        Log.printConcatLine("Initiating the MapReduceCore.");
-
         try {
             fillMapWithData();
 
@@ -62,7 +59,8 @@ public class MapReduceImpl {
 
             long wordCount = mapReduceCollate();
             Log.printConcatLine("All content sums up to " + wordCount + " words.");
-
+        } catch (Exception e) {
+            Log.printConcatLine("Exception in starting the map reduce simulation with Hazelcast", e);
         } finally {
             Log.printConcatLine("Printing the params of the collation map reduce job..");
             MapReduceParams.printJobStatus();

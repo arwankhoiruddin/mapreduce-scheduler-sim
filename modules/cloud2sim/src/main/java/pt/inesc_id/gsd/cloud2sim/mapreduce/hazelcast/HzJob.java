@@ -8,7 +8,7 @@
  * Copyright (c) 2014, Pradeeban Kathiravelu <pradeeban.kathiravelu@tecnico.ulisboa.pt>
  */
 
-package pt.inesc_id.gsd.cloud2sim.mapreduce.core;
+package pt.inesc_id.gsd.cloud2sim.mapreduce.hazelcast;
 
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.core.IMap;
@@ -17,9 +17,10 @@ import com.hazelcast.mapreduce.JobTracker;
 import com.hazelcast.mapreduce.KeyValueSource;
 import org.cloudbus.cloudsim.Log;
 import pt.inesc_id.gsd.cloud2sim.hazelcast.HzObjectCollection;
+import pt.inesc_id.gsd.cloud2sim.mapreduce.core.MapReduceConstants;
 
 /**
- * Cloud2Sim representation of the Job
+ * Hazelcast representation of the Job
  */
 public class HzJob implements pt.inesc_id.gsd.cloud2sim.mapreduce.core.Job {
 
@@ -48,7 +49,6 @@ public class HzJob implements pt.inesc_id.gsd.cloud2sim.mapreduce.core.Job {
      * Get a map-reduce job
      * @return the map-reduce job.
      */
-    @Override
     public Job<String, String> getJob() {
         // Retrieving the JobTracker by name
         JobTracker jobTracker = hazelcastInstance.getJobTracker(MapReduceConstants.DEFAULT_JOB_TRACKER);
@@ -62,7 +62,6 @@ public class HzJob implements pt.inesc_id.gsd.cloud2sim.mapreduce.core.Job {
         return jobTracker.newJob(source);
     }
 
-    @Override
     public Job<String, String> getJob(int size) {
         sizeOfTheCurrentJob = size;
         return getJob();

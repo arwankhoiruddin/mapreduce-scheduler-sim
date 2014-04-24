@@ -8,7 +8,7 @@
  * Copyright (c) 2014, Pradeeban Kathiravelu <pradeeban.kathiravelu@tecnico.ulisboa.pt>
  */
 
-package pt.inesc_id.gsd.cloud2sim.mapreduce.infinispan;
+package pt.inesc_id.gsd.cloud2sim.mapreduce.infinispan.impl;
 
 import org.cloudbus.cloudsim.Log;
 import org.cloudbus.cloudsim.compatibility.common.ConfigReader;
@@ -17,6 +17,7 @@ import org.infinispan.Cache;
 import org.infinispan.distexec.mapreduce.MapReduceTask;
 import pt.inesc_id.gsd.cloud2sim.core.Cloud2SimEngine;
 import pt.inesc_id.gsd.cloud2sim.mapreduce.core.MapReduceConstants;
+import pt.inesc_id.gsd.cloud2sim.mapreduce.infinispan.InfJob;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -28,20 +29,30 @@ import java.util.Map;
 /**
  * Infinispan based implementation of map-reduce simulation
  */
-public class MapReduceImpl {
-    public static void startMapReduce(Cache defaultCache){
+public class InfMapReduceImpl {
+    private static InfJob infJob;
+    private static int processedFiles = 0;
+
+    /**
+     * Initiate the map reduce simulation
+     */
+    public static void initiate(InfJob infJob1) {
+        infJob = infJob1;
         CloudSim.setSimulationStartedTime(System.currentTimeMillis());
-
-        Log.printConcatLine(ConfigReader.getMapReduceSize());
         try {
-            fillMapWithData(defaultCache);
-//        c2.put("2", "Infinispan rules the world");
+            fillMapWithData();
 
-        MapReduceTask<String, String, String, Integer> t =
-                new MapReduceTask<String, String, String, Integer>(defaultCache);
-        t.mappedWith(new WordCountMapper()).reducedWith(new WordCountReducer());
-        Map<String, Integer> wordCountMap = t.execute();
-
+            Log.printConcatLine("Starting the Primary Map Reduce Job with size " + infJob.getSize());
+            MapReduceTask<String, String, String, Long> t =
+                    new MapReduceTask<String, String, String, Long>(InfJob.getDefaultCache());
+            t.mappedWith(new WordCountMapper()).reducedWith(new WordCountReducer());
+            Map<String, Long> wordCountMap = t.execute();
+            if (ConfigReader.getIsVerbose()) {
+                Log.printConcatLine("Counts per words over " + processedFiles + " files:");
+                for (Map.Entry<String, Long> entry : wordCountMap.entrySet()) {
+                    Log.printConcatLine("\tWord '" + entry.getKey() + "' occurred " + entry.getValue() + " times");
+                }
+            }
         } catch (Exception e) {
             Log.printConcatLine("Exception in starting the map reduce simulation with Infinispan", e);
         } finally {
@@ -49,7 +60,7 @@ public class MapReduceImpl {
         }
     }
 
-    private static void fillMapWithData(Cache defaultCache)
+    private static void fillMapWithData()
             throws Exception {
 
         File folder = new File(MapReduceConstants.LOAD_FOLDER);
@@ -60,7 +71,7 @@ public class MapReduceImpl {
         }
         for (File file : folder.listFiles()) {
             String fileName = file.getName();
-            InputStream is = new FileInputStream(MapReduceConstants.LOAD_FOLDER + File.separator + fileName) ;
+            InputStream is = new FileInputStream(MapReduceConstants.LOAD_FOLDER + File.separator + fileName);
             LineNumberReader reader = new LineNumberReader(new InputStreamReader(is));
 
             StringBuilder sb = new StringBuilder();
@@ -70,10 +81,11 @@ public class MapReduceImpl {
                 sb.append(line).append("\n");
                 lineNumber++;
             }
-            defaultCache.put(fileName, sb.toString());
+            InfJob.getDefaultCache().put(fileName, sb.toString());
 
             is.close();
             reader.close();
+            processedFiles++;
         }
     }
 }

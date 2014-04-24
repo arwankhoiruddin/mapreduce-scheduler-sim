@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package pt.inesc_id.gsd.cloud2sim.mapreduce.impl;
+package pt.inesc_id.gsd.cloud2sim.mapreduce.hazelcast.impl;
 
 import com.hazelcast.mapreduce.Collator;
 import org.cloudbus.cloudsim.Log;

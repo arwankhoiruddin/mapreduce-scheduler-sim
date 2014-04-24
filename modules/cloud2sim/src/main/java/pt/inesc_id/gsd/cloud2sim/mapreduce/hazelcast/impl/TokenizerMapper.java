@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package pt.inesc_id.gsd.cloud2sim.mapreduce.impl;
+package pt.inesc_id.gsd.cloud2sim.mapreduce.hazelcast.impl;
 
 import com.hazelcast.mapreduce.Context;
 import com.hazelcast.mapreduce.Mapper;
 import org.cloudbus.cloudsim.Log;
 import org.cloudbus.cloudsim.compatibility.hazelcast.HzConfigReader;
-import pt.inesc_id.gsd.cloud2sim.mapreduce.core.MapReduceParams;
+import pt.inesc_id.gsd.cloud2sim.mapreduce.hazelcast.MapReduceParams;
 
 import java.util.StringTokenizer;
 

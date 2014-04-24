@@ -8,23 +8,23 @@
  * Copyright (c) 2014, Pradeeban Kathiravelu <pradeeban.kathiravelu@tecnico.ulisboa.pt>
  */
 
-package pt.inesc_id.gsd.cloud2sim.mapreduce.infinispan;
+package pt.inesc_id.gsd.cloud2sim.mapreduce.infinispan.impl;
 
 import org.infinispan.distexec.mapreduce.Collector;
 import org.infinispan.distexec.mapreduce.Mapper;
 
 import java.util.StringTokenizer;
 
-public class WordCountMapper  implements Mapper<String,String,String,Integer> {
+public class WordCountMapper  implements Mapper<String,String,String,Long> {
     /** The serialVersionUID */
     private static final long serialVersionUID = -5943370243108735560L;
 
     @Override
-    public void map(String key, String value, Collector<String, Integer> c) {
+    public void map(String key, String value, Collector<String, Long> c) {
         StringTokenizer tokens = new StringTokenizer(value);
         while (tokens.hasMoreElements()) {
             String s = (String) tokens.nextElement();
-            c.emit(s, 1);
+            c.emit(s, 1L);
         }
     }
 }

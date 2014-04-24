@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package pt.inesc_id.gsd.cloud2sim.mapreduce.impl;
+package pt.inesc_id.gsd.cloud2sim.mapreduce.hazelcast.impl;
 
 import com.hazelcast.mapreduce.Combiner;
 import com.hazelcast.mapreduce.CombinerFactory;
 import org.cloudbus.cloudsim.Log;
 import org.cloudbus.cloudsim.compatibility.hazelcast.HzConfigReader;
-import pt.inesc_id.gsd.cloud2sim.mapreduce.core.MapReduceParams;
+import pt.inesc_id.gsd.cloud2sim.mapreduce.hazelcast.MapReduceParams;
 
 /**
  * Adopted from Hazelcast source code. Optional in Hazelcast, though recommended to lower the traffic.
