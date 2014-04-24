@@ -8,7 +8,7 @@
  * Copyright (c) 2014, Pradeeban Kathiravelu <pradeeban.kathiravelu@tecnico.ulisboa.pt>
  */
 
-package org.cloudbus.cloudsim.compatibility;
+package org.cloudbus.cloudsim.compatibility.common;
 
 /**
  * Cloud2Sim/CloudSim General Constants

@@ -10,8 +10,6 @@
 
 package org.cloudbus.cloudsim.compatibility.common;
 
-import org.cloudbus.cloudsim.compatibility.Cloud2SimConstants;
-
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;

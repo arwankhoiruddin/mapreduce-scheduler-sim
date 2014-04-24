@@ -11,7 +11,7 @@
 package org.cloudbus.cloudsim.compatibility.infinispan;
 
 import org.cloudbus.cloudsim.Log;
-import org.cloudbus.cloudsim.compatibility.Cloud2SimConstants;
+import org.cloudbus.cloudsim.compatibility.common.Cloud2SimConstants;
 import org.infinispan.Cache;
 import org.infinispan.manager.DefaultCacheManager;
 
