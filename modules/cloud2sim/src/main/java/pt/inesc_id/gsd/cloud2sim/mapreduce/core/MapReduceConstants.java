@@ -21,4 +21,11 @@ public class MapReduceConstants {
 
     public static final String LOAD_FOLDER = "conf/mapreduce";
 
+    public static final String MAPPERS_FLAG = "numberOfMappers";
+    public static final String REDUCERS_FLAG = "numberOfReducers";
+    public static final String COMBINERS_FLAG = "numberOfCombiners";
+    public static final String JOBS_FLAG = "numberOfJobs";
+    public static final String THIS_MAPPERS_FLAG = "mappersOfTheJob";
+    public static final String THIS_REDUCERS_FLAG = "reducersOfTheJob";
+    public static final String THIS_COMBINERS_FLAG = "combinersOfTheJob";
 }

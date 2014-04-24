@@ -15,8 +15,8 @@ import org.infinispan.distexec.mapreduce.Reducer;
 import java.util.Iterator;
 
 public class WordCountReducer implements Reducer<String, Long> {
-//    /** The serialVersionUID */
-//    private static final long serialVersionUID = 1901016598354633256L;
+    /** The serialVersionUID */
+    private static final long serialVersionUID = 1901016598354633256L;
 
     @Override
     public Long reduce(String key, Iterator<Long> iter) {

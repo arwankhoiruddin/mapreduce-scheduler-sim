@@ -13,31 +13,39 @@ package pt.inesc_id.gsd.cloud2sim.mapreduce.hazelcast;
 import com.hazelcast.core.IAtomicLong;
 import org.cloudbus.cloudsim.Log;
 import pt.inesc_id.gsd.cloud2sim.hazelcast.HzObjectCollection;
+import pt.inesc_id.gsd.cloud2sim.mapreduce.core.MapReduceConstants;
 
 /**
  * Parameters of the map reduce simulation.
  */
 public final class MapReduceParams {
     public static IAtomicLong numberOfMappers =
-            HzObjectCollection.getHzObjectCollection().getFirstInstance().getAtomicLong("numberOfMappers");
+            HzObjectCollection.getHzObjectCollection().getFirstInstance().getAtomicLong(
+                    MapReduceConstants.MAPPERS_FLAG);
 
     public static IAtomicLong numberOfReducers =
-            HzObjectCollection.getHzObjectCollection().getFirstInstance().getAtomicLong("numberOfReducers");
+            HzObjectCollection.getHzObjectCollection().getFirstInstance().getAtomicLong(
+                    MapReduceConstants.REDUCERS_FLAG);
 
     public static IAtomicLong numberOfCombiners =
-            HzObjectCollection.getHzObjectCollection().getFirstInstance().getAtomicLong("numberOfCombiners");
+            HzObjectCollection.getHzObjectCollection().getFirstInstance().getAtomicLong(
+                    MapReduceConstants.COMBINERS_FLAG);
 
     public static IAtomicLong numberOfJobs =
-            HzObjectCollection.getHzObjectCollection().getFirstInstance().getAtomicLong("numberOfJobs");
+            HzObjectCollection.getHzObjectCollection().getFirstInstance().getAtomicLong(
+                    MapReduceConstants.JOBS_FLAG);
 
     public static IAtomicLong mappersOfTheJob =
-            HzObjectCollection.getHzObjectCollection().getFirstInstance().getAtomicLong("mappersOfTheJob");
+            HzObjectCollection.getHzObjectCollection().getFirstInstance().getAtomicLong(
+                    MapReduceConstants.THIS_MAPPERS_FLAG);
 
     public static IAtomicLong reducersOfTheJob =
-            HzObjectCollection.getHzObjectCollection().getFirstInstance().getAtomicLong("reducersOfTheJob");
+            HzObjectCollection.getHzObjectCollection().getFirstInstance().getAtomicLong(
+                    MapReduceConstants.THIS_REDUCERS_FLAG);
 
     public static IAtomicLong combinersOfTheJob =
-            HzObjectCollection.getHzObjectCollection().getFirstInstance().getAtomicLong("combinersOfTheJob");
+            HzObjectCollection.getHzObjectCollection().getFirstInstance().getAtomicLong(
+                    MapReduceConstants.THIS_COMBINERS_FLAG);
 
     /**
      * Printing the characteristics of the map reduce jobs.
