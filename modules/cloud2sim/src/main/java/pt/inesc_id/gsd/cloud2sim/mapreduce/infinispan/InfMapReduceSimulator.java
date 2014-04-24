@@ -17,7 +17,6 @@ import org.infinispan.distexec.mapreduce.MapReduceTask;
 import org.infinispan.distexec.mapreduce.Mapper;
 import org.infinispan.distexec.mapreduce.Reducer;
 import org.infinispan.manager.DefaultCacheManager;
-import org.infinispan.manager.EmbeddedCacheManager;
 import pt.inesc_id.gsd.cloud2sim.mapreduce.core.MapReduceConstants;
 
 import java.io.File;
@@ -41,7 +40,7 @@ public class InfMapReduceSimulator {
      * @param args
      */
     public static void main(String[] args) throws Exception {
-        EmbeddedCacheManager manager = new DefaultCacheManager("conf/infinispan.xml");
+        DefaultCacheManager manager = new DefaultCacheManager();
         defaultCache = manager.getCache();
 
         fillMapWithData();
