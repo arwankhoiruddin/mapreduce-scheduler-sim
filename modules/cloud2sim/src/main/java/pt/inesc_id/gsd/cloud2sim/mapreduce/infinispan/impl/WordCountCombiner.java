@@ -16,16 +16,14 @@ import org.infinispan.distexec.mapreduce.Reducer;
 
 import java.util.Iterator;
 
-public class WordCountReducer implements Reducer<String, Long> {
-    private volatile long sum = 0;
+public class WordCountCombiner implements Reducer<String, Long> {
+    private long sum = 0;
 
     @Override
-    public Long reduce(String key, Iterator<Long> iter) {
+    public Long reduce(String s, Iterator<Long> iter) {
         if (ConfigReader.getIsVerbose()) {
-            Log.printConcatLine("Reduce..");
+            Log.printConcatLine("Combine..");
         }
-
-        Long sum = 0L;
         while (iter.hasNext()) {
             Long i = iter.next();
             sum += i;

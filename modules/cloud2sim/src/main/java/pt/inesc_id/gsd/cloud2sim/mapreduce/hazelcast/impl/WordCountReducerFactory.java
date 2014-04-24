@@ -19,7 +19,7 @@ package pt.inesc_id.gsd.cloud2sim.mapreduce.hazelcast.impl;
 import com.hazelcast.mapreduce.Reducer;
 import com.hazelcast.mapreduce.ReducerFactory;
 import org.cloudbus.cloudsim.Log;
-import org.cloudbus.cloudsim.compatibility.hazelcast.HzConfigReader;
+import org.cloudbus.cloudsim.compatibility.common.ConfigReader;
 import pt.inesc_id.gsd.cloud2sim.mapreduce.hazelcast.MapReduceParams;
 
 /**
@@ -45,7 +45,7 @@ public class WordCountReducerFactory
 
         @Override
         public void reduce(Long value) {
-            if (HzConfigReader.getIsVerbose()) {
+            if (ConfigReader.getIsVerbose()) {
                 Log.printConcatLine("Reduce..");
             }
             // Just increment the sum by the pre combined chunk value

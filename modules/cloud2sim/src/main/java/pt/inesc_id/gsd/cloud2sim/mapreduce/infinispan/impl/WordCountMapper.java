@@ -10,21 +10,30 @@
 
 package pt.inesc_id.gsd.cloud2sim.mapreduce.infinispan.impl;
 
+import org.cloudbus.cloudsim.Log;
+import org.cloudbus.cloudsim.compatibility.common.ConfigReader;
 import org.infinispan.distexec.mapreduce.Collector;
 import org.infinispan.distexec.mapreduce.Mapper;
 
 import java.util.StringTokenizer;
 
 public class WordCountMapper  implements Mapper<String,String,String,Long> {
-    /** The serialVersionUID */
-    private static final long serialVersionUID = -5943370243108735560L;
+    private static final Long ONE = 1L;
+
 
     @Override
-    public void map(String key, String value, Collector<String, Long> c) {
-        StringTokenizer tokens = new StringTokenizer(value);
-        while (tokens.hasMoreElements()) {
-            String s = (String) tokens.nextElement();
-            c.emit(s, 1L);
+    public void map(String key, String document, Collector<String, Long> context) {
+        if (ConfigReader.getIsVerbose()) {
+            Log.printConcatLine("Map..");
+        }
+
+        // Just splitting the text by whitespaces
+        StringTokenizer tokenizer = new StringTokenizer(document.toLowerCase());
+
+        // For every token in the text (=> per word)
+        while (tokenizer.hasMoreTokens()) {
+            // Emit a new value in the mapped results
+            context.emit(tokenizer.nextToken(), ONE);
         }
     }
 }

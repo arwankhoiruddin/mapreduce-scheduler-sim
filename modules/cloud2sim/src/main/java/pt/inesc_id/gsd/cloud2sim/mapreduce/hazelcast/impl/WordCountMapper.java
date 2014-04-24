@@ -19,7 +19,7 @@ package pt.inesc_id.gsd.cloud2sim.mapreduce.hazelcast.impl;
 import com.hazelcast.mapreduce.Context;
 import com.hazelcast.mapreduce.Mapper;
 import org.cloudbus.cloudsim.Log;
-import org.cloudbus.cloudsim.compatibility.hazelcast.HzConfigReader;
+import org.cloudbus.cloudsim.compatibility.common.ConfigReader;
 import pt.inesc_id.gsd.cloud2sim.mapreduce.hazelcast.MapReduceParams;
 
 import java.util.StringTokenizer;
@@ -27,12 +27,12 @@ import java.util.StringTokenizer;
 /**
  * Adopted from Hazelcast source code.
  */
-public class TokenizerMapper
+public class WordCountMapper
         implements Mapper<String, String, String, Long> {
 
     private static final Long ONE = 1L;
 
-    public TokenizerMapper() {
+    public WordCountMapper() {
         MapReduceParams.numberOfMappers.getAndIncrement();
         MapReduceParams.mappersOfTheJob.getAndIncrement();
     }
@@ -40,7 +40,7 @@ public class TokenizerMapper
     @Override
 
     public void map(String key, String document, Context<String, Long> context) {
-        if (HzConfigReader.getIsVerbose()) {
+        if (ConfigReader.getIsVerbose()) {
             Log.printConcatLine("Map..");
         }
         // Just splitting the text by whitespaces

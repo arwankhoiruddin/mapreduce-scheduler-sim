@@ -77,7 +77,7 @@ public class HzMapReduceImpl {
         Log.printConcatLine("*** Starting the primary map reduce operations..");
         // Creating a new Job
         ICompletableFuture<Map<String, Long>> future = job // returned future
-                .mapper(new TokenizerMapper())             // adding a mapper
+                .mapper(new WordCountMapper())             // adding a mapper
                 .combiner(new WordCountCombinerFactory())  // adding a combiner through the factory
                 .reducer(new WordCountReducerFactory())    // adding a reducer through the factory
                 .submit();                                 // submit the task
@@ -98,7 +98,7 @@ public class HzMapReduceImpl {
 
         Log.printConcatLine("*** Starting the map reduce operations for collation..");
         ICompletableFuture<Long> future = job // returned future
-                .mapper(new TokenizerMapper())             // adding a mapper
+                .mapper(new WordCountMapper())             // adding a mapper
                 .combiner(new WordCountCombinerFactory())  // adding a combiner through the factory
                 .reducer(new WordCountReducerFactory())    // adding a reducer through the factory
                 .submit(new WordCountCollator());          // submit the task and supply a collator
