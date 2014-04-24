@@ -58,6 +58,7 @@ public class MapReduceImpl {
 
             Log.printConcatLine("Printing the params of the primary map reduce job..");
             MapReduceParams.printJobStatus();
+            Cloud2SimEngine.shutdownLogs();
 
             long wordCount = mapReduceCollate();
             Log.printConcatLine("All content sums up to " + wordCount + " words.");
@@ -87,7 +88,6 @@ public class MapReduceImpl {
         future.andThen(buildCallback());
 
         Log.printConcatLine("Completing the primary map reduce task with size " + hzJob.getSize());
-        Cloud2SimEngine.shutdownLogs();
         // Wait and retrieve the result
         return future.get();
     }

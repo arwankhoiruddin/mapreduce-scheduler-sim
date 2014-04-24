@@ -10,21 +10,43 @@
 
 package org.cloudbus.cloudsim.compatibility.infinispan;
 
+import org.cloudbus.cloudsim.Log;
+import org.cloudbus.cloudsim.compatibility.Cloud2SimConstants;
+import org.infinispan.Cache;
+import org.infinispan.manager.DefaultCacheManager;
+
+import java.io.IOException;
+
 /**
  * The core class of Infinispan integration
  */
 public class InfiniSim {
     private static InfiniSim infiniSim = null;
+    private Cache<String, String> defaultCache;
 
-    protected InfiniSim() {}
+    public Cache<String, String> getDefaultCache() {
+        return defaultCache;
+    }
 
     /**
-     * Creates a HazelSim object and initializes an array of Hazelcast instances.
-     * @return the hazelsim object.
+     * Singleton. Prevents initialization from outside the class.
+     * @throws IOException, if getting the cache failed.
+     */
+    protected InfiniSim() throws IOException {
+        DefaultCacheManager manager = new DefaultCacheManager(Cloud2SimConstants.INFINISPAN_CONFIG_FILE);
+        defaultCache = manager.getCache();
+    }
+
+    /**
+     * Initializes Infinispan
      */
     public static InfiniSim getInfiniSim() {
         if (infiniSim == null) {
-            infiniSim = new InfiniSim();
+            try {
+                infiniSim = new InfiniSim();
+            } catch (IOException e) {
+                Log.printConcatLine("Exception when trying to initialize Infinispan", e);
+            }
         }
         return infiniSim;
     }

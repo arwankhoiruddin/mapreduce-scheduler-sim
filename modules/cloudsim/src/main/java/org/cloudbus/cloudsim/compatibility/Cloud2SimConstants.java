@@ -22,4 +22,6 @@ public final class Cloud2SimConstants {
     public static final String CLOUD2SIM_PROPERTIES_FILE = "conf/cloud2sim.properties";
 
     public static final String INFINISPAN_PROPERTIES_FILE = "conf/infinispan.properties";
+
+    public static final String INFINISPAN_CONFIG_FILE = "conf/infinispan.xml";
 }

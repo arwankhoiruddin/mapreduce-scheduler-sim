@@ -148,6 +148,15 @@ public class Cloud2SimEngine {
         Log.printLine("The total time taken for the execution: " + totalTimeTaken + " s.");
     }
 
+    /**
+     * Final logs, marking the termination of simulation.
+     */
+    public static void logTotalExecTime() {
+        long endTime = System.currentTimeMillis();
+        double totalTimeTaken = (endTime - startTime) / 1000.0;
+        Log.printLine("The total time taken for the execution: " + totalTimeTaken + " s.");
+    }
+
     public static long getStartTime() {
         return startTime;
     }
