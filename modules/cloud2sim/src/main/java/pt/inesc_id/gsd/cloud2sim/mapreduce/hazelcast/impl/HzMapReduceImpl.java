@@ -19,7 +19,7 @@ import org.cloudbus.cloudsim.compatibility.hazelcast.HzConfigReader;
 import pt.inesc_id.gsd.cloud2sim.core.Cloud2SimEngine;
 import pt.inesc_id.gsd.cloud2sim.mapreduce.hazelcast.HzJob;
 import pt.inesc_id.gsd.cloud2sim.mapreduce.core.MapReduceConstants;
-import pt.inesc_id.gsd.cloud2sim.mapreduce.hazelcast.MapReduceParams;
+import pt.inesc_id.gsd.cloud2sim.mapreduce.hazelcast.HzMapReduceParams;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -54,7 +54,7 @@ public class HzMapReduceImpl {
             }
 
             Log.printConcatLine("Printing the params of the primary map reduce job..");
-            MapReduceParams.printJobStatus();
+            HzMapReduceParams.printJobStatus();
             Cloud2SimEngine.shutdownLogs();
 
             long wordCount = mapReduceCollate();
@@ -63,8 +63,8 @@ public class HzMapReduceImpl {
             Log.printConcatLine("Exception in starting the map reduce simulation with Hazelcast", e);
         } finally {
             Log.printConcatLine("Printing the params of the collation map reduce job..");
-            MapReduceParams.printJobStatus();
-            MapReduceParams.printStatus();
+            HzMapReduceParams.printJobStatus();
+            HzMapReduceParams.printStatus();
             Cloud2SimEngine.shutdown();
         }
     }
@@ -94,7 +94,7 @@ public class HzMapReduceImpl {
             throws Exception {
         Log.printConcatLine("Starting the Collation Map Reduce Job");
         Job<String, String> job = hzJob.getJob();
-        MapReduceParams.initJobParams();
+        HzMapReduceParams.initJobParams();
 
         Log.printConcatLine("*** Starting the map reduce operations for collation..");
         ICompletableFuture<Long> future = job // returned future

@@ -1,1 +1,6 @@
-<infinispan />
+<?xml version="1.0" encoding="UTF-8"?>
+<infinispan>
+    <namedCache name="transactional">
+        <transaction transactionMode="TRANSACTIONAL"/>
+    </namedCache>
+</infinispan>

@@ -12,12 +12,22 @@ package pt.inesc_id.gsd.cloud2sim.mapreduce.infinispan.impl;
 
 import org.cloudbus.cloudsim.Log;
 import org.cloudbus.cloudsim.compatibility.common.ConfigReader;
+import org.cloudbus.cloudsim.compatibility.infinispan.InfiniSim;
 import org.infinispan.distexec.mapreduce.Reducer;
+import pt.inesc_id.gsd.cloud2sim.mapreduce.core.MapReduceConstants;
 
 import java.util.Iterator;
 
+/**
+ * WordCountReducer, Infinispan implementation.
+ */
 public class WordCountReducer implements Reducer<String, Long> {
     private volatile long sum = 0;
+
+    public WordCountReducer() {
+        InfiniSim.incrementFlagAtomically(MapReduceConstants.THIS_REDUCERS_FLAG);
+        InfiniSim.incrementFlagAtomically(MapReduceConstants.REDUCERS_FLAG);
+    }
 
     @Override
     public Long reduce(String key, Iterator<Long> iter) {

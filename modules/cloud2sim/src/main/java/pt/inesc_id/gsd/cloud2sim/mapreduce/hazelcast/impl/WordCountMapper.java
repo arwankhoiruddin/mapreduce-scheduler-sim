@@ -20,7 +20,7 @@ import com.hazelcast.mapreduce.Context;
 import com.hazelcast.mapreduce.Mapper;
 import org.cloudbus.cloudsim.Log;
 import org.cloudbus.cloudsim.compatibility.common.ConfigReader;
-import pt.inesc_id.gsd.cloud2sim.mapreduce.hazelcast.MapReduceParams;
+import pt.inesc_id.gsd.cloud2sim.mapreduce.hazelcast.HzMapReduceParams;
 
 import java.util.StringTokenizer;
 
@@ -33,8 +33,8 @@ public class WordCountMapper
     private static final Long ONE = 1L;
 
     public WordCountMapper() {
-        MapReduceParams.numberOfMappers.getAndIncrement();
-        MapReduceParams.mappersOfTheJob.getAndIncrement();
+        HzMapReduceParams.numberOfMappers.getAndIncrement();
+        HzMapReduceParams.mappersOfTheJob.getAndIncrement();
     }
 
     @Override

@@ -20,7 +20,7 @@ import com.hazelcast.mapreduce.Combiner;
 import com.hazelcast.mapreduce.CombinerFactory;
 import org.cloudbus.cloudsim.Log;
 import org.cloudbus.cloudsim.compatibility.common.ConfigReader;
-import pt.inesc_id.gsd.cloud2sim.mapreduce.hazelcast.MapReduceParams;
+import pt.inesc_id.gsd.cloud2sim.mapreduce.hazelcast.HzMapReduceParams;
 
 /**
  * Adopted from Hazelcast source code. Optional in Hazelcast, though recommended to lower the traffic.
@@ -31,8 +31,8 @@ public class WordCountCombinerFactory
     @Override
     public Combiner<String, Long, Long> newCombiner(String key) {
         // Create a new Combiner for the given key
-        MapReduceParams.numberOfCombiners.getAndIncrement();
-        MapReduceParams.combinersOfTheJob.getAndIncrement();
+        HzMapReduceParams.numberOfCombiners.getAndIncrement();
+        HzMapReduceParams.combinersOfTheJob.getAndIncrement();
         return new WordCountCombiner();
     }
 

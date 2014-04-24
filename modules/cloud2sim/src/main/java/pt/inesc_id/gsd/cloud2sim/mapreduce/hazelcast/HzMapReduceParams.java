@@ -18,7 +18,7 @@ import pt.inesc_id.gsd.cloud2sim.mapreduce.core.MapReduceConstants;
 /**
  * Parameters of the map reduce simulation.
  */
-public final class MapReduceParams {
+public final class HzMapReduceParams {
     public static IAtomicLong numberOfMappers =
             HzObjectCollection.getHzObjectCollection().getFirstInstance().getAtomicLong(
                     MapReduceConstants.MAPPERS_FLAG);
