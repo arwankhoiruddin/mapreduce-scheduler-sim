@@ -132,7 +132,12 @@
 			<groupId>com.hazelcast</groupId>
 			<artifactId>hazelcast-client</artifactId>
 			<version>3.2</version>
-		</dependency> 		  		
+		</dependency>
+        <dependency>
+            <groupId>org.infinispan</groupId>
+            <artifactId>infinispan-core</artifactId>
+            <version>6.0.2.Final</version>
+        </dependency>
   	</dependencies>
   </dependencyManagement>
     
