@@ -11,7 +11,7 @@
 package pt.inesc_id.gsd.cloud2sim.hazelcast;
 
 import org.cloudbus.cloudsim.Log;
-import org.cloudbus.cloudsim.compatibility.ConfigReader;
+import org.cloudbus.cloudsim.compatibility.hazelcast.ConfigReader;
 import org.cloudbus.cloudsim.compatibility.hazelcast.HazelSimCore;
 import org.cloudbus.cloudsim.compatibility.hazelcast.HzConstants;
 import org.cloudbus.cloudsim.core.CloudSim;

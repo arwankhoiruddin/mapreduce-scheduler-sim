@@ -18,7 +18,7 @@ import org.cloudbus.cloudsim.Storage;
 import org.cloudbus.cloudsim.VmAllocationPolicySimple;
 import org.cloudbus.cloudsim.VmSchedulerTimeShared;
 import pt.inesc_id.gsd.cloud2sim.core.Cloud2SimEngine;
-import org.cloudbus.cloudsim.compatibility.ConfigReader;
+import org.cloudbus.cloudsim.compatibility.hazelcast.ConfigReader;
 import pt.inesc_id.gsd.cloud2sim.applications.roundrobin.RoundRobinVmAllocationPolicy;
 import org.cloudbus.cloudsim.provisioners.BwProvisionerSimple;
 import org.cloudbus.cloudsim.provisioners.RamProvisionerSimple;

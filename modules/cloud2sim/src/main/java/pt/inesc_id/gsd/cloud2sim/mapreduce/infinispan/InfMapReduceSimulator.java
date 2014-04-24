@@ -11,12 +11,11 @@
 package pt.inesc_id.gsd.cloud2sim.mapreduce.infinispan;
 
 import org.cloudbus.cloudsim.Log;
+import org.cloudbus.cloudsim.compatibility.infinispan.InfConfigReader;
 import org.infinispan.Cache;
-import org.infinispan.distexec.mapreduce.Collector;
 import org.infinispan.distexec.mapreduce.MapReduceTask;
-import org.infinispan.distexec.mapreduce.Mapper;
-import org.infinispan.distexec.mapreduce.Reducer;
 import org.infinispan.manager.DefaultCacheManager;
+import pt.inesc_id.gsd.cloud2sim.core.Cloud2SimEngine;
 import pt.inesc_id.gsd.cloud2sim.mapreduce.core.MapReduceConstants;
 
 import java.io.File;
@@ -24,25 +23,29 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.LineNumberReader;
-import java.util.Iterator;
 import java.util.Map;
-import java.util.StringTokenizer;
 
 public class InfMapReduceSimulator {
 
-    private static int jobSize = 10;
     private static Cache<String, String> defaultCache;
 
     /**
      * In this example replace c1 and c2 with
      * real Cache references
      *
-     * @param args
      */
     public static void main(String[] args) throws Exception {
-        DefaultCacheManager manager = new DefaultCacheManager();
+        simulateMapReduce();
+    }
+
+    private static void simulateMapReduce() throws Exception {
+        Cloud2SimEngine.startInfinispan();
+        Log.printLine("# Starting the Infinispan Map Reduce Simulator...");
+
+        DefaultCacheManager manager = new DefaultCacheManager("conf/infinispan.xml");
         defaultCache = manager.getCache();
 
+        Log.printConcatLine(InfConfigReader.getMapReduceSize());
         fillMapWithData();
 
 
@@ -55,34 +58,6 @@ public class InfMapReduceSimulator {
         Map<String, Integer> wordCountMap = t.execute();
     }
 
-    static class WordCountMapper implements Mapper<String,String,String,Integer> {
-        /** The serialVersionUID */
-        private static final long serialVersionUID = -5943370243108735560L;
-
-        @Override
-        public void map(String key, String value, Collector<String, Integer> c) {
-            StringTokenizer tokens = new StringTokenizer(value);
-            while (tokens.hasMoreElements()) {
-                String s = (String) tokens.nextElement();
-                c.emit(s, 1);
-            }
-        }
-    }
-
-    static class WordCountReducer implements Reducer<String, Integer> {
-        /** The serialVersionUID */
-        private static final long serialVersionUID = 1901016598354633256L;
-
-        @Override
-        public Integer reduce(String key, Iterator<Integer> iter) {
-            int sum = 0;
-            while (iter.hasNext()) {
-                Integer i = iter.next();
-                sum += i;
-            }
-            return sum;
-        }
-    }
 
     private static void fillMapWithData()
             throws Exception {
@@ -101,7 +76,7 @@ public class InfMapReduceSimulator {
             StringBuilder sb = new StringBuilder();
             String line;
             int lineNumber = 0;
-            while (((line = reader.readLine()) != null) && (lineNumber < jobSize)) {
+            while (((line = reader.readLine()) != null) && (lineNumber < InfConfigReader.getMapReduceSize())) {
                 sb.append(line).append("\n");
                 lineNumber++;
             }

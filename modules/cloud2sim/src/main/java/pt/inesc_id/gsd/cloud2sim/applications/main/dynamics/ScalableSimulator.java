@@ -12,7 +12,7 @@ package pt.inesc_id.gsd.cloud2sim.applications.main.dynamics;
 
 import org.cloudbus.cloudsim.Datacenter;
 import org.cloudbus.cloudsim.Log;
-import org.cloudbus.cloudsim.compatibility.ConfigReader;
+import org.cloudbus.cloudsim.compatibility.hazelcast.ConfigReader;
 import pt.inesc_id.gsd.cloud2sim.applications.callables.DatacenterCreatorCallable;
 import pt.inesc_id.gsd.cloud2sim.core.Cloud2SimEngine;
 import pt.inesc_id.gsd.cloud2sim.hazelcast.HzCloudSim;

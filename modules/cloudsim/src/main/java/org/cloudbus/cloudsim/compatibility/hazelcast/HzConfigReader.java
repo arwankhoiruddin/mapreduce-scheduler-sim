@@ -10,8 +10,6 @@
 
 package org.cloudbus.cloudsim.compatibility.hazelcast;
 
-import org.cloudbus.cloudsim.compatibility.ConfigReader;
-
 /**
  * The class that reads the Hazelcast properties from the properties file.
  */

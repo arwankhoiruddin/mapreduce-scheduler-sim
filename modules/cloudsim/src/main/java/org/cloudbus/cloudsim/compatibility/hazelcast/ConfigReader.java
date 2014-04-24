@@ -8,7 +8,9 @@
  * Copyright (c) 2014, Pradeeban Kathiravelu <pradeeban.kathiravelu@tecnico.ulisboa.pt>
  */
 
-package org.cloudbus.cloudsim.compatibility;
+package org.cloudbus.cloudsim.compatibility.hazelcast;
+
+import org.cloudbus.cloudsim.compatibility.Cloud2SimConstants;
 
 import java.io.FileInputStream;
 import java.io.IOException;
