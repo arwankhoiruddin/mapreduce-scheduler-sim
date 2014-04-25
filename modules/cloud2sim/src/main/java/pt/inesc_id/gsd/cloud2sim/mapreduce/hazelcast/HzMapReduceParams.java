@@ -19,33 +19,28 @@ import pt.inesc_id.gsd.cloud2sim.mapreduce.core.MapReduceConstants;
  * Parameters of the map reduce simulation.
  */
 public final class HzMapReduceParams {
-    public static IAtomicLong numberOfMappers =
-            HzObjectCollection.getHzObjectCollection().getFirstInstance().getAtomicLong(
-                    MapReduceConstants.MAPPERS_FLAG);
+    public static IAtomicLong numberOfMappers = getParam(MapReduceConstants.MAPPERS_FLAG);
 
-    public static IAtomicLong numberOfReducers =
-            HzObjectCollection.getHzObjectCollection().getFirstInstance().getAtomicLong(
-                    MapReduceConstants.REDUCERS_FLAG);
+    public static IAtomicLong numberOfReducers = getParam(MapReduceConstants.REDUCERS_FLAG);
 
-    public static IAtomicLong numberOfCombiners =
-            HzObjectCollection.getHzObjectCollection().getFirstInstance().getAtomicLong(
-                    MapReduceConstants.COMBINERS_FLAG);
+    public static IAtomicLong numberOfCombiners = getParam(MapReduceConstants.COMBINERS_FLAG);
 
-    public static IAtomicLong numberOfJobs =
-            HzObjectCollection.getHzObjectCollection().getFirstInstance().getAtomicLong(
-                    MapReduceConstants.JOBS_FLAG);
+    public static IAtomicLong numberOfJobs = getParam(MapReduceConstants.JOBS_FLAG);
 
-    public static IAtomicLong mappersOfTheJob =
-            HzObjectCollection.getHzObjectCollection().getFirstInstance().getAtomicLong(
-                    MapReduceConstants.THIS_MAPPERS_FLAG);
+    public static IAtomicLong mappersOfTheJob = getParam(MapReduceConstants.THIS_MAPPERS_FLAG);
 
-    public static IAtomicLong reducersOfTheJob =
-            HzObjectCollection.getHzObjectCollection().getFirstInstance().getAtomicLong(
-                    MapReduceConstants.THIS_REDUCERS_FLAG);
+    public static IAtomicLong reducersOfTheJob = getParam(MapReduceConstants.THIS_REDUCERS_FLAG);
 
-    public static IAtomicLong combinersOfTheJob =
-            HzObjectCollection.getHzObjectCollection().getFirstInstance().getAtomicLong(
-                    MapReduceConstants.THIS_COMBINERS_FLAG);
+    public static IAtomicLong combinersOfTheJob = getParam(MapReduceConstants.THIS_COMBINERS_FLAG);
+
+    /**
+     * Create a distributed atomic long variable, with the given key
+     * @param key, key of the variable.
+     * @return the distributed variable.
+     */
+    public static IAtomicLong getParam(String key) {
+        return HzObjectCollection.getHzObjectCollection().getFirstInstance().getAtomicLong(key);
+    }
 
     /**
      * Printing the characteristics of the map reduce jobs.
