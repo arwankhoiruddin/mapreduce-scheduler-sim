@@ -49,12 +49,12 @@ public class InfJob implements pt.inesc_id.gsd.cloud2sim.mapreduce.core.Job {
     public static void printStatus() {
         Log.printConcatLine("******Printing the number of jobs, mappers, combiners, and reducers executed************");
         Log.printConcatLine("Number of Jobs: " + InfiniSim.numberOfJobs.get());
-        Log.printConcatLine("Invocations of Map(): " + InfiniSim.mapInvocations.get());
-        Log.printConcatLine("Invocations of Combine() : " + InfiniSim.combineInvocations.get());
-        Log.printConcatLine("Invocations of Reduce(): " + InfiniSim.reduceInvocations.get());
         Log.printConcatLine("Number of Mappers: " + InfiniSim.numberOfMappers.get());
         Log.printConcatLine("Number of Combiners: " + InfiniSim.numberOfCombiners.get());
         Log.printConcatLine("Number of Reducers: " + InfiniSim.numberOfReducers.get());
+        Log.printConcatLine("Invocations of Map(): " + InfiniSim.mapInvocations.get());
+        Log.printConcatLine("Invocations of Combine() : " + InfiniSim.combineInvocations.get());
+        Log.printConcatLine("Invocations of Reduce(): " + InfiniSim.reduceInvocations.get());
         Log.printConcatLine("****************************************************************************************");
         printJobStatus();
     }
