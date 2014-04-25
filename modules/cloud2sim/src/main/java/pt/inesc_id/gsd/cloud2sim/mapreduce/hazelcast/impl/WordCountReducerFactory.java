@@ -45,9 +45,8 @@ public class WordCountReducerFactory
 
         @Override
         public void reduce(Long value) {
-            HzMapReduceParams.reduceInvocations.getAndIncrement();
-
             if (ConfigReader.getIsVerbose()) {
+                HzMapReduceParams.reduceInvocations.getAndIncrement();
                 Log.printConcatLine("Reduce..");
             }
             // Just increment the sum by the pre combined chunk value

@@ -12,6 +12,7 @@ package pt.inesc_id.gsd.cloud2sim.mapreduce.hazelcast;
 
 import com.hazelcast.core.IAtomicLong;
 import org.cloudbus.cloudsim.Log;
+import org.cloudbus.cloudsim.compatibility.common.ConfigReader;
 import pt.inesc_id.gsd.cloud2sim.hazelcast.HzObjectCollection;
 import pt.inesc_id.gsd.cloud2sim.mapreduce.core.MapReduceConstants;
 
@@ -58,9 +59,10 @@ public final class HzMapReduceParams {
         Log.printConcatLine("Number of Combiners: " + numberOfCombiners.get());
         Log.printConcatLine("Number of Reducers: " + numberOfReducers.get());
         Log.printConcatLine("Invocations of Map(): " + mapInvocations.get());
-        Log.printConcatLine("Invocations of Combine() : " + combineInvocations.get());
-        Log.printConcatLine("Invocations of Reduce(): " + reduceInvocations.get());
-
+        if (ConfigReader.getIsVerbose()) {
+            Log.printConcatLine("Invocations of Combine() : " + combineInvocations.get());
+            Log.printConcatLine("Invocations of Reduce(): " + reduceInvocations.get());
+        }
         Log.printConcatLine("****************************************************************************************");
     }
 
