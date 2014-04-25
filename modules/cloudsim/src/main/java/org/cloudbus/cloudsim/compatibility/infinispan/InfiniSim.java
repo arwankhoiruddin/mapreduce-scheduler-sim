@@ -13,13 +13,7 @@ package org.cloudbus.cloudsim.compatibility.infinispan;
 import org.cloudbus.cloudsim.Log;
 import org.cloudbus.cloudsim.compatibility.common.Cloud2SimConstants;
 import org.infinispan.Cache;
-import org.infinispan.atomic.AtomicMap;
-import org.infinispan.atomic.AtomicMapLookup;
-import org.infinispan.configuration.cache.Configuration;
 import org.infinispan.manager.DefaultCacheManager;
-import org.infinispan.transaction.TransactionMode;
-import pt.inesc_id.gsd.cloud2sim.infinispan.DistrInfiniSim;
-import pt.inesc_id.gsd.cloud2sim.mapreduce.core.MapReduceConstants;
 
 import java.io.IOException;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -39,6 +33,7 @@ public class InfiniSim {
     public static AtomicInteger numberOfMappers;
     public static AtomicInteger numberOfReducers;
     public static AtomicInteger numberOfCombiners;
+    public static AtomicInteger numberOfJobs;
 
     public Cache<String, String> getDefaultCache() {
         return defaultCache;
@@ -56,6 +51,7 @@ public class InfiniSim {
     }
 
     private static void initializeDefaultJobTracker() {
+        numberOfJobs = new AtomicInteger(0);
         numberOfMappers = new AtomicInteger(0);
         numberOfCombiners = new AtomicInteger(0);
         numberOfReducers = new AtomicInteger(0);

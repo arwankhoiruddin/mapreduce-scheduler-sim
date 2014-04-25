@@ -17,6 +17,7 @@ import org.infinispan.distexec.mapreduce.MapReduceTask;
 import pt.inesc_id.gsd.cloud2sim.core.Cloud2SimEngine;
 import pt.inesc_id.gsd.cloud2sim.mapreduce.core.MapReduceConstants;
 import pt.inesc_id.gsd.cloud2sim.mapreduce.infinispan.InfJob;
+import pt.inesc_id.gsd.cloud2sim.mapreduce.infinispan.InfMapReduceTask;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -42,8 +43,7 @@ public class InfMapReduceImpl {
             fillMapWithData();
 
             Log.printConcatLine("Starting the Primary Map Reduce Job with size " + infJob.getSize());
-            MapReduceTask<String, String, String, Long> t =
-                    new MapReduceTask<String, String, String, Long>(InfJob.getDefaultCache());
+            MapReduceTask<String, String, String, Long> t = InfMapReduceTask.getMapReduceTask();
             t.mappedWith(new WordCountMapper()).reducedWith(new WordCountReducer());
             Map<String, Long> wordCountMap = t.execute();
             if (ConfigReader.getIsVerbose()) {

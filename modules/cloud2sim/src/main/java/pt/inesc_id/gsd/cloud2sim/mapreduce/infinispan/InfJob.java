@@ -48,7 +48,7 @@ public class InfJob implements pt.inesc_id.gsd.cloud2sim.mapreduce.core.Job {
      */
     public static void printStatus() {
         Log.printConcatLine("******Printing the number of jobs, mappers, combiners, and reducers executed************");
-//        Log.printConcatLine("Number of Jobs: " + InfiniSim.getValue(MapReduceConstants.JOBS_FLAG));
+        Log.printConcatLine("Number of Jobs: " + InfiniSim.numberOfJobs.get());
         Log.printConcatLine("Invocations of Map(): " + InfiniSim.mapInvocations.get());
         Log.printConcatLine("Invocations of Combine() : " + InfiniSim.combineInvocations.get());
         Log.printConcatLine("Invocations of Reduce(): " + InfiniSim.reduceInvocations.get());
@@ -63,7 +63,7 @@ public class InfJob implements pt.inesc_id.gsd.cloud2sim.mapreduce.core.Job {
      * Printing the characteristics of the current job.
      */
     public static void printJobStatus() {
-        Log.printConcatLine("******Printing the number of jobs, mappers, combiners, and reducers executed************");
+        Log.printConcatLine("******Printing the parameters of the last executed job************");
         Log.printConcatLine("Mappers of This Job: " + InfiniSim.mappersOfTheJob.get());
         Log.printConcatLine("Combiners of This Job: " + InfiniSim.combinersOfTheJob.get());
         Log.printConcatLine("Reducers of This Job: " + InfiniSim.reducersOfTheJob.get());
