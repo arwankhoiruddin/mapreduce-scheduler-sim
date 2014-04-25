@@ -48,10 +48,10 @@ public class InfJob implements pt.inesc_id.gsd.cloud2sim.mapreduce.core.Job {
      */
     public static void printStatus() {
         Log.printConcatLine("******Printing the number of jobs, mappers, combiners, and reducers executed************");
-        Log.printConcatLine("Number of Jobs: " + InfiniSim.getValue(MapReduceConstants.JOBS_FLAG));
-        Log.printConcatLine("Number of Mappers: " + InfiniSim.getValue(MapReduceConstants.MAPPERS_FLAG));
-        Log.printConcatLine("Number of Combiners: " + InfiniSim.getValue(MapReduceConstants.COMBINERS_FLAG));
-        Log.printConcatLine("Number of Reducers: " + InfiniSim.getValue(MapReduceConstants.REDUCERS_FLAG));
+//        Log.printConcatLine("Number of Jobs: " + InfiniSim.getValue(MapReduceConstants.JOBS_FLAG));
+//        Log.printConcatLine("Number of Mappers: " + InfiniSim.getValue(MapReduceConstants.MAPPERS_FLAG));
+//        Log.printConcatLine("Number of Combiners: " + InfiniSim.getValue(MapReduceConstants.COMBINERS_FLAG));
+//        Log.printConcatLine("Number of Reducers: " + InfiniSim.getValue(MapReduceConstants.REDUCERS_FLAG));
         Log.printConcatLine("****************************************************************************************");
     }
 
@@ -60,9 +60,9 @@ public class InfJob implements pt.inesc_id.gsd.cloud2sim.mapreduce.core.Job {
      */
     public static void printJobStatus() {
         Log.printConcatLine("******Printing the number of jobs, mappers, combiners, and reducers executed************");
-        Log.printConcatLine("Number of Mappers: " + InfiniSim.getValue(MapReduceConstants.THIS_MAPPERS_FLAG));
-        Log.printConcatLine("Number of Combiners: " + InfiniSim.getValue(MapReduceConstants.THIS_COMBINERS_FLAG));
-        Log.printConcatLine("Number of Reducers: " + InfiniSim.getValue(MapReduceConstants.THIS_REDUCERS_FLAG));
+//        Log.printConcatLine("Number of Mappers: " + InfiniSim.getValue(MapReduceConstants.THIS_MAPPERS_FLAG));
+//        Log.printConcatLine("Number of Combiners: " + InfiniSim.getValue(MapReduceConstants.THIS_COMBINERS_FLAG));
+//        Log.printConcatLine("Number of Reducers: " + InfiniSim.getValue(MapReduceConstants.THIS_REDUCERS_FLAG));
         Log.printConcatLine("****************************************************************************************");
     }
 
