@@ -45,6 +45,8 @@ public class WordCountReducerFactory
 
         @Override
         public void reduce(Long value) {
+            HzMapReduceParams.reduceInvocations.getAndIncrement();
+
             if (ConfigReader.getIsVerbose()) {
                 Log.printConcatLine("Reduce..");
             }

@@ -55,6 +55,7 @@ public class HzMapReduceImpl {
 
             Log.printConcatLine("Printing the params of the primary map reduce job..");
             HzMapReduceParams.printJobStatus();
+            HzMapReduceParams.printStatus();
             Cloud2SimEngine.shutdownLogs();
 
             long wordCount = mapReduceCollate();

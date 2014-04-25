@@ -38,8 +38,9 @@ public class WordCountMapper
     }
 
     @Override
-
     public void map(String key, String document, Context<String, Long> context) {
+        HzMapReduceParams.mapInvocations.getAndIncrement();
+
         if (ConfigReader.getIsVerbose()) {
             Log.printConcatLine("Map..");
         }
@@ -52,5 +53,4 @@ public class WordCountMapper
             context.emit(tokenizer.nextToken(), ONE);
         }
     }
-
 }

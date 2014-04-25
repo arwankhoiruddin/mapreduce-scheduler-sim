@@ -43,6 +43,8 @@ public class WordCountCombinerFactory
 
         @Override
         public void combine(String key, Long value) {
+            HzMapReduceParams.combineInvocations.getAndIncrement();
+
             if (ConfigReader.getIsVerbose()) {
                 Log.printConcatLine("Combine..");
             }

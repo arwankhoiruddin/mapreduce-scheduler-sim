@@ -33,6 +33,12 @@ public final class HzMapReduceParams {
 
     public static IAtomicLong combinersOfTheJob = getParam(MapReduceConstants.THIS_COMBINERS_FLAG);
 
+    public static IAtomicLong mapInvocations = getParam(MapReduceConstants.MAP_FLAG);
+
+    public static IAtomicLong reduceInvocations = getParam(MapReduceConstants.REDUCE_FLAG);
+
+    public static IAtomicLong combineInvocations = getParam(MapReduceConstants.COMBINE_FLAG);
+
     /**
      * Create a distributed atomic long variable, with the given key
      * @param key, key of the variable.
@@ -51,6 +57,10 @@ public final class HzMapReduceParams {
         Log.printConcatLine("Number of Mappers: " + numberOfMappers.get());
         Log.printConcatLine("Number of Combiners: " + numberOfCombiners.get());
         Log.printConcatLine("Number of Reducers: " + numberOfReducers.get());
+        Log.printConcatLine("Invocations of Map(): " + mapInvocations.get());
+        Log.printConcatLine("Invocations of Combine() : " + combineInvocations.get());
+        Log.printConcatLine("Invocations of Reduce(): " + reduceInvocations.get());
+
         Log.printConcatLine("****************************************************************************************");
     }
 
@@ -58,7 +68,7 @@ public final class HzMapReduceParams {
      * Printing the characteristics of the current job.
      */
     public static void printJobStatus() {
-        Log.printConcatLine("******Printing the number of jobs, mappers, combiners, and reducers executed************");
+        Log.printConcatLine("******Printing the parameters of the last executed job************");
         Log.printConcatLine("Number of Mappers: " + mappersOfTheJob.get());
         Log.printConcatLine("Number of Combiners: " + combinersOfTheJob.get());
         Log.printConcatLine("Number of Reducers: " + reducersOfTheJob.get());
