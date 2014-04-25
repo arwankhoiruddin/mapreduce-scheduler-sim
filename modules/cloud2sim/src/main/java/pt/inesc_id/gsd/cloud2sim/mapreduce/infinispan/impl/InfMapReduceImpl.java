@@ -55,7 +55,7 @@ public class InfMapReduceImpl {
         } catch (Exception e) {
             Log.printConcatLine("Exception in starting the map reduce simulation with Infinispan. ", e);
         } finally {
-            InfJob.printJobStatus();
+            InfJob.printStatus();
             Cloud2SimEngine.shutdownLogs();
         }
     }

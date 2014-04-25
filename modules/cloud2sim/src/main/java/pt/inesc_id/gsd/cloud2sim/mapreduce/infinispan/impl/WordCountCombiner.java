@@ -12,6 +12,7 @@ package pt.inesc_id.gsd.cloud2sim.mapreduce.infinispan.impl;
 
 import org.cloudbus.cloudsim.Log;
 import org.cloudbus.cloudsim.compatibility.common.ConfigReader;
+import org.cloudbus.cloudsim.compatibility.infinispan.InfiniSim;
 import org.infinispan.distexec.mapreduce.Reducer;
 
 import java.util.Iterator;
@@ -23,12 +24,13 @@ public class WordCountCombiner implements Reducer<String, Long> {
     private long sum = 0;
 
     public WordCountCombiner() {
-//        InfiniSim.incrementFlagAtomically(MapReduceConstants.THIS_COMBINERS_FLAG);
-//        InfiniSim.incrementFlagAtomically(MapReduceConstants.COMBINERS_FLAG);
+        InfiniSim.combinersOfTheJob.getAndIncrement();
+        InfiniSim.numberOfCombiners.getAndIncrement();
     }
 
     @Override
     public Long reduce(String s, Iterator<Long> iter) {
+        InfiniSim.combineInvocations.getAndIncrement();
         if (ConfigReader.getIsVerbose()) {
             Log.printConcatLine("Combine..");
         }

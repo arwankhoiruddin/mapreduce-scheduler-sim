@@ -12,6 +12,7 @@ package pt.inesc_id.gsd.cloud2sim.mapreduce.infinispan.impl;
 
 import org.cloudbus.cloudsim.Log;
 import org.cloudbus.cloudsim.compatibility.common.ConfigReader;
+import org.cloudbus.cloudsim.compatibility.infinispan.InfiniSim;
 import org.infinispan.distexec.mapreduce.Collector;
 import org.infinispan.distexec.mapreduce.Mapper;
 
@@ -24,12 +25,13 @@ public class WordCountMapper  implements Mapper<String,String,String,Long> {
     private static final Long ONE = 1L;
 
     public WordCountMapper() {
-//        InfiniSim.incrementFlagAtomically(MapReduceConstants.THIS_MAPPERS_FLAG);
-//        InfiniSim.incrementFlagAtomically(MapReduceConstants.MAPPERS_FLAG);
+        InfiniSim.mappersOfTheJob.getAndIncrement();
+        InfiniSim.numberOfMappers.getAndIncrement();
     }
 
     @Override
     public void map(String key, String document, Collector<String, Long> context) {
+        InfiniSim.mapInvocations.getAndIncrement();
         if (ConfigReader.getIsVerbose()) {
             Log.printConcatLine("Map..");
         }
