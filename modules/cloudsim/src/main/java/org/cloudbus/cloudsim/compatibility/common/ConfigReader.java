@@ -27,8 +27,8 @@ public class ConfigReader {
     private static boolean isRR; // true
     private static boolean isVerbose; //true
     private static boolean withWorkload; //true
-    private static int simultaneousInstances; // 1
-    private static int noOfExecutions; // 2
+    private static int simultaneousInstances = 1;
+    private static int noOfExecutions = 1;
     private static int mapReduceSize;
 
     protected static Properties prop;
@@ -58,17 +58,25 @@ public class ConfigReader {
         boolean loaded = loadProperties();
 
         if (loaded) {
-            noOfUsers = Integer.parseInt(prop.getProperty("noOfUsers"));
-            noOfDatacenters = Integer.parseInt(prop.getProperty("noOfDatacenters"));
-            noOfHosts = Integer.parseInt(prop.getProperty("noOfHosts"));
-            noOfVms = Integer.parseInt(prop.getProperty("noOfVms"));
-            noOfCloudlets = Integer.parseInt(prop.getProperty("noOfCloudlets"));
-            isRR = Boolean.parseBoolean(prop.getProperty("isRR"));
-            withWorkload = Boolean.parseBoolean(prop.getProperty("withWorkload"));
-            simultaneousInstances = Integer.parseInt(prop.getProperty("simultaneousInstances"));
-            noOfExecutions = Integer.parseInt(prop.getProperty("noOfExecutions"));
+            String temp = prop.getProperty("mapReduceSize");
+            if (temp!= null) {
+                // map-reduce simulations
+                mapReduceSize = Integer.parseInt(temp);
+            }
             isVerbose = Boolean.parseBoolean(prop.getProperty("isVerbose"));
-            mapReduceSize = Integer.parseInt(prop.getProperty("mapReduceSize"));
+            temp = prop.getProperty("noOfUsers");
+            if (temp != null) {
+                // cloud simulations
+                noOfUsers = Integer.parseInt(temp);
+                noOfDatacenters = Integer.parseInt(prop.getProperty("noOfDatacenters"));
+                noOfHosts = Integer.parseInt(prop.getProperty("noOfHosts"));
+                noOfVms = Integer.parseInt(prop.getProperty("noOfVms"));
+                noOfCloudlets = Integer.parseInt(prop.getProperty("noOfCloudlets"));
+                isRR = Boolean.parseBoolean(prop.getProperty("isRR"));
+                withWorkload = Boolean.parseBoolean(prop.getProperty("withWorkload"));
+                simultaneousInstances = Integer.parseInt(prop.getProperty("simultaneousInstances"));
+                noOfExecutions = Integer.parseInt(prop.getProperty("noOfExecutions"));
+            }
         }
     }
 

@@ -83,6 +83,7 @@ public class ScalableSimulator {
             Cloud2SimEngine.setNoOfCloudlets(ConfigReader.getNoOfCloudlets());
             Cloud2SimEngine.setNoOfVms(ConfigReader.getNoOfVms());
 
+            System.out.println("222");
             broker.submitCloudletsAndVms();
 
 

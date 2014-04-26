@@ -44,18 +44,25 @@ public class Cloud2SimEngine {
      * Starts the executions and threads.
      */
     public static void start() {
-        startTime = System.currentTimeMillis();
-        HzConfigReader.readConfig();
-        Thread t = new Thread(new HealthMonitor());
-        t.start();
-        if (AutoScaleConfigReader.getMode().equalsIgnoreCase("adaptive")) {
-            AdaptiveScalerProbe.startHealthAnnouncerInstance();
-            Thread t2 = new Thread(new AdaptiveScalerProbe());
-            t2.start();
+        startHzMapReduceSimulator();
+        if (AutoScaleConfigReader.getTimeBetweenHealthChecks() > 0) {
+            Thread t = new Thread(new HealthMonitor());
+            t.start();
+
+            if (AutoScaleConfigReader.getMode() != null && AutoScaleConfigReader.getMode().equalsIgnoreCase("adaptive")) {
+                AdaptiveScalerProbe.startHealthAnnouncerInstance();
+                Thread t2 = new Thread(new AdaptiveScalerProbe());
+                t2.start();
+            }
         }
     }
 
-    public static void startInfinispan() {
+    public static void startHzMapReduceSimulator() {
+        startTime = System.currentTimeMillis();
+        HzConfigReader.readConfig();
+    }
+
+    public static void startInfMapReduceSimulator() {
         startTime = System.currentTimeMillis();
         ConfigReader.readConfig();
     }
@@ -129,7 +136,7 @@ public class Cloud2SimEngine {
      */
     public static void shutdown() {
         shutdownLogs();
-        if (AutoScaleConfigReader.getMode().equalsIgnoreCase("adaptive")) {
+        if (AutoScaleConfigReader.getMode() != null && AutoScaleConfigReader.getMode().equalsIgnoreCase("adaptive")) {
             AdaptiveScalerProbe.setTerminateAllKey();
         }
         Hazelcast.shutdownAll();

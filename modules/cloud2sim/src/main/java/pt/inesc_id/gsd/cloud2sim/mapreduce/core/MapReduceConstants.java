@@ -19,7 +19,7 @@ public class MapReduceConstants {
 
     public static final String DEFAULT_KEY_VALUE_STORE = "articles";
 
-    public static final String LOAD_FOLDER = "conf/mapreduce";
+    public static final String LOAD_FOLDER = "conf/mapreduce/load";
 
     public static final String MAP_FLAG = "numberOfMapInvocations";
     public static final String REDUCE_FLAG = "numberOfReduceInvocations";

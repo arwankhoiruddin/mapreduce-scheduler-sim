@@ -99,6 +99,7 @@ public class HzDatacenterBroker extends DatacenterBroker {
      * @throws ExecutionException, if the execution failed.
      */
     public void submitCloudletsAndVms() throws InterruptedException, ExecutionException {
+        System.out.println("XXXXXXZZZ");
         Map <Member, Future< Integer >> vmResult =
                 vmExecutor.submitToAllMembers(new VmListSubmitter());
         Map <Member, Future< Integer >> cloudletResult =

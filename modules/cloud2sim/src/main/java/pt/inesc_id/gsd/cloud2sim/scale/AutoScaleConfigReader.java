@@ -27,18 +27,35 @@ public class AutoScaleConfigReader extends HzConfigReader {
      * Read the config file for autoscaler properties
      */
     public static void readConfig() {
+        String temp;
         HzConfigReader.readConfig();
-        maxNumberOfInstancesToBeSpawned = Integer.parseInt(prop.getProperty("maxNumberOfInstancesToBeSpawned"));
-        highThresholdProcessCpuLoad = Double.parseDouble(prop.getProperty("highThresholdProcessCpuLoad"));
-        lowThresholdProcessCpuLoad = Double.parseDouble(prop.getProperty("lowThresholdProcessCpuLoad"));
-        timeBetweenScalingDecisions = Integer.parseInt(prop.getProperty("timeBetweenScalingDecisions"));
-        timeBetweenHealthChecks = Integer.parseInt(prop.getProperty("timeBetweenHealthChecks"));
+        temp = prop.getProperty("maxNumberOfInstancesToBeSpawned");
+        if (temp != null) {
+            maxNumberOfInstancesToBeSpawned = Integer.parseInt(temp);
+        }
+        temp = prop.getProperty("highThresholdProcessCpuLoad");
+        if (temp != null) {
+            highThresholdProcessCpuLoad = Double.parseDouble(temp);
+        }
+        temp = prop.getProperty("lowThresholdProcessCpuLoad");
+        if (temp != null) {
+            lowThresholdProcessCpuLoad = Double.parseDouble(temp);
+        }
+        temp = prop.getProperty("timeBetweenScalingDecisions");
+        if (temp != null) {
+            timeBetweenScalingDecisions = Integer.parseInt(temp);
+        }
+        temp = prop.getProperty("timeBetweenHealthChecks");
+        if (temp != null) {
+            timeBetweenHealthChecks = Integer.parseInt(temp);
+        }
         scalingMode = prop.getProperty("scalingMode");
     }
 
     /**
      * Get the Maximum number of instances that are spawned. The number of instances could go up to 1 + the maximum
      * number of instances to be spawned, including the simulator instance itself.
+     *
      * @return the maximum number of instances.
      */
     public static int getMaxNumberOfInstancesToBeSpawned() {
@@ -47,6 +64,7 @@ public class AutoScaleConfigReader extends HzConfigReader {
 
     /**
      * Gets the high threshold for the process cpu load
+     *
      * @return high threshold for the process cpu load
      */
     public static double getHighThresholdProcessCpuLoad() {
@@ -55,6 +73,7 @@ public class AutoScaleConfigReader extends HzConfigReader {
 
     /**
      * Gets the low threshold for the process cpu load
+     *
      * @return low threshold for the process cpu load
      */
     public static double getLowThresholdProcessCpuLoad() {
@@ -63,6 +82,7 @@ public class AutoScaleConfigReader extends HzConfigReader {
 
     /**
      * Time between any two consecutive scaling decisions - scaling up or scaling down.
+     *
      * @return time between scaling decisions, in seconds.
      */
     public static int getTimeBetweenScalingDecisions() {
@@ -71,6 +91,7 @@ public class AutoScaleConfigReader extends HzConfigReader {
 
     /**
      * Time between two consecutive health checks for the scaling decisions
+     *
      * @return time between health checks, in seconds.
      */
     public static int getTimeBetweenHealthChecks() {

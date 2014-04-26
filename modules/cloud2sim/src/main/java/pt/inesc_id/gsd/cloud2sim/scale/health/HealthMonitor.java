@@ -39,7 +39,7 @@ public class HealthMonitor implements Runnable {
         AutoScaleConfigReader.readConfig();
         runtime = Runtime.getRuntime();
         osMxBean = ManagementFactory.getPlatformMXBean(OperatingSystemMXBean.class);
-        if (AutoScaleConfigReader.getMode().equalsIgnoreCase("adaptive")) {
+        if (AutoScaleConfigReader.getMode() != null && AutoScaleConfigReader.getMode().equalsIgnoreCase("adaptive")) {
             AdaptiveScalerProbe.startHealthAnnouncerInstance();
         }
     }
@@ -105,17 +105,23 @@ public class HealthMonitor implements Runnable {
                 AutoScaler.getSize() < AutoScaleConfigReader.getMaxNumberOfInstancesToBeSpawned()) {
             Log.printConcatLine("[HealthMonitor] Process CPU Load: " + processCpuLoad +
                     ". Exceeds the allowed maximum.");
-            if (AutoScaleConfigReader.getMode().equalsIgnoreCase("auto")) {
-                return AutoScaler.spawnInstance();
-            } else {
-                return AdaptiveScalerProbe.addInstance();
+            if (AutoScaleConfigReader.getMode() != null) {
+                if (AutoScaleConfigReader.getMode().equalsIgnoreCase("auto")) {
+                    return AutoScaler.spawnInstance();
+                } else {
+                    return AdaptiveScalerProbe.addInstance();
+                }
             }
         } else if (processCpuLoad < AutoScaleConfigReader.getLowThresholdProcessCpuLoad()) {
             Log.printConcatLine("[HealthMonitor] Process CPU Load: " + processCpuLoad + ". Falls below the minimum.");
-            if (AutoScaleConfigReader.getMode().equalsIgnoreCase("auto")) {
-                return AutoScaler.terminateInstance();
-            } else {
-                return AdaptiveScalerProbe.removeInstance();
+
+            if (AutoScaleConfigReader.getMode() != null) {
+
+                if (AutoScaleConfigReader.getMode().equalsIgnoreCase("auto")) {
+                    return AutoScaler.terminateInstance();
+                } else {
+                    return AdaptiveScalerProbe.removeInstance();
+                }
             }
         }
         return false;

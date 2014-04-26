@@ -12,6 +12,7 @@ package pt.inesc_id.gsd.cloud2sim.mapreduce.infinispan;
 
 import org.cloudbus.cloudsim.Log;
 import org.cloudbus.cloudsim.compatibility.common.ConfigReader;
+import org.cloudbus.cloudsim.core.CloudSim;
 import pt.inesc_id.gsd.cloud2sim.core.Cloud2SimEngine;
 import pt.inesc_id.gsd.cloud2sim.mapreduce.infinispan.impl.InfMapReduceImpl;
 
@@ -25,10 +26,11 @@ public class InfMapReduceSimulator {
     }
 
     private static void simulateMapReduce() throws Exception {
-        Cloud2SimEngine.startInfinispan();
+        Cloud2SimEngine.startInfMapReduceSimulator();
         Log.printLine("# Starting the Infinispan Map Reduce Simulator...");
         InfJob infJob = new InfJob();
         infJob.init(ConfigReader.getMapReduceSize());
+        CloudSim.setSimulationStartedTime(System.currentTimeMillis());
         InfMapReduceImpl.initiate(infJob);
     }
 }

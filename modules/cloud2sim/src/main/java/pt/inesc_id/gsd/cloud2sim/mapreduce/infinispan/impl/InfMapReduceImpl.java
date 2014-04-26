@@ -12,7 +12,6 @@ package pt.inesc_id.gsd.cloud2sim.mapreduce.infinispan.impl;
 
 import org.cloudbus.cloudsim.Log;
 import org.cloudbus.cloudsim.compatibility.common.ConfigReader;
-import org.cloudbus.cloudsim.core.CloudSim;
 import org.infinispan.distexec.mapreduce.MapReduceTask;
 import pt.inesc_id.gsd.cloud2sim.core.Cloud2SimEngine;
 import pt.inesc_id.gsd.cloud2sim.mapreduce.core.MapReduceConstants;
@@ -38,7 +37,6 @@ public class InfMapReduceImpl {
      */
     public static void initiate(InfJob infJob1) {
         infJob = infJob1;
-        CloudSim.setSimulationStartedTime(System.currentTimeMillis());
         try {
             fillMapWithData();
 
