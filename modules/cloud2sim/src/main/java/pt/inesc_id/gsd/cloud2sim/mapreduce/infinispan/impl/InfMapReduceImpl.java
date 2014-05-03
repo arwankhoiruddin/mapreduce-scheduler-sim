@@ -61,7 +61,7 @@ public class InfMapReduceImpl {
     private static void fillMapWithData()
             throws Exception {
 
-        File folder = new File(MapReduceConstants.LOAD_FOLDER);
+        File folder = new File(MapReduceConstants.BULK_LOAD_FOLDER);
         Log.printConcatLine("Filling the map with data..");
         if (folder.listFiles() == null) {
             Log.printConcatLine("Empty load provided. Terminating the simulation.");
@@ -69,7 +69,7 @@ public class InfMapReduceImpl {
         }
         for (File file : folder.listFiles()) {
             String fileName = file.getName();
-            InputStream is = new FileInputStream(MapReduceConstants.LOAD_FOLDER + File.separator + fileName);
+            InputStream is = new FileInputStream(MapReduceConstants.BULK_LOAD_FOLDER + File.separator + fileName);
             LineNumberReader reader = new LineNumberReader(new InputStreamReader(is));
 
             StringBuilder sb = new StringBuilder();

@@ -57,8 +57,11 @@ Set the map-reduce workload size in the conf/infinispan.properties.
 # By default, up to 128 460, by using the 3 default files in conf/mapreduce
 mapReduceSize=10
 
+To run the initiator,
+$ nohup java -classpath cloudsim-3.1-SNAPSHOT.jar:lib/*:cloud2sim-1.0-SNAPSHOT.jar pt.inesc_id.gsd.cloud2sim.infinispan.Initiator > nohup.out &
+
 To run the simulations,
-$ java -classpath cloudsim-3.1-SNAPSHOT.jar:lib/*:cloud2sim-1.0-SNAPSHOT.jar pt.inesc_id.gsd.cloud2sim.mapreduce.infinispan.InfMapReduceSimulator
+$ nohup java -classpath cloudsim-3.1-SNAPSHOT.jar:lib/*:cloud2sim-1.0-SNAPSHOT.jar pt.inesc_id.gsd.cloud2sim.mapreduce.infinispan.InfMapReduceSimulator > nohup.out &
 
 Copy the files to the other instances.
 ----------------------------------------
