@@ -48,6 +48,8 @@ mapReduceSize=10
 To run the simulations,
 $ java -classpath cloudsim-3.1-SNAPSHOT.jar:lib/hazelcast-3.2.jar:cloud2sim-1.0-SNAPSHOT.jar pt.inesc_id.gsd.cloud2sim.mapreduce.hazelcast.HzMapReduceSimulator
 
+To run with nohup, printing the output to nohup.out,
+$ nohup java -classpath cloudsim-3.1-SNAPSHOT.jar:lib/hazelcast-3.2.jar:cloud2sim-1.0-SNAPSHOT.jar pt.inesc_id.gsd.cloud2sim.mapreduce.hazelcast.HzMapReduceSimulator > nohup.out &
 
 2) Using Infinispan
 --------------------
