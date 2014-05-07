@@ -13,6 +13,7 @@ package pt.inesc_id.gsd.cloud2sim.applications.main.parallel;
 import org.cloudbus.cloudsim.Datacenter;
 import org.cloudbus.cloudsim.Log;
 import org.cloudbus.cloudsim.compatibility.common.ConfigReader;
+import org.cloudbus.cloudsim.compatibility.hazelcast.HzConstants;
 import pt.inesc_id.gsd.cloud2sim.applications.callables.DatacenterCreatorCallable;
 import pt.inesc_id.gsd.cloud2sim.core.Cloud2SimEngine;
 import pt.inesc_id.gsd.cloud2sim.hazelcast.HzCloudSim;
@@ -52,7 +53,7 @@ public class ParallelSimulator {
             Calendar calendar = Calendar.getInstance();
             boolean trace_flag = false;  // mean trace events
 
-            String clusterGroup = "main" + id;
+            String clusterGroup = HzConstants.MAIN_HZ_CLUSTER + id;
 
             // Initialize the CloudSim library
             HzCloudSim.init(ConfigReader.getNoOfUsers(), calendar, trace_flag, clusterGroup);
