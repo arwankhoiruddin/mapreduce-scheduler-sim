@@ -13,7 +13,6 @@ package pt.inesc_id.gsd.cloud2sim.mapreduce.infinispan;
 import org.cloudbus.cloudsim.Log;
 import org.cloudbus.cloudsim.compatibility.infinispan.InfiniSim;
 import org.infinispan.Cache;
-import pt.inesc_id.gsd.cloud2sim.mapreduce.core.MapReduceConstants;
 
 /**
  * Infinispan representation of the Job
