@@ -14,7 +14,6 @@ import org.cloudbus.cloudsim.Log;
 import org.cloudbus.cloudsim.compatibility.common.ConfigReader;
 import org.infinispan.distexec.mapreduce.MapReduceTask;
 import pt.inesc_id.gsd.cloud2sim.core.Cloud2SimEngine;
-import pt.inesc_id.gsd.cloud2sim.mapreduce.core.MapReduceConstants;
 import pt.inesc_id.gsd.cloud2sim.mapreduce.infinispan.InfJob;
 import pt.inesc_id.gsd.cloud2sim.mapreduce.infinispan.InfMapReduceTask;
 
@@ -61,7 +60,7 @@ public class InfMapReduceImpl {
     private static void fillMapWithData()
             throws Exception {
 
-        File folder = new File(MapReduceConstants.BULK_LOAD_FOLDER);
+        File folder = new File(ConfigReader.getLoadFolder());
         Log.printConcatLine("Filling the map with data..");
         if (folder.listFiles() == null) {
             Log.printConcatLine("Empty load provided. Terminating the simulation.");
@@ -69,7 +68,7 @@ public class InfMapReduceImpl {
         }
         for (File file : folder.listFiles()) {
             String fileName = file.getName();
-            InputStream is = new FileInputStream(MapReduceConstants.BULK_LOAD_FOLDER + File.separator + fileName);
+            InputStream is = new FileInputStream(ConfigReader.getLoadFolder() + File.separator + fileName);
             LineNumberReader reader = new LineNumberReader(new InputStreamReader(is));
 
             StringBuilder sb = new StringBuilder();

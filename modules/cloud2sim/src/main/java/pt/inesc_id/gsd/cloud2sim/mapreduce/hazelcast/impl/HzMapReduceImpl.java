@@ -15,6 +15,7 @@ import com.hazelcast.core.ICompletableFuture;
 import com.hazelcast.core.IMap;
 import com.hazelcast.mapreduce.Job;
 import org.cloudbus.cloudsim.Log;
+import org.cloudbus.cloudsim.compatibility.common.ConfigReader;
 import org.cloudbus.cloudsim.compatibility.hazelcast.HzConfigReader;
 import pt.inesc_id.gsd.cloud2sim.core.Cloud2SimEngine;
 import pt.inesc_id.gsd.cloud2sim.mapreduce.hazelcast.HzJob;
@@ -125,7 +126,7 @@ public class HzMapReduceImpl {
     private static void fillMapWithData()
             throws Exception {
 
-        File folder = new File(MapReduceConstants.LOAD_FOLDER);
+        File folder = new File(ConfigReader.getLoadFolder());
         Log.printConcatLine("Filling the map with data..");
         IMap<String, String> map = HzJob.getHazelcastInstance().getMap(MapReduceConstants.DEFAULT_KEY_VALUE_STORE);
         if (folder.listFiles() == null) {
@@ -134,7 +135,7 @@ public class HzMapReduceImpl {
         }
         for (File file : folder.listFiles()) {
             String fileName = file.getName();
-            InputStream is = new FileInputStream(MapReduceConstants.LOAD_FOLDER + File.separator + fileName) ;
+            InputStream is = new FileInputStream(ConfigReader.getLoadFolder() + File.separator + fileName) ;
             LineNumberReader reader = new LineNumberReader(new InputStreamReader(is));
 
             StringBuilder sb = new StringBuilder();

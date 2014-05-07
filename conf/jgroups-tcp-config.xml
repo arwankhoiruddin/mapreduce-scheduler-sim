@@ -50,11 +50,20 @@
         />
    -->
 
-   <MPING bind_addr="${jgroups.bind_addr:127.0.0.1}" break_on_coord_rsp="true"
+    <TCPPING timeout="50000"
+             initial_hosts="${jgroups.tcpping.initial_hosts:146.193.41.141[7806], 146.193.41.142[7806],
+                 146.193.41.143[7806], 146.193.41.144[7806], 146.193.41.145[7806], 146.193.41.146[7806]}"
+             port_range="1"
+             num_initial_members="1"
+             ergonomics="false"
+            />
+
+    <!--MPING bind_addr="${jgroups.bind_addr:127.0.0.1}" break_on_coord_rsp="true"
       mcast_addr="${jgroups.mping.mcast_addr:228.2.4.6}"
       mcast_port="${jgroups.mping.mcast_port:43366}"
       ip_ttl="${jgroups.udp.ip_ttl:2}"
-      num_initial_members="3"/>
+      num_initial_members="3"/-->
+
    <MERGE2 max_interval="30000" min_interval="10000"/>
 
    <FD_SOCK/>

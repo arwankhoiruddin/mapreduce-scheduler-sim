@@ -30,6 +30,7 @@ public class ConfigReader {
     private static int simultaneousInstances = 1;
     private static int noOfExecutions = 1;
     private static int mapReduceSize;
+    private static String loadFolder;
 
     protected static Properties prop;
 
@@ -64,6 +65,7 @@ public class ConfigReader {
                 mapReduceSize = Integer.parseInt(temp);
             }
             isVerbose = Boolean.parseBoolean(prop.getProperty("isVerbose"));
+            loadFolder = prop.getProperty("loadFolder");
             temp = prop.getProperty("noOfUsers");
             if (temp != null) {
                 // cloud simulations
@@ -122,5 +124,9 @@ public class ConfigReader {
 
     public static int getMapReduceSize() {
         return mapReduceSize;
+    }
+
+    public static String getLoadFolder() {
+        return loadFolder;
     }
 }
