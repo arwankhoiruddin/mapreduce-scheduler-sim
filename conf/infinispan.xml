@@ -3,7 +3,7 @@
     <global>
         <transport>
             <properties>
-                <property name="configurationFile" value="conf/jgroups-tcp-config.xml"/>
+                <property name="configurationFile" value="conf/jgroups-udp-config.xml"/>
             </properties>
         </transport>
     </global>

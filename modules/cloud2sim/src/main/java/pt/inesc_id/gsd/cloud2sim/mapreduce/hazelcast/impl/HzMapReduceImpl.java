@@ -133,6 +133,7 @@ public class HzMapReduceImpl {
             Log.printConcatLine("Empty load provided. Terminating the simulation.");
             return;
         }
+        Integer readFilesCount = 0;
         for (File file : folder.listFiles()) {
             String fileName = file.getName();
             InputStream is = new FileInputStream(ConfigReader.getLoadFolder() + File.separator + fileName) ;
@@ -150,6 +151,14 @@ public class HzMapReduceImpl {
             is.close();
             reader.close();
             processedFiles++;
+
+            if (ConfigReader.getFilesRead() > 0) {
+                readFilesCount++;
+                if (readFilesCount >= ConfigReader.getFilesRead()) {
+                    Log.printConcatLine("Finished reading the " + ConfigReader.getFilesRead() + " files.");
+                    return;
+                }
+            }
         }
     }
 }
