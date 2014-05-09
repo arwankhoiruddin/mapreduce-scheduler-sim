@@ -23,6 +23,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.LineNumberReader;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Infinispan based implementation of map-reduce simulation
@@ -34,13 +35,15 @@ public class InfMapReduceImpl {
     /**
      * Initiate the map reduce simulation
      */
-    public static void initiate(InfJob infJob1) {
+    public static void initiate(InfJob infJob1) throws Exception {
         infJob = infJob1;
         try {
             fillMapWithData();
 
             Log.printConcatLine("Starting the Primary Map Reduce Job with size " + infJob.getSize());
             MapReduceTask<String, String, String, Long> t = InfMapReduceTask.getMapReduceTask();
+            // long enough not to timeout
+            t.timeout(10, TimeUnit.MINUTES);
             t.mappedWith(new WordCountMapper()).reducedWith(new WordCountReducer());
             Map<String, Long> wordCountMap = t.execute();
             if (ConfigReader.getIsVerbose()) {
@@ -49,8 +52,6 @@ public class InfMapReduceImpl {
                     Log.printConcatLine("\tWord '" + entry.getKey() + "' occurred " + entry.getValue() + " times");
                 }
             }
-        } catch (Exception e) {
-            Log.printConcatLine("Exception in starting the map reduce simulation with Infinispan. ", e);
         } finally {
             InfJob.printStatus();
             Cloud2SimEngine.shutdownLogs();
