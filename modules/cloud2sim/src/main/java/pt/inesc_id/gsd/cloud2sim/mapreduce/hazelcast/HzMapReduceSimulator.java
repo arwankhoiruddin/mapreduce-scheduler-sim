@@ -32,7 +32,7 @@ public class HzMapReduceSimulator {
      * @throws Exception, if the simulation failed.
      */
     public static void simulateMapReduce() throws Exception {
-        Cloud2SimEngine.startHzMapReduceSimulator();
+        Cloud2SimEngine.startHz();
         Log.printLine("# Starting the Map Reduce Simulator...");
         initCloud2Sim();
         HzJob hzJob = new HzJob();

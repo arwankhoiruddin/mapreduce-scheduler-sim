@@ -44,7 +44,7 @@ public class Cloud2SimEngine {
      * Starts the executions and threads.
      */
     public static void start() {
-        startHzMapReduceSimulator();
+        startHz();
         if (AutoScaleConfigReader.getTimeBetweenHealthChecks() > 0) {
             Thread t = new Thread(new HealthMonitor());
             t.start();
@@ -57,7 +57,7 @@ public class Cloud2SimEngine {
         }
     }
 
-    public static void startHzMapReduceSimulator() {
+    public static void startHz() {
         startTime = System.currentTimeMillis();
         HzConfigReader.readConfig();
     }
