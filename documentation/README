@@ -21,6 +21,8 @@ Running the Simulations.
 To run an existing example:
 $ java -classpath cloudsim-3.1-SNAPSHOT.jar:cloudsim-examples-3.1-SNAPSHOT.jar:lib/hazelcast-3.2.jar:cloud2sim-1.0-SNAPSHOT.jar pt.inesc_id.gsd.cloud2sim.applications.main.statics.Simulator
 
+$ java -classpath cloudsim-3.1-SNAPSHOT.jar:cloudsim-examples-3.1-SNAPSHOT.jar:lib/hazelcast-3.2.jar:cloud2sim-1.0-SNAPSHOT.jar org.cloudbus.cloudsim.examples.power.planetlab.Dvfs
+
 To initiate an instance without running any specific code:
 $ java -classpath cloudsim-3.1-SNAPSHOT.jar:lib/hazelcast-3.2.jar:cloud2sim-1.0-SNAPSHOT.jar pt.inesc_id.gsd.cloud2sim.applications.main.dynamics.Initiator
 
