@@ -34,6 +34,7 @@ public class HealthMonitor implements Runnable {
     private double systemCpuLoad;
     private double processCpuLoad;
     private double systemLoadAverage; // -1.0 in windows
+    private static String healthLogs = "";
 
     public HealthMonitor() {
         AutoScaleConfigReader.readConfig();
@@ -57,6 +58,18 @@ public class HealthMonitor implements Runnable {
         systemCpuLoad = osMxBean.getSystemCpuLoad(); // get(osMxBean, "getSystemCpuLoad", -1L);
         processCpuLoad = osMxBean.getProcessCpuLoad();
         systemLoadAverage = osMxBean.getSystemLoadAverage();
+        healthLogs += "[HealthMonitor]: Memory Used of Total, as Percentage: " + memoryUsedOfTotalPercentage +
+                ". Memory Used of Maximum, as Percentage: " + memoryUsedOfMaxPercentage +
+                ". System CPU Load: " + systemCpuLoad + ". Process CPU Load: " + processCpuLoad +
+                ". System Load Average: " + systemLoadAverage + ".\n";
+    }
+
+    /**
+     * Gets the health logs that are stored.
+     * @return health logs
+     */
+    public static String getHealthLogs() {
+        return healthLogs;
     }
 
     public long getMemoryFree() {

@@ -59,7 +59,7 @@ public class Cloud2SimEngine {
 
     public static void startHz() {
         startTime = System.currentTimeMillis();
-        HzConfigReader.readConfig();
+        AutoScaleConfigReader.readConfig();
     }
 
     public static void startInfMapReduceSimulator() {
@@ -153,6 +153,10 @@ public class Cloud2SimEngine {
         Log.printLine("The time taken for the initialization: " + (totalTimeTaken - timeTakenForSimulation) +
                 " s.");
         Log.printLine("The total time taken for the execution: " + totalTimeTaken + " s.");
+
+        if (AutoScaleConfigReader.getTimeBetweenHealthChecks() > 0) {
+            Log.printConcatLine(HealthMonitor.getHealthLogs());
+        }
     }
 
     /**
