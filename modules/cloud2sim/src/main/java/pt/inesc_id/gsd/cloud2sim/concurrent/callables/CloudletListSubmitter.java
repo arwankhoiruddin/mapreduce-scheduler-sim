@@ -27,6 +27,7 @@ import java.util.concurrent.Callable;
 public class CloudletListSubmitter implements Callable, Serializable, HazelcastInstanceAware {
     private transient HazelcastInstance hazelcastInstance;
     private transient HzObjectCollection hzObjectCollection;
+    private boolean isPU = true;
 
     @Override
     public Integer call() throws Exception {
@@ -46,6 +47,31 @@ public class CloudletListSubmitter implements Callable, Serializable, HazelcastI
                 int value = LoadGenerator.ifPrime(Double.valueOf(cloudletId));
                 cloudlet.setCloudletLength(value);
             }
+
+            if (isPU) {
+                IMap vmmap = hzObjectCollection.getUserVmList();
+
+                int minVmLength = (int) (cloudlet.getCloudletLength() * 1000 / 40);
+                Object returnKey = null;
+                long size = 0;
+                long tempSize;
+                for (Object vmkey : vmmap.localKeySet()) {
+                    tempSize = hzObjectCollection.getUserVmList().get(vmkey).getSize();
+                    if (tempSize > minVmLength) {
+                        if (size == 0) {
+                            returnKey = key;
+                            size = tempSize;
+                        } else if (tempSize < size) {
+                            returnKey = key;
+                            size = tempSize;
+                        }
+                    }
+                }
+                if (returnKey != null) {
+                    cloudlet.setVmId((Integer) returnKey);
+                }
+            }
+
             hzObjectCollection.getCloudletList().put(cloudletId, cloudlet);
         }
 
