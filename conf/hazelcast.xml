@@ -39,8 +39,8 @@
             </multicast>
             <tcp-ip enabled="true">
                 <member>146.193.41.141-146</member>
-                <member>146.193.41.107</member>
-                <member>146.193.41.111</member>
+                <!--member>146.193.41.107</member>
+                <member>146.193.41.111</member-->
             </tcp-ip>
             <aws enabled="false">
                 <access-key>my-access-key</access-key>

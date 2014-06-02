@@ -23,7 +23,7 @@ $ java -classpath cloudsim-3.1-SNAPSHOT.jar:cloudsim-examples-3.1-SNAPSHOT.jar:l
 
 $ java -classpath cloudsim-3.1-SNAPSHOT.jar:cloudsim-examples-3.1-SNAPSHOT.jar:lib/hazelcast-3.2.jar:cloud2sim-1.0-SNAPSHOT.jar org.cloudbus.cloudsim.examples.power.planetlab.Dvfs
 
-$ java -classpath cloudsim-3.1-SNAPSHOT.jar:cloudsim-examples-3.1-SNAPSHOT.jar:lib/hazelcast-3.2.jar:cloud2sim-1.0-SNAPSHOT.jar pt.inesc_id.gsd.cloud2sim.applications.main.mm.Simulator
+$ nohup java -classpath cloudsim-3.1-SNAPSHOT.jar:cloudsim-examples-3.1-SNAPSHOT.jar:lib/hazelcast-3.2.jar:cloud2sim-1.0-SNAPSHOT.jar pt.inesc_id.gsd.cloud2sim.applications.main.mm.Simulator &
 
 To initiate an instance without running any specific code:
 $ java -classpath cloudsim-3.1-SNAPSHOT.jar:lib/hazelcast-3.2.jar:cloud2sim-1.0-SNAPSHOT.jar pt.inesc_id.gsd.cloud2sim.applications.main.dynamics.Initiator

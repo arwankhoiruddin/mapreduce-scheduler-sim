@@ -29,10 +29,9 @@ public final class HzConstants {
     public static final String HAZELCAST_CONFIG_FILE = HzConfigReader.getHazelcastXml();
     public static final String HAZELCAST_CONFIG_FILE_NOT_FOUND_ERROR =
             "Hazelcast Configuration File not found. Using the default.";
-    public static final String DEFAULT_HAZELCAST_ADDRESS = "127.0.0.1:5701";
     public static final int FIRST = 0;
     public static final int LAST = HAZELCAST_INSTANCES_STARTED_SIMULTANEOUSLY - 1;
 
-    public static final String MAIN_HZ_CLUSTER = "main";
-    public static final String SUB_HZ_CLUSTER = "sub";
+    public static final String MAIN_HZ_CLUSTER = HzConfigReader.getMainClusterName();
+    public static final String SUB_HZ_CLUSTER = HzConfigReader.getSubClusterName();
 }

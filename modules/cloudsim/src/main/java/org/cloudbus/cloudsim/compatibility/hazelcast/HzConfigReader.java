@@ -17,13 +17,25 @@ import org.cloudbus.cloudsim.compatibility.common.ConfigReader;
  */
 public class HzConfigReader extends ConfigReader {
     private static String hazelcastXml;
+    private static String mainClusterName;
+    private static String subClusterName;
 
     public static void readConfig() {
         ConfigReader.readConfig();
         hazelcastXml = prop.getProperty("hazelcastXml");
+        mainClusterName = prop.getProperty("mainCluster");
+        subClusterName = prop.getProperty("subCluster");
     }
 
     public static String getHazelcastXml() {
         return hazelcastXml;
+    }
+
+    public static String getMainClusterName() {
+        return mainClusterName;
+    }
+
+    public static String getSubClusterName() {
+        return subClusterName;
     }
 }
