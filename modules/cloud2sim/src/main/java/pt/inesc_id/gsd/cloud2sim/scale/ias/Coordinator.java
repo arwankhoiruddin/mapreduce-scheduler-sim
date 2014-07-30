@@ -80,8 +80,6 @@ public class Coordinator implements Runnable {
         return HzObjectCollection.getHzObjectCollection().getFirstInstance(iKey).getMap("nodeHealth");
     }
 
-
-
     /**
      * Spawns an instances in the given cluster.
      */
