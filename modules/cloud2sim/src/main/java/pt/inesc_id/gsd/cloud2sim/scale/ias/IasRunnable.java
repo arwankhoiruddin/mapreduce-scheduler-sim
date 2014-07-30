@@ -19,6 +19,7 @@ import org.cloudbus.cloudsim.Log;
 import org.cloudbus.cloudsim.compatibility.hazelcast.HazelSimCore;
 import pt.inesc_id.gsd.cloud2sim.hazelcast.HzObjectCollection;
 import pt.inesc_id.gsd.cloud2sim.scale.AutoScaleConfigReader;
+import pt.inesc_id.gsd.cloud2sim.scale.DynamicScalingConstants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -81,10 +82,12 @@ public class IasRunnable implements Runnable {
             return 1;
         } else {
             if (getNodeHealth().get("toScaleIn")) {
-                if (key.get() == -2) {
+                if (key.get() == DynamicScalingConstants.TERMINATE_ALL_FLAG) {
                     if (instances.get(0).getCluster().getMembers().size() == 2) {
-                        for (Object o : HzObjectCollection.getHzObjectCollection().getFirstInstance().getDistributedObjects()) {
-                            HzObjectCollection.getHzObjectCollection().getFirstInstance().getDistributedObjects().remove(o);
+                        for (Object o :
+                                HzObjectCollection.getHzObjectCollection().getFirstInstance().getDistributedObjects()) {
+                            HzObjectCollection.getHzObjectCollection().getFirstInstance().
+                                    getDistributedObjects().remove(o);
                         }
                     }
                     instances.get(0).shutdown();

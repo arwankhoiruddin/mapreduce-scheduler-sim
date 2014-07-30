@@ -21,9 +21,13 @@ public class HzConfigReader extends ConfigReader {
     private static String subClusterName;
 
     public static void readConfig() {
+        readConfig("mainCluster");
+    }
+
+    public static void readConfig(String iMainCluster) {
         ConfigReader.readConfig();
         hazelcastXml = prop.getProperty("hazelcastXml");
-        mainClusterName = prop.getProperty("mainCluster");
+        mainClusterName = prop.getProperty(iMainCluster);
         subClusterName = prop.getProperty("subCluster");
     }
 

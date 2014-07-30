@@ -34,6 +34,14 @@ public class HazelSimCore {
      * @return hazelcast configurations
      */
     public static Config getCfg() {
+        return getCfg(clusterGroup);
+    }
+
+    /**
+     * Gets the configurations
+     * @return hazelcast configurations
+     */
+    public static Config getCfg(String mainCluster) {
         Config cfg;
         try {
             cfg = new FileSystemXmlConfig(HzConstants.HAZELCAST_CONFIG_FILE);
@@ -43,10 +51,12 @@ public class HazelSimCore {
         }
         cfg.setProperty("hazelcast.initial.min.cluster.size", String.valueOf(HzConstants.NO_OF_PARALLEL_EXECUTIONS));
         cfg.setProperty("hazelcast.operation.call.timeout.millis", "50000000");
-        GroupConfig groupConfig = new GroupConfig(clusterGroup);
+        GroupConfig groupConfig = new GroupConfig(mainCluster);
         cfg.setGroupConfig(groupConfig);
         return cfg;
     }
+
+
 
     public static HazelSimCore getHazelSimCore(int noOfSimultaneousInstances, String _clusterGroup) {
         if (hazelSimCore == null) {

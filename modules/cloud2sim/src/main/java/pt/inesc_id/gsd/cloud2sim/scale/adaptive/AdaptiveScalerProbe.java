@@ -16,6 +16,7 @@ import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.core.IMap;
 import org.cloudbus.cloudsim.Log;
 import pt.inesc_id.gsd.cloud2sim.scale.AutoScaleConfigReader;
+import pt.inesc_id.gsd.cloud2sim.scale.DynamicScalingConstants;
 import pt.inesc_id.gsd.cloud2sim.scale.core.ClusterConfig;
 import pt.inesc_id.gsd.cloud2sim.scale.health.HealthParams;
 
@@ -56,7 +57,7 @@ public class AdaptiveScalerProbe implements Runnable {
 
     public static void setTerminateAllKey() {
         HealthParams.setToScaleIn(true);
-        instances.get(0).getAtomicLong("scalingDecision").getAndSet(-2);
+        instances.get(0).getAtomicLong("scalingDecision").getAndSet(DynamicScalingConstants.TERMINATE_ALL_FLAG);
     }
 
     @Override
