@@ -338,6 +338,7 @@ public class DatacenterBroker extends SimEntity {
      * @post $none
      */
     protected void submitCloudlets() {
+        Log.printConcatLine("Arwan: in submitCloudlets method");
         int vmIndex = 0;
         List<Cloudlet> successfullySubmitted = new ArrayList<Cloudlet>();
         for (Cloudlet cloudlet : getCloudletList()) {
@@ -345,6 +346,7 @@ public class DatacenterBroker extends SimEntity {
             // if user didn't bind this cloudlet and it has not been executed yet
             if (cloudlet.getVmId() == -1) {
                 vm = getVmsCreatedList().get(vmIndex);
+
             } else { // submit to the specific vm
                 vm = VmList.getById(getVmsCreatedList(), cloudlet.getVmId());
                 if (vm == null) { // vm was not created

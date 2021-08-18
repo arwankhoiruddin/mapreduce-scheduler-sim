@@ -724,6 +724,7 @@ public class Datacenter extends SimEntity {
 			Host host = getVmAllocationPolicy().getHost(vmId, userId);
 			Vm vm = host.getVm(vmId, userId);
 			CloudletScheduler scheduler = vm.getCloudletScheduler();
+			Log.printConcatLine("Arwan: cloudletScheduler: " + scheduler);
 			double estimatedFinishTime = scheduler.cloudletSubmit(cl, fileTransferTime);
 
 			// if this cloudlet is in the exec queue
